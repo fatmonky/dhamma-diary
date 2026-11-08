@@ -6,7 +6,7 @@ Terms used in Dhamma Diary. Planning decisions live on the Trello map "MAP: Dham
 
 **Root**: the kind of thought a stone came from. White stones: renunciation, kindness, harmlessness. Black stones: sensual desire, ill will, harming. A stone's root must match its colour.
 
-**Passage**: a short excerpt from a sutta, shown in the evening with one reflection question. Passages come from a fixed, ordered set that ships with the app.
+**Passage**: a short excerpt from one sutta, shown in the evening with one reflection question. An excerpt may join several parts of the same sutta, marked with an ellipsis. Passages come from a fixed, ordered set that ships with the app.
 
 **Evening reflection**: the nightly passage, its question, and the user's optional journal entry about the day.
 
