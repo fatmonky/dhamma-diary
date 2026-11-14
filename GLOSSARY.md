@@ -19,3 +19,5 @@ Terms used in Dhamma Diary (the app's name on the App Store and home screen). Pl
 **Journal entry**: what the user writes in an evening reflection. Optional, at most one per reflection day, and editable later. It remembers the passage and question it answered, as they were that day. A missed day can't be written afterwards.
 
 **Diary**: the tab where the evening reflection lives, next to Today, Review and About. It can be opened at any time of day.
+
+**Passages**: the history inside Diary, where past journal entries are gathered under the passage they answered. Review also shows each day's entry alongside its stones.
