@@ -10,4 +10,10 @@ Terms used in Dhamma Diary. Planning decisions live on the Trello map "MAP: Dham
 
 **Evening reflection**: the nightly passage, its question, and the user's optional journal entry about the day.
 
-**Reflection day**: the day an evening reflection belongs to. It runs until 3am, so a reflection written just after midnight counts for the day just lived.
+**Reflection day**: the day an evening reflection, a stone or anything else in the app belongs to. It runs until 3am, so a reflection written or a stone logged just after midnight counts for the day just lived.
+
+**Passage set**: the ordered list of passages that ships with the app. Each passage keeps its identity for good, even if later versions reword its question or drop it from the set.
+
+**Sequence**: each user's walk through the passage set. It starts at passage 1 on the user's first reflection day and moves on one passage per reflection day, whether or not the app is opened, looping back to passage 1 after the last.
+
+**Journal entry**: what the user writes in an evening reflection. Optional, at most one per reflection day, and editable later. It remembers the passage and question it answered, as they were that day. A missed day can't be written afterwards.
