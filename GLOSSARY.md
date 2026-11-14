@@ -1,6 +1,6 @@
 # Glossary
 
-Terms used in Dhamma Diary. Planning decisions live on the Trello map "MAP: Dhamma Diary on a White Stone fork" (https://trello.com/c/UKufqlKx).
+Terms used in Dhamma Diary (the app's name on the App Store and home screen). Planning decisions live on the Trello map "MAP: Dhamma Diary on a White Stone fork" (https://trello.com/c/UKufqlKx).
 
 **Stone**: one logged moment from the day, either white (wholesome) or black (unwholesome). Optional: a day can have none.
 
@@ -17,3 +17,5 @@ Terms used in Dhamma Diary. Planning decisions live on the Trello map "MAP: Dham
 **Sequence**: each user's walk through the passage set. It starts at passage 1 on the user's first reflection day and moves on one passage per reflection day, whether or not the app is opened, looping back to passage 1 after the last.
 
 **Journal entry**: what the user writes in an evening reflection. Optional, at most one per reflection day, and editable later. It remembers the passage and question it answered, as they were that day. A missed day can't be written afterwards.
+
+**Diary**: the tab where the evening reflection lives, next to Today, Review and About. It can be opened at any time of day.
