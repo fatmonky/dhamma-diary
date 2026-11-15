@@ -2,7 +2,7 @@
 
 ## Project
 
-White Stone is a native iOS app for tracking wholesome and unwholesome thoughts/actions as white and black stones. Keep the app quiet, local-first, and contemplative. Do not add analytics, telemetry, badges, achievements, streak milestones, notifications, or gamified copy unless explicitly requested.
+Dhamma Diary is a native iOS app: a daily sutta-reflection journal with optional white and black stones for wholesome and unwholesome thoughts/actions. It is a fork of White Stone. The build spec is `docs/spec/v1.md`. Keep the app quiet, local-first, and contemplative. Do not add analytics, telemetry, badges, achievements, streak milestones, notifications, or gamified copy unless explicitly requested.
 
 ## Stack
 
@@ -15,15 +15,15 @@ White Stone is a native iOS app for tracking wholesome and unwholesome thoughts/
 
 ## Important Files
 
-- App entry: `WhiteStone/App/WhiteStoneApp.swift`
-- Main tabs and onboarding: `WhiteStone/Views/ContentView.swift`
-- Today flow: `WhiteStone/Views/Today/TodayView.swift`
-- Add stone sheet: `WhiteStone/Views/AddStone/AddStoneSheet.swift`
-- Review tab: `WhiteStone/Views/Review/ReviewView.swift`
-- Pattern observations: `WhiteStone/Utilities/PatternEngine.swift`
-- Reflections: `WhiteStone/Views/Reflection/`
-- Models: `WhiteStone/Models/Stone.swift`, `WhiteStone/Models/Reflection.swift`
-- Tests: `WhiteStoneTests/`
+- App entry: `DhammaDiary/App/DhammaDiaryApp.swift`
+- Main tabs and onboarding: `DhammaDiary/Views/ContentView.swift`
+- Today flow: `DhammaDiary/Views/Today/TodayView.swift`
+- Add stone sheet: `DhammaDiary/Views/AddStone/AddStoneSheet.swift`
+- Review tab: `DhammaDiary/Views/Review/ReviewView.swift`
+- Pattern observations: `DhammaDiary/Utilities/PatternEngine.swift`
+- Reflections: `DhammaDiary/Views/Reflection/`
+- Models: `DhammaDiary/Models/Stone.swift`, `DhammaDiary/Models/Reflection.swift`
+- Tests: `DhammaDiaryTests/`
 
 ## Build And Test
 
@@ -36,13 +36,13 @@ xcodegen generate
 Build:
 
 ```bash
-xcodebuild -project WhiteStone.xcodeproj -scheme WhiteStone -destination 'platform=iOS Simulator,name=iPhone 17' build
+xcodebuild -project DhammaDiary.xcodeproj -scheme DhammaDiary -destination 'platform=iOS Simulator,name=iPhone 17' build
 ```
 
 Run tests:
 
 ```bash
-xcodebuild -project WhiteStone.xcodeproj -scheme WhiteStone -destination 'platform=iOS Simulator,name=iPhone 17' test
+xcodebuild -project DhammaDiary.xcodeproj -scheme DhammaDiary -destination 'platform=iOS Simulator,name=iPhone 17' test
 ```
 
 If `iPhone 17` is unavailable, list simulators and use the closest available iPhone simulator.

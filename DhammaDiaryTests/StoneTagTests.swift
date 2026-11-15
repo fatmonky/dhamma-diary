@@ -1,5 +1,5 @@
 import XCTest
-@testable import WhiteStone
+@testable import DhammaDiary
 
 final class StoneTagTests: XCTestCase {
     func testAllowedRootsAreConstrainedByStoneType() {

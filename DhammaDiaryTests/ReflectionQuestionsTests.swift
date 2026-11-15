@@ -1,5 +1,5 @@
 import XCTest
-@testable import WhiteStone
+@testable import DhammaDiary
 
 final class ReflectionQuestionsTests: XCTestCase {
     func testQuestionForDateUsesDayOfYearModuloQuestionCount() {

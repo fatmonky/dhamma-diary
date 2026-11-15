@@ -1,5 +1,5 @@
 import XCTest
-@testable import WhiteStone
+@testable import DhammaDiary
 
 final class PatternEngineTests: XCTestCase {
     private var calendar: Calendar!

@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 @main
-struct WhiteStoneApp: App {
+struct DhammaDiaryApp: App {
     var body: some Scene {
         WindowGroup {
             SplashView()

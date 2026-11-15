@@ -8,7 +8,7 @@ struct SplashView: View {
             ContentView()
         } else {
             VStack(spacing: 12) {
-                Text("White Stone")
+                Text("Dhamma Diary")
                     .font(.system(size: 40, weight: .thin))
                 Text("tracker of mental action")
                     .font(.system(size: 16, weight: .light))

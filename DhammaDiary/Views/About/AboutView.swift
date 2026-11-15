@@ -11,7 +11,7 @@ struct AboutView: View {
         let iosVersion = UIDevice.current.systemVersion
         let deviceModel = UIDevice.current.model
 
-        let subject = "White Stone Feedback"
+        let subject = "Dhamma Diary Feedback"
         let body = "\n\n---\nApp Version: \(appVersion) (\(buildNumber))\niOS: \(iosVersion)\nDevice: \(deviceModel)"
 
         var components = URLComponents()

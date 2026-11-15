@@ -296,7 +296,7 @@ struct TodayView: View {
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("White Stone")
+                Text("Dhamma Diary")
                     .font(.headline)
             }
         }

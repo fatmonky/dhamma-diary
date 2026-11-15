@@ -3,7 +3,7 @@ import OSLog
 import SwiftData
 
 extension ModelContext {
-    private static let logger = Logger(subsystem: "com.whitestone.app", category: "persistence")
+    private static let logger = Logger(subsystem: "com.whitestone.DhammaDiary", category: "persistence")
 
     /// Fetches and returns an empty array on failure, but logs the error
     /// instead of silently rendering as "no data".
