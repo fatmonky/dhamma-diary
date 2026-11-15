@@ -1,6 +1,39 @@
 import SwiftUI
 import SwiftData
 
+enum OnboardingStep: String {
+    case welcome
+    case todayCoach
+    case firstLog
+    case reviewTour
+    case diaryTour
+    case completed
+
+    /// The step to use when the app appears or the stone count changes.
+    /// - Completed stays completed, even after every stone is deleted.
+    /// - Fresh users with no stones start at welcome.
+    /// - Existing users with stones skip onboarding, unless they're part way
+    ///   through the steps that follow the first stone.
+    static func bootstrapped(
+        from current: OnboardingStep?,
+        hasStones: Bool,
+        showingPostFirstEntry: Bool
+    ) -> OnboardingStep {
+        if current == .completed {
+            return .completed
+        }
+        if !hasStones {
+            return current ?? .welcome
+        }
+        switch current {
+        case .firstLog, .reviewTour, .diaryTour:
+            return current!
+        default:
+            return showingPostFirstEntry ? (current ?? .completed) : .completed
+        }
+    }
+}
+
 struct ContentView: View {
     @Query private var allStones: [Stone]
 
@@ -11,15 +44,6 @@ struct ContentView: View {
     @State private var diaryPassageRequest: String?
 
     @AppStorage("onboarding.step") private var onboardingStepRaw = ""
-
-    private enum OnboardingStep: String {
-        case welcome
-        case todayCoach
-        case firstLog
-        case reviewTour
-        case diaryTour
-        case completed
-    }
 
     private var onboardingStep: OnboardingStep? {
         get { OnboardingStep(rawValue: onboardingStepRaw) }
@@ -143,25 +167,16 @@ struct ContentView: View {
     }
 
     private func bootstrapOnboardingState() {
-        if isFreshUser {
-            if onboardingStep == nil || onboardingStep == .completed {
-                onboardingStep = .welcome
-            }
-            showWelcome = shouldShowWelcomeSheet
-            return
+        let step = OnboardingStep.bootstrapped(
+            from: onboardingStep,
+            hasStones: !isFreshUser,
+            showingPostFirstEntry: showPostFirstEntry
+        )
+        if step != onboardingStep {
+            onboardingStep = step
         }
-
-        let shouldPreserveOnboardingFlow =
-            onboardingStep == .firstLog ||
-            onboardingStep == .reviewTour ||
-            onboardingStep == .diaryTour ||
-            showPostFirstEntry
-
-        if !shouldPreserveOnboardingFlow && onboardingStep != .completed {
-            onboardingStep = .completed
-        }
-        showWelcome = false
-        if onboardingStep == .completed {
+        showWelcome = shouldShowWelcomeSheet
+        if step == .completed {
             showPostFirstEntry = false
         }
     }

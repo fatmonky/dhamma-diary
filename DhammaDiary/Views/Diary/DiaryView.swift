@@ -59,6 +59,8 @@ struct DiaryView: View {
                 } label: {
                     Text(mode == .tonight ? "Passages" : "Tonight")
                 }
+                // Tour overlays block the screen underneath, toolbar included.
+                .disabled(showTourOverlay)
             }
         }
     }
