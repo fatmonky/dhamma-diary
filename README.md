@@ -61,7 +61,7 @@ WhiteStone/
     Review/ReviewView.swift           # Calendar, stats, charts, and Review tour
     Review/Calendar/DayCell.swift     # Single day cell with ratio colour
     Review/Patterns/PatternsView.swift # Quiet pattern observations
-    Reflection/ReflectionView.swift    # Daily and by-question reflection views
+    Diary/DiaryView.swift              # Diary tab: Tonight and Passages
     StoneDetail/StoneDetailView.swift # Editable stone detail
     About/AboutView.swift             # App story and guidance
     Components/StoneIcon.swift        # Reusable 3D stone rendering

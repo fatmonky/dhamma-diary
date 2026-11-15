@@ -32,8 +32,8 @@ WhiteStone/
         DayCell.swift               # Single day cell with ratio colour
       Patterns/
         PatternsView.swift          # Local-only pattern observations
-    Reflection/
-      ReflectionView.swift          # Daily and by-question reflection root
+    Diary/
+      DiaryView.swift               # Diary tab: Tonight and Passages
     StoneDetail/
       StoneDetailView.swift         # Editable stone detail (type, time, note)
     Components/

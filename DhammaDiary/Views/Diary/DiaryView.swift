@@ -1,22 +1,32 @@
 import SwiftUI
 import SwiftData
 
-struct ReflectionView: View {
+/// The Diary tab (spec 4.2): Tonight (the default) and Passages (history).
+struct DiaryView: View {
     var showTourOverlay: Bool = false
     var onFinishTour: () -> Void = {}
     var onSkipTour: () -> Void = {}
 
-    @State private var mode: ReflectionMode = .today
+    @State private var mode: DiaryMode = .tonight
     @State private var expandedPassageID: String?
+    @State private var draft = ""
 
     var body: some View {
         ZStack {
             Group {
                 switch mode {
-                case .today:
-                    ReflectionTodayView()
-                case .byQuestion:
-                    ByQuestionView(expandedPassageID: $expandedPassageID)
+                case .tonight:
+                    TonightView(
+                        onOpenPassageHistory: { passageID in
+                            expandedPassageID = passageID
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                mode = .passages
+                            }
+                        },
+                        text: $draft
+                    )
+                case .passages:
+                    PassagesView(expandedPassageID: $expandedPassageID)
                 }
             }
             .allowsHitTesting(!showTourOverlay)
@@ -26,21 +36,23 @@ struct ReflectionView: View {
             }
         }
         .navigationTitle("Diary")
+        #if DEBUG
+        // For simulator screenshots: `simctl launch … -debug.diaryMode passages`.
+        .onAppear {
+            if UserDefaults.standard.string(forKey: "debug.diaryMode") == "passages" {
+                mode = .passages
+            }
+        }
+        #endif
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     withAnimation(.easeInOut(duration: 0.2)) {
-                        mode = mode == .today ? .byQuestion : .today
+                        mode = mode == .tonight ? .passages : .tonight
                     }
                 } label: {
-                    VStack(spacing: 1) {
-                        Image(systemName: mode == .today ? "questionmark.bubble" : "square.and.pencil")
-                            .font(.title3)
-                        Text(mode == .today ? "Passages" : "Tonight")
-                            .font(.caption2)
-                    }
+                    Text(mode == .tonight ? "Passages" : "Tonight")
                 }
-                .accessibilityLabel(mode == .today ? "Passages View" : "Tonight View")
             }
         }
     }
@@ -86,7 +98,7 @@ struct ReflectionView: View {
     }
 }
 
-private enum ReflectionMode {
-    case today
-    case byQuestion
+private enum DiaryMode {
+    case tonight
+    case passages
 }

@@ -78,7 +78,7 @@ struct ContentView: View {
             .tag(1)
 
             NavigationStack {
-                ReflectionView(
+                DiaryView(
                     showTourOverlay: shouldShowDiaryTour,
                     onFinishTour: finishOnboarding,
                     onSkipTour: finishOnboarding
@@ -97,6 +97,12 @@ struct ContentView: View {
         .onAppear {
             bootstrapOnboardingState()
             syncTabWithOnboardingStep()
+            #if DEBUG
+            // For simulator screenshots: `simctl launch … -debug.selectedTab 2`.
+            if let tab = UserDefaults.standard.string(forKey: "debug.selectedTab").flatMap(Int.init) {
+                selectedTab = tab
+            }
+            #endif
         }
         .onChange(of: allStones.count) { _, _ in
             bootstrapOnboardingState()

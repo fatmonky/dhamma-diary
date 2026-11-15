@@ -1,7 +1,9 @@
 import SwiftUI
 import SwiftData
 
-struct ReflectionDetailView: View {
+/// One journal entry, editable. Blank text deletes it. Previous/next move
+/// between entries for the same passage (spec 4.2).
+struct JournalEntryDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
@@ -31,7 +33,7 @@ struct ReflectionDetailView: View {
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                         Text(entry.question)
-                            .font(.title3.weight(.semibold))
+                            .font(.system(.title3, design: .serif).weight(.semibold))
                     }
 
                     TextEditor(text: $editedText)

@@ -315,7 +315,7 @@ struct ReviewView: View {
 
     private func selectedEntrySection(_ entry: JournalEntry) -> some View {
         NavigationLink {
-            ReflectionDetailView(entryID: entry.persistentModelID)
+            JournalEntryDetailView(entryID: entry.persistentModelID)
         } label: {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Journal entry")

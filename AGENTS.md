@@ -21,7 +21,7 @@ Dhamma Diary is a native iOS app: a daily sutta-reflection journal with optional
 - Add stone sheet: `DhammaDiary/Views/AddStone/AddStoneSheet.swift`
 - Review tab: `DhammaDiary/Views/Review/ReviewView.swift`
 - Pattern observations: `DhammaDiary/Utilities/PatternEngine.swift`
-- Reflections (becomes the Diary tab in build step 5): `DhammaDiary/Views/Reflection/`
+- Diary tab (Tonight and Passages, entry detail): `DhammaDiary/Views/Diary/`
 - Models: `DhammaDiary/Models/Stone.swift`, `DhammaDiary/Models/JournalEntry.swift`
 - SwiftData schema and migration plan: `DhammaDiary/Models/Schema.swift` (add a new `SchemaVn` and a migration stage for any model change)
 - Journal entry saving rules: `DhammaDiary/Utilities/JournalStore.swift`
