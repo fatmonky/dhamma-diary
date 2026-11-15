@@ -10,7 +10,7 @@ struct SplashView: View {
             VStack(spacing: 12) {
                 Text("Dhamma Diary")
                     .font(.system(size: 40, weight: .thin))
-                Text("tracker of mental action")
+                Text("daily Dhamma reflection")
                     .font(.system(size: 16, weight: .light))
                     .foregroundStyle(.secondary)
             }

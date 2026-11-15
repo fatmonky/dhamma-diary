@@ -25,7 +25,7 @@ struct ReflectionView: View {
                 tourOverlay
             }
         }
-        .navigationTitle("Reflections")
+        .navigationTitle("Diary")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -36,11 +36,11 @@ struct ReflectionView: View {
                     VStack(spacing: 1) {
                         Image(systemName: mode == .today ? "questionmark.bubble" : "square.and.pencil")
                             .font(.title3)
-                        Text(mode == .today ? "Passages" : "Daily")
+                        Text(mode == .today ? "Passages" : "Tonight")
                             .font(.caption2)
                     }
                 }
-                .accessibilityLabel(mode == .today ? "Passages View" : "Daily View")
+                .accessibilityLabel(mode == .today ? "Passages View" : "Tonight View")
             }
         }
     }
@@ -54,10 +54,10 @@ struct ReflectionView: View {
                 Spacer(minLength: 180)
 
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("Reflections")
+                    Text("Diary")
                         .font(.headline)
 
-                    Text("Reflections gives you one daily question and a quiet place to save a response. Use Questions to revisit past answers by prompt; saved reflections also appear as markers in Review.")
+                    Text("Each day brings a new passage and one question. Write as much or as little as you like, or nothing at all. An entry written before 3am counts for the day before. Past entries are kept by day and by passage in Passages.")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
 

@@ -27,7 +27,7 @@ struct AboutView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                Text("White Stone is a mental tracking app that helps spiritual practitioners track the goodness of their thoughts & actions throughout a day.")
+                Text("Dhamma Diary is a quiet daily journal for Dhamma practitioners. Each day it offers a short passage from the suttas and one question to reflect on, with space to write. During the day, you can also log white and black stones for wholesome and unwholesome thoughts.")
                     .font(.body)
 
                 VStack(alignment: .leading, spacing: 16) {
@@ -60,7 +60,7 @@ struct AboutView: View {
                     }
                 }
 
-                Text("But you are free to decide for yourself what are good thoughts or bad thoughts that you will be tracking with White Stone.")
+                Text("But you are free to decide for yourself what are good thoughts or bad thoughts that you will be tracking with Dhamma Diary.")
                     .font(.body)
 
                 VStack(alignment: .leading, spacing: 8) {

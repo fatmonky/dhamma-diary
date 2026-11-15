@@ -64,7 +64,7 @@ If `iPhone 17` is unavailable, list simulators and use the closest available iPh
 The current onboarding flow is:
 
 ```text
-welcome -> todayCoach -> firstLog -> reviewTour -> reflectionsTour -> completed
+welcome -> todayCoach -> firstLog -> reviewTour -> diaryTour -> completed
 ```
 
 Rules:
@@ -73,8 +73,8 @@ Rules:
 - Fresh users with no stones start at `welcome`.
 - Existing users with stones should not see onboarding.
 - Completed onboarding must not restart if the user later deletes all stones.
-- Preserve mid-flow states: `firstLog`, `reviewTour`, `reflectionsTour`.
-- Sync `reviewTour` to the Review tab and `reflectionsTour` to the Reflections tab.
+- Preserve mid-flow states: `firstLog`, `reviewTour`, `diaryTour`.
+- Sync `reviewTour` to the Review tab and `diaryTour` to the Diary tab.
 - Today coach sub-step is local UI state and should reset when re-shown.
 - Tour overlays should block underlying content interaction.
 - Keep onboarding copy calm and practical.

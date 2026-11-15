@@ -15,7 +15,7 @@ struct ContentView: View {
         case todayCoach
         case firstLog
         case reviewTour
-        case reflectionsTour
+        case diaryTour
         case completed
     }
 
@@ -40,8 +40,8 @@ struct ContentView: View {
         onboardingStep == .reviewTour && selectedTab == 1
     }
 
-    private var shouldShowReflectionsTour: Bool {
-        onboardingStep == .reflectionsTour && selectedTab == 2
+    private var shouldShowDiaryTour: Bool {
+        onboardingStep == .diaryTour && selectedTab == 2
     }
 
     var body: some View {
@@ -68,7 +68,7 @@ struct ContentView: View {
                 ReviewView(
                     showTourOverlay: shouldShowReviewTour,
                     onFinishTour: {
-                        onboardingStep = .reflectionsTour
+                        onboardingStep = .diaryTour
                         selectedTab = 2
                     },
                     onSkipTour: finishOnboarding
@@ -79,12 +79,12 @@ struct ContentView: View {
 
             NavigationStack {
                 ReflectionView(
-                    showTourOverlay: shouldShowReflectionsTour,
+                    showTourOverlay: shouldShowDiaryTour,
                     onFinishTour: finishOnboarding,
                     onSkipTour: finishOnboarding
                 )
             }
-            .tabItem { Label("Reflections", systemImage: "text.book.closed") }
+            .tabItem { Label("Diary", systemImage: "text.book.closed") }
             .tag(2)
 
             NavigationStack {
@@ -141,7 +141,7 @@ struct ContentView: View {
         let shouldPreserveOnboardingFlow =
             onboardingStep == .firstLog ||
             onboardingStep == .reviewTour ||
-            onboardingStep == .reflectionsTour ||
+            onboardingStep == .diaryTour ||
             showPostFirstEntry
 
         if !shouldPreserveOnboardingFlow && onboardingStep != .completed {
@@ -157,7 +157,7 @@ struct ContentView: View {
         switch onboardingStep {
         case .reviewTour:
             selectedTab = 1
-        case .reflectionsTour:
+        case .diaryTour:
             selectedTab = 2
         default:
             break
@@ -183,11 +183,11 @@ private struct WelcomeOnboardingSheet: View {
                     .font(.system(size: 42))
                     .foregroundStyle(Color(red: 0.53, green: 0.38, blue: 0.22))
 
-                Text("Track your thoughts, one stone at a time.")
+                Text("A passage, a question, and your day.")
                     .font(.title3.weight(.semibold))
                     .multilineTextAlignment(.center)
 
-                Text("Log a white stone for a wholesome thought, or log a black stone if the thought was unskillful. Start with logging one stone today, then take a short tour of Review and Reflections.")
+                Text("Each day, the Diary tab offers a short sutta passage and one question to reflect on. During the day, you can log a white stone for a wholesome thought, or a black stone for an unskillful one. Start by logging one stone today, then take a short tour of Review and Diary.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -233,7 +233,7 @@ private struct FirstStoneSuccessSheet: View {
                     .font(.title3.weight(.semibold))
                     .multilineTextAlignment(.center)
 
-                Text("Next, take a quick look at Review, then finish with Reflections for the daily question and saved responses.")
+                Text("Next, take a quick look at Review, then finish with Diary for today's passage and question.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
