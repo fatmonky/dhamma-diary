@@ -523,7 +523,7 @@ struct ReviewView: View {
                 .frame(maxWidth: 320)
                 .background(
                     RoundedRectangle(cornerRadius: 16)
-                        .fill(Color.white.opacity(0.98))
+                        .fill(Color(.tertiarySystemBackground)) // white in light mode, dark grey in dark mode
                 )
                 .shadow(color: .black.opacity(0.08), radius: 18, y: 8)
 
