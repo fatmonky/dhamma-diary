@@ -7,6 +7,8 @@ struct ContentView: View {
     @State private var selectedTab = 0
     @State private var showWelcome = false
     @State private var showPostFirstEntry = false
+    /// A passage to show in the Diary's Passages mode, set from Review.
+    @State private var diaryPassageRequest: String?
 
     @AppStorage("onboarding.step") private var onboardingStepRaw = ""
 
@@ -79,6 +81,7 @@ struct ContentView: View {
 
             NavigationStack {
                 DiaryView(
+                    passageRequest: $diaryPassageRequest,
                     showTourOverlay: shouldShowDiaryTour,
                     onFinishTour: finishOnboarding,
                     onSkipTour: finishOnboarding
@@ -94,6 +97,10 @@ struct ContentView: View {
             .tag(3)
         }
         .tint(Color(red: 0.53, green: 0.38, blue: 0.22))
+        .environment(\.openPassageInDiary) { passageID in
+            diaryPassageRequest = passageID
+            selectedTab = 2
+        }
         .onAppear {
             bootstrapOnboardingState()
             syncTabWithOnboardingStep()

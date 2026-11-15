@@ -6,8 +6,12 @@ import SwiftData
 struct JournalEntryDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openPassageInDiary) private var openPassageInDiary
 
     let entryID: PersistentIdentifier
+    /// Shows a link to this passage in the Diary's Passages mode. On when
+    /// opened from Review; off inside Passages, where it would loop back.
+    var showsPassageLink = false
 
     @State private var editedText = ""
     @State private var currentID: PersistentIdentifier?
@@ -34,6 +38,15 @@ struct JournalEntryDetailView: View {
                             .foregroundStyle(.secondary)
                         Text(entry.question)
                             .font(.system(.title3, design: .serif).weight(.semibold))
+
+                        if showsPassageLink, let openPassageInDiary {
+                            Button("All entries for this passage") {
+                                save(entry)
+                                openPassageInDiary(entry.passageID)
+                            }
+                            .font(.footnote)
+                            .foregroundStyle(Color(red: 0.53, green: 0.38, blue: 0.22))
+                        }
                     }
 
                     TextEditor(text: $editedText)

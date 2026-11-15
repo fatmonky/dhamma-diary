@@ -3,6 +3,8 @@ import SwiftData
 
 /// The Diary tab (spec 4.2): Tonight (the default) and Passages (history).
 struct DiaryView: View {
+    /// Set from outside (Review) to open Passages at that passage.
+    @Binding var passageRequest: String?
     var showTourOverlay: Bool = false
     var onFinishTour: () -> Void = {}
     var onSkipTour: () -> Void = {}
@@ -36,6 +38,10 @@ struct DiaryView: View {
             }
         }
         .navigationTitle("Diary")
+        .onAppear(perform: handlePassageRequest)
+        .onChange(of: passageRequest) { _, _ in
+            handlePassageRequest()
+        }
         #if DEBUG
         // For simulator screenshots: `simctl launch … -debug.diaryMode passages`.
         .onAppear {
@@ -55,6 +61,13 @@ struct DiaryView: View {
                 }
             }
         }
+    }
+
+    private func handlePassageRequest() {
+        guard let passageID = passageRequest else { return }
+        passageRequest = nil
+        expandedPassageID = passageID
+        mode = .passages
     }
 
     private var tourOverlay: some View {

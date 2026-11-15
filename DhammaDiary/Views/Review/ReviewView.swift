@@ -315,7 +315,7 @@ struct ReviewView: View {
 
     private func selectedEntrySection(_ entry: JournalEntry) -> some View {
         NavigationLink {
-            JournalEntryDetailView(entryID: entry.persistentModelID)
+            JournalEntryDetailView(entryID: entry.persistentModelID, showsPassageLink: true)
         } label: {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Journal entry")
@@ -325,7 +325,7 @@ struct ReviewView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Text(entry.question)
-                    .font(.subheadline.weight(.medium))
+                    .font(.system(.subheadline, design: .serif).weight(.semibold))
                     .foregroundStyle(.primary)
                 Text(entry.responseText)
                     .font(.caption)
