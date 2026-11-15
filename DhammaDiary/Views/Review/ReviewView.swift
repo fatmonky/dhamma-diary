@@ -11,9 +11,9 @@ struct ReviewView: View {
     @State private var displayedMonth: Date = .now
     @State private var selectedDay: Date = Calendar.current.startOfDay(for: .now)
     @State private var monthStones: [Stone] = []
-    @State private var monthReflections: [Reflection] = []
+    @State private var monthEntries: [JournalEntry] = []
     @State private var selectedStones: [Stone] = []
-    @State private var selectedReflection: Reflection?
+    @State private var selectedEntry: JournalEntry?
     @State private var allStones: [Stone] = []
     @State private var currentStreak: Int = 0
 
@@ -39,8 +39,8 @@ struct ReviewView: View {
         }
     }
 
-    private var reflectionDays: Set<Date> {
-        Set(monthReflections.map { Calendar.current.startOfDay(for: $0.date) })
+    private var entryDays: Set<Date> {
+        Set(monthEntries.map { Calendar.current.startOfDay(for: $0.day) })
     }
 
     private var daysInMonth: Int {
@@ -161,13 +161,13 @@ struct ReviewView: View {
         .onChange(of: displayedMonth) { _, _ in
             syncSelectionForMonth()
             reloadMonthStones()
-            reloadMonthReflections()
+            reloadMonthEntries()
             reloadSelectedDayStones()
-            reloadSelectedDayReflection()
+            reloadSelectedDayEntry()
         }
         .onChange(of: selectedDay) { _, _ in
             reloadSelectedDayStones()
-            reloadSelectedDayReflection()
+            reloadSelectedDayEntry()
         }
         .onChange(of: selectedDayKey) { _, _ in
             reloadSelectedChartDayStones()
@@ -235,7 +235,7 @@ struct ReviewView: View {
                             DayCell(
                                 day: day,
                                 ratio: ratio,
-                                hasReflection: reflectionDays.contains(dayStart)
+                                hasEntry: entryDays.contains(dayStart)
                             )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
@@ -291,7 +291,7 @@ struct ReviewView: View {
             }
 
             if selectedStones.isEmpty {
-                if selectedReflection == nil {
+                if selectedEntry == nil {
                     Text("No stones recorded this day.")
                         .font(.caption)
                         .foregroundStyle(.tertiary)
@@ -306,25 +306,28 @@ struct ReviewView: View {
                 StoneTimelineList(stones: selectedStones)
             }
 
-            if let selectedReflection {
-                selectedReflectionSection(selectedReflection)
+            if let selectedEntry {
+                selectedEntrySection(selectedEntry)
             }
         }
         .padding(.top, 8)
     }
 
-    private func selectedReflectionSection(_ reflection: Reflection) -> some View {
+    private func selectedEntrySection(_ entry: JournalEntry) -> some View {
         NavigationLink {
-            ReflectionDetailView(reflectionID: reflection.persistentModelID)
+            ReflectionDetailView(entryID: entry.persistentModelID)
         } label: {
             VStack(alignment: .leading, spacing: 8) {
-                Text("Reflection")
+                Text("Journal entry")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.secondary)
-                Text(questionText(for: reflection.questionIndex))
+                Text("\(entry.passageRef) · \(entry.passageTitle)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Text(entry.question)
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(.primary)
-                Text(reflection.responseText)
+                Text(entry.responseText)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -532,9 +535,9 @@ struct ReviewView: View {
     private func reloadAllData() {
         syncSelectionForMonth()
         reloadMonthStones()
-        reloadMonthReflections()
+        reloadMonthEntries()
         reloadSelectedDayStones()
-        reloadSelectedDayReflection()
+        reloadSelectedDayEntry()
         reloadChartStones()
         reloadAllStonesAndStreak()
         reloadSelectedChartDayStones()
@@ -552,16 +555,11 @@ struct ReviewView: View {
         monthStones = modelContext.fetchOrEmpty(descriptor)
     }
 
-    private func reloadMonthReflections() {
-        let interval = DateHelpers.monthInterval(for: displayedMonth)
-        let predicate = #Predicate<Reflection> { reflection in
-            reflection.date >= interval.start && reflection.date < interval.end
-        }
-        let descriptor = FetchDescriptor<Reflection>(
-            predicate: predicate,
-            sortBy: [SortDescriptor(\.date, order: .forward)]
+    private func reloadMonthEntries() {
+        monthEntries = JournalStore.entries(
+            in: DateHelpers.monthInterval(for: displayedMonth),
+            in: modelContext
         )
-        monthReflections = modelContext.fetchOrEmpty(descriptor)
     }
 
     private func reloadSelectedDayStones() {
@@ -576,16 +574,8 @@ struct ReviewView: View {
         selectedStones = modelContext.fetchOrEmpty(descriptor)
     }
 
-    private func reloadSelectedDayReflection() {
-        let interval = DateHelpers.dayInterval(for: selectedDay)
-        let predicate = #Predicate<Reflection> { reflection in
-            reflection.date >= interval.start && reflection.date < interval.end
-        }
-        let descriptor = FetchDescriptor<Reflection>(
-            predicate: predicate,
-            sortBy: [SortDescriptor(\.createdAt, order: .forward)]
-        )
-        selectedReflection = modelContext.fetchOrEmpty(descriptor).first
+    private func reloadSelectedDayEntry() {
+        selectedEntry = JournalStore.entry(forDay: selectedDay, in: modelContext)
     }
 
     private func reloadChartStones() {
@@ -678,11 +668,6 @@ struct ReviewView: View {
                 }
             }
         }
-    }
-
-    private func questionText(for index: Int) -> String {
-        guard ReflectionQuestions.questions.indices.contains(index) else { return "" }
-        return ReflectionQuestions.questions[index]
     }
 
     private static func monthLabel(for date: Date) -> String {

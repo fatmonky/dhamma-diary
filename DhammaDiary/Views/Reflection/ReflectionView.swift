@@ -7,21 +7,16 @@ struct ReflectionView: View {
     var onSkipTour: () -> Void = {}
 
     @State private var mode: ReflectionMode = .today
-    @State private var expandedQuestionIndex: Int?
+    @State private var expandedPassageID: String?
 
     var body: some View {
         ZStack {
             Group {
                 switch mode {
                 case .today:
-                    ReflectionTodayView(
-                        onOpenQuestionHistory: { index in
-                            expandedQuestionIndex = index
-                            mode = .byQuestion
-                        }
-                    )
+                    ReflectionTodayView()
                 case .byQuestion:
-                    ByQuestionView(expandedQuestionIndex: $expandedQuestionIndex)
+                    ByQuestionView(expandedPassageID: $expandedPassageID)
                 }
             }
             .allowsHitTesting(!showTourOverlay)
@@ -41,11 +36,11 @@ struct ReflectionView: View {
                     VStack(spacing: 1) {
                         Image(systemName: mode == .today ? "questionmark.bubble" : "square.and.pencil")
                             .font(.title3)
-                        Text(mode == .today ? "Questions" : "Daily")
+                        Text(mode == .today ? "Passages" : "Daily")
                             .font(.caption2)
                     }
                 }
-                .accessibilityLabel(mode == .today ? "Questions View" : "Daily View")
+                .accessibilityLabel(mode == .today ? "Passages View" : "Daily View")
             }
         }
     }

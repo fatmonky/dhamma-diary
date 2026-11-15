@@ -5,28 +5,32 @@ struct ReflectionDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
-    let reflectionID: PersistentIdentifier
+    let entryID: PersistentIdentifier
 
     @State private var editedText = ""
     @State private var currentID: PersistentIdentifier?
+    @State private var didDelete = false
 
-    private var reflection: Reflection? {
+    private var entry: JournalEntry? {
         guard let currentID else { return nil }
-        return modelContext.model(for: currentID) as? Reflection
+        return modelContext.model(for: currentID) as? JournalEntry
     }
 
     var body: some View {
         Group {
-            if let reflection {
+            if let entry {
                 VStack(alignment: .leading, spacing: 16) {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(DateHelpers.fullDateString(for: reflection.date))
+                        Text(DateHelpers.fullDateString(for: entry.day))
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
-                        Text("Last saved \(ReflectionDateFormatters.detailTimestamp.string(from: reflection.updatedAt ?? reflection.createdAt))")
+                        Text("Last saved \(ReflectionDateFormatters.detailTimestamp.string(from: entry.updatedAt))")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
-                        Text(ReflectionQuestions.questions[safe: reflection.questionIndex] ?? "")
+                        Text("\(entry.passageRef) · \(entry.passageTitle)")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                        Text(entry.question)
                             .font(.title3.weight(.semibold))
                     }
 
@@ -38,41 +42,41 @@ struct ReflectionDetailView: View {
                                 .fill(Color(.secondarySystemBackground))
                         )
 
-                    navigationControls(for: reflection)
+                    navigationControls(for: entry)
                 }
                 .padding()
-                .navigationTitle("Reflection")
+                .navigationTitle("Journal Entry")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Save") {
-                            save(reflection, forceTimestamp: true)
+                            save(entry, forceTimestamp: true)
                         }
                     }
                 }
                 .onDisappear {
-                    save(reflection)
+                    save(entry)
                 }
             } else {
-                ContentUnavailableView("Reflection not found", systemImage: "questionmark.circle")
+                ContentUnavailableView("Entry not found", systemImage: "questionmark.circle")
             }
         }
         .onAppear {
             if currentID == nil {
-                currentID = reflectionID
+                currentID = entryID
             }
-            editedText = reflection?.responseText ?? ""
+            editedText = entry?.responseText ?? ""
         }
     }
 
-    private func navigationControls(for reflection: Reflection) -> some View {
-        let siblings = reflectionsForQuestion(reflection.questionIndex)
-        let currentIndex = siblings.firstIndex { $0.persistentModelID == reflection.persistentModelID }
+    private func navigationControls(for entry: JournalEntry) -> some View {
+        let siblings = JournalStore.entries(forPassage: entry.passageID, in: modelContext)
+        let currentIndex = siblings.firstIndex { $0.persistentModelID == entry.persistentModelID }
         let previous = currentIndex.flatMap { $0 > 0 ? siblings[$0 - 1] : nil }
         let next = currentIndex.flatMap { $0 < siblings.count - 1 ? siblings[$0 + 1] : nil }
 
         return HStack {
-            Button("← previous on this question") {
+            Button("← previous for this passage") {
                 move(to: previous)
             }
             .disabled(previous == nil)
@@ -81,7 +85,7 @@ struct ReflectionDetailView: View {
 
             Spacer()
 
-            Button("next on this question →") {
+            Button("next for this passage →") {
                 move(to: next)
             }
             .disabled(next == nil)
@@ -91,42 +95,20 @@ struct ReflectionDetailView: View {
         .font(.footnote)
     }
 
-    private func move(to reflection: Reflection?) {
-        guard let reflection else { return }
-        if let current = self.reflection {
+    private func move(to target: JournalEntry?) {
+        guard let target else { return }
+        if let current = entry {
             save(current)
         }
-        currentID = reflection.persistentModelID
-        editedText = reflection.responseText
+        currentID = target.persistentModelID
+        editedText = target.responseText
     }
 
-    private func save(_ reflection: Reflection, forceTimestamp: Bool = false) {
-        let trimmed = editedText.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty {
-            modelContext.delete(reflection)
-            try? modelContext.save()
+    private func save(_ entry: JournalEntry, forceTimestamp: Bool = false) {
+        guard !didDelete, entry.responseText != editedText || forceTimestamp else { return }
+        if JournalStore.update(entry, text: editedText, in: modelContext) == .deleted {
+            didDelete = true
             dismiss()
-        } else if reflection.responseText != editedText || forceTimestamp {
-            reflection.responseText = editedText
-            reflection.updatedAt = .now
-            try? modelContext.save()
         }
-    }
-
-    private func reflectionsForQuestion(_ questionIndex: Int) -> [Reflection] {
-        let predicate = #Predicate<Reflection> { reflection in
-            reflection.questionIndex == questionIndex
-        }
-        let descriptor = FetchDescriptor<Reflection>(
-            predicate: predicate,
-            sortBy: [SortDescriptor(\.date, order: .forward)]
-        )
-        return modelContext.fetchOrEmpty(descriptor)
-    }
-}
-
-private extension Array {
-    subscript(safe index: Int) -> Element? {
-        indices.contains(index) ? self[index] : nil
     }
 }

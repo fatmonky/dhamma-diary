@@ -64,11 +64,12 @@ struct AboutView: View {
                     .font(.body)
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Reflections")
+                    Text("Passages")
                         .font(.headline)
                         .foregroundStyle(.secondary)
 
-                    AttributionText(font: .body)
+                    Text("Passages are from Bhikkhu Sujato's translations, published by SuttaCentral (suttacentral.net) and dedicated to the public domain (CC0). Each passage links to the full sutta.")
+                        .font(.body)
                 }
 
                 // Feedback section
