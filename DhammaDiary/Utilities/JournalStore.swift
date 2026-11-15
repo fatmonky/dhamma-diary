@@ -1,14 +1,6 @@
 import Foundation
 import SwiftData
 
-/// The passage details a new journal entry keeps a copy of.
-struct JournalPassageCopy: Equatable {
-    var passageID: String
-    var passageRef: String
-    var passageTitle: String
-    var question: String
-}
-
 /// Saving rules for journal entries (spec 3.2):
 /// - at most one entry per day; saving again replaces its text;
 /// - the passage copies are set once and never overwritten;

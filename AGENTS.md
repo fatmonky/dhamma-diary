@@ -27,6 +27,8 @@ Dhamma Diary is a native iOS app: a daily sutta-reflection journal with optional
 - Journal entry saving rules: `DhammaDiary/Utilities/JournalStore.swift`
 - Passages: `DhammaDiary/Resources/passages.json` (generated, never edit by hand), loaded by `DhammaDiary/Models/Passage.swift`; tonight's passage from `DhammaDiary/Utilities/PassageSequence.swift`
 - Passage generator: `scripts/passages/build_passages.py` with input `scripts/passages/passages-source.json`. Add or reword passages in the source file, then regenerate (instructions at the top of the script). Passage IDs are permanent: never reuse or rename one.
+- Widget (tonight's question, Home and Lock Screen): `DhammaDiaryWidget/TonightWidget.swift`. It compiles `Passage.swift`, `PassageSequence.swift`, `DateHelpers.swift` and `passages.json` from the app, so keep those free of SwiftData and UIKit. The first day lives in the App Group `group.com.whitestone.DhammaDiary` (`PassageSequence.sharedDefaults`).
+- Week look-back: `DhammaDiary/Utilities/WeekLookBack.swift`, `DhammaDiary/Views/Week/WeekLookBackView.swift`
 - App icon: `scripts/icon/make_icon.py` draws `AppIcon.png`; change the script, not the PNG.
 - Privacy policy: `docs/privacy-policy.md` (published on inquivision.com).
 - Tests: `DhammaDiaryTests/`

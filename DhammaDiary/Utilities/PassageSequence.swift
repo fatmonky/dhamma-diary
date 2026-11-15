@@ -8,6 +8,21 @@ import Foundation
 enum PassageSequence {
     static let firstDayStorageKey = "sequence.firstDay"
 
+    /// Shared with the widget (spec 8.4).
+    static let appGroup = "group.com.whitestone.DhammaDiary"
+
+    /// Where the first day is stored: the App Group, so the widget can read
+    /// it. Falls back to the app's own defaults if the group is unavailable.
+    static let sharedDefaults: UserDefaults = UserDefaults(suiteName: appGroup) ?? .standard
+
+    /// Copies a first day stored before the App Group existed into the
+    /// shared store, once, so an update doesn't restart the sequence.
+    static func moveFirstDayToSharedStore(from old: UserDefaults = .standard, to shared: UserDefaults = sharedDefaults) {
+        guard shared.string(forKey: firstDayStorageKey) == nil,
+              let value = old.string(forKey: firstDayStorageKey) else { return }
+        shared.set(value, forKey: firstDayStorageKey)
+    }
+
     /// Index into the passage set for `currentDay`. Both are calendar dates
     /// (reflection days). A negative day count (clock set back) gives 0.
     static func index(
@@ -31,7 +46,7 @@ enum PassageSequence {
     @discardableResult
     static func recordFirstDayIfNeeded(
         now: Date = .now,
-        defaults: UserDefaults = .standard,
+        defaults: UserDefaults = sharedDefaults,
         calendar: Calendar = .current
     ) -> Date {
         if let stored = firstDay(defaults: defaults, calendar: calendar) {
@@ -42,7 +57,7 @@ enum PassageSequence {
         return day
     }
 
-    static func firstDay(defaults: UserDefaults = .standard, calendar: Calendar = .current) -> Date? {
+    static func firstDay(defaults: UserDefaults = sharedDefaults, calendar: Calendar = .current) -> Date? {
         guard let key = defaults.string(forKey: firstDayStorageKey) else { return nil }
         let parts = key.split(separator: "-").compactMap { Int($0) }
         guard parts.count == 3 else { return nil }
@@ -53,7 +68,7 @@ enum PassageSequence {
     static func passage(
         for currentDay: Date = DateHelpers.currentReflectionDay,
         in set: PassageSet = .bundled,
-        defaults: UserDefaults = .standard,
+        defaults: UserDefaults = sharedDefaults,
         calendar: Calendar = .current
     ) -> Passage? {
         guard !set.passages.isEmpty else { return nil }

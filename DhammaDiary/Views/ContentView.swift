@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import WidgetKit
 
 enum OnboardingStep: String {
     case welcome
@@ -36,6 +37,7 @@ enum OnboardingStep: String {
 
 struct ContentView: View {
     @Query private var allStones: [Stone]
+    @Environment(\.scenePhase) private var scenePhase
 
     @State private var selectedTab = 0
     @State private var showWelcome = false
@@ -124,6 +126,17 @@ struct ContentView: View {
         .environment(\.openDiary) { destination in
             diaryRequest = destination
             selectedTab = 2
+        }
+        // The widget opens dhammadiary://tonight (spec 8.4).
+        .onOpenURL { url in
+            guard url.scheme == "dhammadiary", url.host == "tonight" else { return }
+            diaryRequest = .tonight
+            selectedTab = 2
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active {
+                WidgetCenter.shared.reloadAllTimelines()
+            }
         }
         .onAppear {
             bootstrapOnboardingState()

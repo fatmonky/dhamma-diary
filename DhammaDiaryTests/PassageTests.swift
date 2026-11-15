@@ -131,3 +131,34 @@ final class PassageSequenceTests: XCTestCase {
         XCTAssertEqual(tomorrow?.id, "mn19-two-kinds")
     }
 }
+
+final class SharedFirstDayTests: XCTestCase {
+    private let oldName = "SharedFirstDayTests.old"
+    private let sharedName = "SharedFirstDayTests.shared"
+
+    override func tearDown() {
+        UserDefaults().removePersistentDomain(forName: oldName)
+        UserDefaults().removePersistentDomain(forName: sharedName)
+        super.tearDown()
+    }
+
+    func testExistingFirstDayIsCopiedOnce() {
+        let old = UserDefaults(suiteName: oldName)!
+        let shared = UserDefaults(suiteName: sharedName)!
+        old.set("2026-11-01", forKey: PassageSequence.firstDayStorageKey)
+
+        PassageSequence.moveFirstDayToSharedStore(from: old, to: shared)
+        XCTAssertEqual(shared.string(forKey: PassageSequence.firstDayStorageKey), "2026-11-01")
+
+        // A later run doesn't overwrite the shared value.
+        old.set("2026-12-25", forKey: PassageSequence.firstDayStorageKey)
+        PassageSequence.moveFirstDayToSharedStore(from: old, to: shared)
+        XCTAssertEqual(shared.string(forKey: PassageSequence.firstDayStorageKey), "2026-11-01")
+    }
+
+    func testNothingToCopyLeavesSharedEmpty() {
+        let shared = UserDefaults(suiteName: sharedName)!
+        PassageSequence.moveFirstDayToSharedStore(from: UserDefaults(suiteName: oldName)!, to: shared)
+        XCTAssertNil(shared.string(forKey: PassageSequence.firstDayStorageKey))
+    }
+}

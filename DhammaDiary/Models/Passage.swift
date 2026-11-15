@@ -1,6 +1,14 @@
 import Foundation
 import OSLog
 
+/// The passage details a new journal entry keeps a copy of.
+struct JournalPassageCopy: Equatable {
+    var passageID: String
+    var passageRef: String
+    var passageTitle: String
+    var question: String
+}
+
 /// One bundled passage (spec 3.3). Read-only; never stored in SwiftData.
 struct Passage: Codable, Identifiable, Equatable {
     struct SegmentRange: Codable, Equatable {
