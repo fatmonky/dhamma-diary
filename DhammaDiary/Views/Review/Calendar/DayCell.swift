@@ -15,7 +15,7 @@ struct DayCell: View {
 
             if hasEntry {
                 Circle()
-                    .fill(Color(red: 0.53, green: 0.38, blue: 0.22))
+                    .fill(ColorHelpers.accent)
                     .frame(width: 5, height: 5)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                     .padding(5)

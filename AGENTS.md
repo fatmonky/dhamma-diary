@@ -27,6 +27,8 @@ Dhamma Diary is a native iOS app: a daily sutta-reflection journal with optional
 - Journal entry saving rules: `DhammaDiary/Utilities/JournalStore.swift`
 - Passages: `DhammaDiary/Resources/passages.json` (generated, never edit by hand), loaded by `DhammaDiary/Models/Passage.swift`; tonight's passage from `DhammaDiary/Utilities/PassageSequence.swift`
 - Passage generator: `scripts/passages/build_passages.py` with input `scripts/passages/passages-source.json`. Add or reword passages in the source file, then regenerate (instructions at the top of the script). Passage IDs are permanent: never reuse or rename one.
+- App icon: `scripts/icon/make_icon.py` draws `AppIcon.png`; change the script, not the PNG.
+- Privacy policy: `docs/privacy-policy.md` (published on inquivision.com).
 - Tests: `DhammaDiaryTests/`
 
 ## Build And Test
@@ -83,7 +85,7 @@ Rules:
 
 ## UI Tone
 
-- Use the existing white/black/brown visual language.
+- Use the existing white/black/brown visual language. The brown is the robe brown #894E26 (`ColorHelpers.accent`, the `AccentColor` asset); don't add other browns.
 - Avoid green/red judgment framing except where already used for system confirmation.
 - Avoid flashy celebration language.
 - Keep copy plain, reflective, and non-coercive.

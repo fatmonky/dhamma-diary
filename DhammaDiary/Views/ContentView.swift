@@ -120,7 +120,7 @@ struct ContentView: View {
             .tabItem { Label("About", systemImage: "info.circle") }
             .tag(3)
         }
-        .tint(Color(red: 0.53, green: 0.38, blue: 0.22))
+        .tint(ColorHelpers.accent)
         .environment(\.openPassageInDiary) { passageID in
             diaryPassageRequest = passageID
             selectedTab = 2
@@ -209,7 +209,7 @@ private struct WelcomeOnboardingSheet: View {
 
                 Image(systemName: "circle.inset.filled")
                     .font(.system(size: 42))
-                    .foregroundStyle(Color(red: 0.53, green: 0.38, blue: 0.22))
+                    .foregroundStyle(ColorHelpers.accent)
 
                 Text("A passage, a question, and your day.")
                     .font(.title3.weight(.semibold))
@@ -227,7 +227,7 @@ private struct WelcomeOnboardingSheet: View {
                     onStart()
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(Color(red: 0.53, green: 0.38, blue: 0.22))
+                .tint(ColorHelpers.accent)
                 .controlSize(.large)
 
                 Button("Skip") {
@@ -273,7 +273,7 @@ private struct FirstStoneSuccessSheet: View {
                     onContinue()
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(Color(red: 0.53, green: 0.38, blue: 0.22))
+                .tint(ColorHelpers.accent)
                 .controlSize(.large)
 
                 Button("Finish Without Tour") {

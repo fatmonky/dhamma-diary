@@ -207,13 +207,13 @@ private struct DetailStoneTagPills: View {
     private func tag(label: String, value: String) -> some View {
         Text("\(label): \(value)")
             .font(.caption.weight(.medium))
-            .foregroundStyle(Color(red: 0.53, green: 0.38, blue: 0.22))
+            .foregroundStyle(ColorHelpers.accent)
             .lineLimit(1)
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
             .background(
                 Capsule()
-                    .fill(Color(red: 0.53, green: 0.38, blue: 0.22).opacity(0.11))
+                    .fill(ColorHelpers.accent.opacity(0.11))
             )
     }
 }

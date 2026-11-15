@@ -25,7 +25,7 @@ struct TonightView: View {
     @State private var dayEndedBeforeSave = false
     @FocusState private var isEditorFocused: Bool
 
-    private let accent = Color(red: 0.53, green: 0.38, blue: 0.22)
+    private let accent = ColorHelpers.accent
 
     private var hasUnsavedText: Bool { text != savedText }
 
@@ -290,7 +290,7 @@ private struct StoneSummaryView: View {
 /// to the full sutta on SuttaCentral.
 struct PassageView: View {
     let passage: Passage
-    var accent: Color = Color(red: 0.53, green: 0.38, blue: 0.22)
+    var accent: Color = ColorHelpers.accent
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {

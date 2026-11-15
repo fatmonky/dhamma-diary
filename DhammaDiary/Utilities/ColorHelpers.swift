@@ -1,6 +1,10 @@
 import SwiftUI
 
 enum ColorHelpers {
+    /// The app's brown: the robe colour of a monk on alms round, #894E26
+    /// (lighter, #C47E48, in dark mode). Defined in Assets as AccentColor.
+    static let accent = Color("AccentColor")
+
     /// Maps a white-stone ratio (0.0 = all black, 1.0 = all white) to a colour.
     /// Interpolates from black (0.0) through gray (0.5) to off-white (1.0).
     /// Returns nil for days with no stones.

@@ -45,7 +45,7 @@ struct JournalEntryDetailView: View {
                                 openPassageInDiary(entry.passageID)
                             }
                             .font(.footnote)
-                            .foregroundStyle(Color(red: 0.53, green: 0.38, blue: 0.22))
+                            .foregroundStyle(ColorHelpers.accent)
                         }
                     }
 
@@ -95,7 +95,7 @@ struct JournalEntryDetailView: View {
                 move(to: previous)
             }
             .disabled(previous == nil)
-            .foregroundStyle(previous == nil ? .secondary : Color(red: 0.53, green: 0.38, blue: 0.22))
+            .foregroundStyle(previous == nil ? .secondary : ColorHelpers.accent)
             .opacity(previous == nil ? 0.45 : 1)
 
             Spacer()
@@ -104,7 +104,7 @@ struct JournalEntryDetailView: View {
                 move(to: next)
             }
             .disabled(next == nil)
-            .foregroundStyle(next == nil ? .secondary : Color(red: 0.53, green: 0.38, blue: 0.22))
+            .foregroundStyle(next == nil ? .secondary : ColorHelpers.accent)
             .opacity(next == nil ? 0.45 : 1)
         }
         .font(.footnote)

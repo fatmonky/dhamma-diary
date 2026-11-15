@@ -268,13 +268,13 @@ struct TodayView: View {
                                 coachStep = 1
                             }
                             .buttonStyle(.borderedProminent)
-                            .tint(Color(red: 0.53, green: 0.38, blue: 0.22))
+                            .tint(ColorHelpers.accent)
                         } else {
                             Button("Try it now") {
                                 onCompleteCoach()
                             }
                             .buttonStyle(.borderedProminent)
-                            .tint(Color(red: 0.53, green: 0.38, blue: 0.22))
+                            .tint(ColorHelpers.accent)
                         }
 
                         Button("Not now") {
@@ -361,13 +361,13 @@ private struct TodayStoneTagPills: View {
     private func tag(label: String, value: String) -> some View {
         Text("\(label): \(value)")
             .font(.caption2.weight(.medium))
-            .foregroundStyle(Color(red: 0.53, green: 0.38, blue: 0.22))
+            .foregroundStyle(ColorHelpers.accent)
             .lineLimit(1)
             .padding(.horizontal, 7)
             .padding(.vertical, 3)
             .background(
                 Capsule()
-                    .fill(Color(red: 0.53, green: 0.38, blue: 0.22).opacity(0.11))
+                    .fill(ColorHelpers.accent.opacity(0.11))
             )
     }
 }

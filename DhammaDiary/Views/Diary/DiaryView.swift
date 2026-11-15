@@ -92,7 +92,7 @@ struct DiaryView: View {
                         onFinishTour()
                     }
                     .buttonStyle(.borderedProminent)
-                    .tint(Color(red: 0.53, green: 0.38, blue: 0.22))
+                    .tint(ColorHelpers.accent)
 
                     Button("Skip Tour") {
                         onSkipTour()

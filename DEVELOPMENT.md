@@ -42,7 +42,7 @@ WhiteStone/
   Utilities/
     DateHelpers.swift               # Calendar math, date formatting
     ColorHelpers.swift              # Ratio-to-colour mapping (white/black spectrum)
-  Assets.xcassets/                  # Accent colour (brown), app icon placeholder
+  Assets.xcassets/                  # Accent colour (robe brown #894E26), app icon
   Preview Content/
 project.yml                         # XcodeGen config
 .gitignore                          # Ignores .xcodeproj, build output, DerivedData

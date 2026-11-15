@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AboutView: View {
     @Environment(\.openURL) private var openURL
-    private static let brownAccent = Color(red: 0.53, green: 0.38, blue: 0.22)
+    private static let brownAccent = ColorHelpers.accent
     private static let chineseBuddhismURL = URL(string: "https://sacred-texts.com/bud/cbu/cbu10.htm")!
 
     private var feedbackMailtoURL: URL? {
