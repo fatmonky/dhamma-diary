@@ -6,7 +6,7 @@ import SwiftData
 struct JournalEntryDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.openPassageInDiary) private var openPassageInDiary
+    @Environment(\.openDiary) private var openDiary
 
     let entryID: PersistentIdentifier
     /// Shows a link to this passage in the Diary's Passages mode. On when
@@ -39,10 +39,10 @@ struct JournalEntryDetailView: View {
                         Text(entry.question)
                             .font(.system(.title3, design: .serif).weight(.semibold))
 
-                        if showsPassageLink, let openPassageInDiary {
+                        if showsPassageLink, let openDiary {
                             Button("All entries for this passage") {
                                 save(entry)
-                                openPassageInDiary(entry.passageID)
+                                openDiary(.passage(entry.passageID))
                             }
                             .font(.footnote)
                             .foregroundStyle(ColorHelpers.accent)

@@ -19,6 +19,14 @@ struct StoneDaySummary: Equatable {
         rows.map(\.countText).joined(separator: " · ")
     }
 
+    /// The line above Tonight's journal box (spec 8.2), e.g. "You had 2 white
+    /// stones and 1 black stone today. What was happening?" A colour with no
+    /// stones is left out.
+    var promptText: String {
+        let parts = rows.map { "\($0.count) \($0.type.rawValue) \($0.count == 1 ? "stone" : "stones")" }
+        return "You had \(parts.joined(separator: " and ")) today. What was happening?"
+    }
+
     /// Nil for a day with no stones; nothing is shown then.
     init?(stones: [Stone]) {
         let rows: [Row] = StoneType.allCases.compactMap { type in

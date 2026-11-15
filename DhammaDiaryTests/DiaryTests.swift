@@ -59,3 +59,18 @@ final class PassageGroupTests: XCTestCase {
         XCTAssertEqual(groups[1].title, "Your Own Mind (renamed)")
     }
 }
+
+final class StonePromptTests: XCTestCase {
+    func testBothColours() throws {
+        let stones = [Stone(type: .white), Stone(type: .white), Stone(type: .black)]
+        XCTAssertEqual(try XCTUnwrap(StoneDaySummary(stones: stones)).promptText,
+                       "You had 2 white stones and 1 black stone today. What was happening?")
+    }
+
+    func testOneColourLeavesTheOtherOut() throws {
+        XCTAssertEqual(try XCTUnwrap(StoneDaySummary(stones: [Stone(type: .white), Stone(type: .white)])).promptText,
+                       "You had 2 white stones today. What was happening?")
+        XCTAssertEqual(try XCTUnwrap(StoneDaySummary(stones: [Stone(type: .black)])).promptText,
+                       "You had 1 black stone today. What was happening?")
+    }
+}

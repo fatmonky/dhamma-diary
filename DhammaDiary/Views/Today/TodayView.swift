@@ -13,6 +13,8 @@ struct TodayView: View {
     @State private var addStoneType: StoneType? = nil
     @State private var currentDate = Date.now
     @State private var todayStones: [Stone] = []
+    /// Tonight's question, shown in the morning card (spec 8.1).
+    @State private var tonightQuestion: String?
     @State private var displayedStoneType: StoneType = .white
     @State private var flipAngle: Double = 0
     @State private var verticalFlipAngle: Double = 0
@@ -30,6 +32,11 @@ struct TodayView: View {
             sortBy: [SortDescriptor(\.timestamp, order: .forward)]
         )
         todayStones = modelContext.fetchOrEmpty(descriptor)
+
+        // The entry's stored question if one is written, as Tonight shows it.
+        let day = DateHelpers.reflectionDay(for: currentDate)
+        tonightQuestion = JournalStore.entry(forDay: day, in: modelContext)?.question
+            ?? PassageSequence.passage(for: day)?.question
     }
 
     private var whiteCount: Int {
@@ -83,6 +90,10 @@ struct TodayView: View {
                         Text(DateHelpers.fullDateString(for: DateHelpers.reflectionDay(for: currentDate)))
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
+
+                        if let tonightQuestion {
+                            MorningQuestionCard(question: tonightQuestion)
+                        }
 
                         if whiteCount + blackCount > 0 {
                             VStack(alignment: .leading, spacing: 4) {
@@ -369,5 +380,43 @@ private struct TodayStoneTagPills: View {
                 Capsule()
                     .fill(ColorHelpers.accent.opacity(0.11))
             )
+    }
+}
+
+/// "Carry this through the day": tonight's question, all day, on Today
+/// (spec 8.1). Tapping it opens Diary → Tonight.
+private struct MorningQuestionCard: View {
+    @Environment(\.openDiary) private var openDiary
+    let question: String
+
+    var body: some View {
+        Button {
+            openDiary?(.tonight)
+        } label: {
+            HStack(alignment: .center, spacing: 10) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Carry this through the day")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text(question)
+                        .font(.system(.body, design: .serif).weight(.semibold))
+                        .foregroundStyle(.primary)
+                        .lineLimit(3)
+                        .multilineTextAlignment(.leading)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(14)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(Color(.secondarySystemBackground))
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityHint("Opens tonight's passage in the Diary")
     }
 }

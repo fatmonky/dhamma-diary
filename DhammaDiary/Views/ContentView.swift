@@ -40,8 +40,8 @@ struct ContentView: View {
     @State private var selectedTab = 0
     @State private var showWelcome = false
     @State private var showPostFirstEntry = false
-    /// A passage to show in the Diary's Passages mode, set from Review.
-    @State private var diaryPassageRequest: String?
+    /// Where the Diary tab should open next, set from Today, Review or the widget.
+    @State private var diaryRequest: DiaryDestination?
 
     @AppStorage("onboarding.step") private var onboardingStepRaw = ""
 
@@ -105,7 +105,7 @@ struct ContentView: View {
 
             NavigationStack {
                 DiaryView(
-                    passageRequest: $diaryPassageRequest,
+                    request: $diaryRequest,
                     showTourOverlay: shouldShowDiaryTour,
                     onFinishTour: finishOnboarding,
                     onSkipTour: finishOnboarding
@@ -121,8 +121,8 @@ struct ContentView: View {
             .tag(3)
         }
         .tint(ColorHelpers.accent)
-        .environment(\.openPassageInDiary) { passageID in
-            diaryPassageRequest = passageID
+        .environment(\.openDiary) { destination in
+            diaryRequest = destination
             selectedTab = 2
         }
         .onAppear {

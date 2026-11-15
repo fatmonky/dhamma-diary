@@ -60,6 +60,10 @@ struct TonightView: View {
             }
             .padding()
         }
+        #if DEBUG
+        // For simulator screenshots: `simctl launch … -debug.scroll bottom`.
+        .defaultScrollAnchor(UserDefaults.standard.string(forKey: "debug.scroll") == "bottom" ? .bottom : .top)
+        #endif
         .scrollDismissesKeyboard(.interactively)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
@@ -116,6 +120,13 @@ struct TonightView: View {
 
     private var editorSection: some View {
         VStack(alignment: .leading, spacing: 14) {
+            if let stoneSummary {
+                Text(stoneSummary.promptText)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
             TextEditor(text: $text)
                 .focused($isEditorFocused)
                 .frame(minHeight: 220)
