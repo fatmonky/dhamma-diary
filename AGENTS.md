@@ -25,6 +25,8 @@ Dhamma Diary is a native iOS app: a daily sutta-reflection journal with optional
 - Models: `DhammaDiary/Models/Stone.swift`, `DhammaDiary/Models/JournalEntry.swift`
 - SwiftData schema and migration plan: `DhammaDiary/Models/Schema.swift` (add a new `SchemaVn` and a migration stage for any model change)
 - Journal entry saving rules: `DhammaDiary/Utilities/JournalStore.swift`
+- Passages: `DhammaDiary/Resources/passages.json` (generated, never edit by hand), loaded by `DhammaDiary/Models/Passage.swift`; tonight's passage from `DhammaDiary/Utilities/PassageSequence.swift`
+- Passage generator: `scripts/passages/build_passages.py` with input `scripts/passages/passages-source.json`. Add or reword passages in the source file, then regenerate (instructions at the top of the script). Passage IDs are permanent: never reuse or rename one.
 - Tests: `DhammaDiaryTests/`
 
 ## Build And Test

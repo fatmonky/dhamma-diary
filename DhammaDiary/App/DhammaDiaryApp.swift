@@ -11,6 +11,7 @@ struct DhammaDiaryApp: App {
         } catch {
             fatalError("Could not open the Dhamma Diary store: \(error)")
         }
+        PassageSequence.recordFirstDayIfNeeded()
     }
 
     var body: some Scene {
