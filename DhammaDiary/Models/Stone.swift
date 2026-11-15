@@ -61,11 +61,10 @@ extension StoneIntensity: StoneTagOption {}
 @Model
 final class Stone {
     var type: StoneType
-    var timestamp: Date {
-        didSet {
-            dayKey = DateHelpers.dayKey(for: timestamp)
-        }
-    }
+    /// Change with `setTimestamp(_:)` so `dayKey` stays in sync.
+    /// (A `didSet` here never runs: `@Model` turns stored properties into
+    /// computed ones.)
+    private(set) var timestamp: Date
     var note: String
     var dayKey: String // "yyyy-MM-dd" for efficient filtering
     var root: StoneRoot?
@@ -85,11 +84,16 @@ final class Stone {
         self.type = type
         self.timestamp = timestamp
         self.note = note
-        self.dayKey = DateHelpers.dayKey(for: timestamp)
+        self.dayKey = DateHelpers.reflectionDayKey(for: timestamp)
         self.root = root ?? roots.first
         self.rootTagsRawValue = roots.map(\.rawValue).joined(separator: ",")
         self.rootDescriptor = rootDescriptor
         self.intensity = intensity
+    }
+
+    func setTimestamp(_ newValue: Date) {
+        timestamp = newValue
+        dayKey = DateHelpers.reflectionDayKey(for: newValue)
     }
 
     var roots: [StoneRoot] {

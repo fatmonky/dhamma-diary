@@ -21,7 +21,7 @@ struct TodayView: View {
     @State private var coachStep: Int = 0
 
     private func reloadTodayStones() {
-        let interval = DateHelpers.dayInterval(for: currentDate)
+        let interval = DateHelpers.reflectionDayInterval(for: currentDate)
         let predicate = #Predicate<Stone> { stone in
             stone.timestamp >= interval.start && stone.timestamp < interval.end
         }
@@ -80,7 +80,7 @@ struct TodayView: View {
                 VStack(spacing: 0) {
                     // Header: date + ratio bar
                     VStack(alignment: .leading, spacing: 12) {
-                        Text(DateHelpers.fullDateString(for: currentDate))
+                        Text(DateHelpers.fullDateString(for: DateHelpers.reflectionDay(for: currentDate)))
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
 
@@ -328,6 +328,14 @@ struct TodayView: View {
         .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
             currentDate = .now
             reloadTodayStones()
+        }
+        .task(id: DateHelpers.reflectionDayKey(for: currentDate)) {
+            // Move to the next reflection day at 03:00 while the screen is open.
+            let end = DateHelpers.reflectionDayInterval(for: currentDate).end
+            let seconds = max(end.timeIntervalSinceNow, 0) + 1
+            try? await Task.sleep(for: .seconds(seconds))
+            guard !Task.isCancelled else { return }
+            currentDate = .now
         }
     }
 }

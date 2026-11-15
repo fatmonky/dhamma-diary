@@ -9,7 +9,7 @@ struct ReviewView: View {
     var onSkipTour: () -> Void = {}
 
     @State private var displayedMonth: Date = .now
-    @State private var selectedDay: Date = Calendar.current.startOfDay(for: .now)
+    @State private var selectedDay: Date = DateHelpers.currentReflectionDay
     @State private var monthStones: [Stone] = []
     @State private var monthEntries: [JournalEntry] = []
     @State private var selectedStones: [Stone] = []
@@ -22,7 +22,7 @@ struct ReviewView: View {
     @State private var stonesListOpacity: Double = 0
     @State private var chartStones: [Stone] = []
     @State private var selectedStonesForChartDay: [Stone] = []
-    @State private var chartEndDate: Date = Calendar.current.startOfDay(for: .now)
+    @State private var chartEndDate: Date = DateHelpers.currentReflectionDay
 
     private let columns = Array(repeating: GridItem(.flexible()), count: 7)
     private let weekdaySymbols = ["M", "T", "W", "T", "F", "S", "S"]
@@ -30,7 +30,7 @@ struct ReviewView: View {
     private static let brownAccent = Color(red: 0.53, green: 0.38, blue: 0.22)
 
     private var ratioByDay: [Date: Double?] {
-        let grouped = Dictionary(grouping: monthStones) { Calendar.current.startOfDay(for: $0.timestamp) }
+        let grouped = Dictionary(grouping: monthStones) { DateHelpers.reflectionDay(for: $0.timestamp) }
         return grouped.mapValues { stones in
             ColorHelpers.ratio(
                 white: stones.filter { $0.type == .white }.count,
@@ -68,12 +68,12 @@ struct ReviewView: View {
     }
 
     private var totalDaysTracked: Int {
-        Set(allStones.map { DateHelpers.dayKey(for: $0.timestamp) }).count
+        Set(allStones.map { DateHelpers.reflectionDayKey(for: $0.timestamp) }).count
     }
 
     private var chartCountsByDayKey: [String: (white: Int, black: Int)] {
         chartStones.reduce(into: [String: (white: Int, black: Int)]()) { partial, stone in
-            let key = DateHelpers.dayKey(for: stone.timestamp)
+            let key = DateHelpers.reflectionDayKey(for: stone.timestamp)
             var value = partial[key] ?? (0, 0)
             if stone.type == .white {
                 value.white += 1
@@ -85,7 +85,7 @@ struct ReviewView: View {
     }
 
     private var isShowingCurrentWindow: Bool {
-        Calendar.current.isDateInToday(chartEndDate)
+        Calendar.current.isDate(chartEndDate, inSameDayAs: DateHelpers.currentReflectionDay)
     }
 
     private var chartHeaderText: String {
@@ -115,7 +115,7 @@ struct ReviewView: View {
 
     private var allTimeData: [MonthStoneCount] {
         let grouped = Dictionary(grouping: allStones) { stone in
-            DateHelpers.firstOfMonth(for: stone.timestamp)
+            DateHelpers.firstOfMonth(for: DateHelpers.reflectionDay(for: stone.timestamp))
         }
 
         return grouped.keys.sorted().flatMap { monthStart -> [MonthStoneCount] in
@@ -374,7 +374,7 @@ struct ReviewView: View {
                 Spacer()
                 if !isShowingCurrentWindow {
                     Button("Today") {
-                        chartEndDate = Calendar.current.startOfDay(for: .now)
+                        chartEndDate = DateHelpers.currentReflectionDay
                     }
                     .font(.subheadline)
                     .foregroundStyle(Self.brownAccent)
@@ -426,7 +426,7 @@ struct ReviewView: View {
                                 if value.translation.width > 0 {
                                     chartEndDate = calendar.date(byAdding: .day, value: -14, to: chartEndDate)!
                                 } else {
-                                    let today = calendar.startOfDay(for: .now)
+                                    let today = DateHelpers.currentReflectionDay
                                     let newEnd = calendar.date(byAdding: .day, value: 14, to: chartEndDate)!
                                     chartEndDate = min(newEnd, today)
                                 }
@@ -544,7 +544,7 @@ struct ReviewView: View {
     }
 
     private func reloadMonthStones() {
-        let interval = DateHelpers.monthInterval(for: displayedMonth)
+        let interval = DateHelpers.reflectionMonthInterval(for: displayedMonth)
         let predicate = #Predicate<Stone> { stone in
             stone.timestamp >= interval.start && stone.timestamp < interval.end
         }
@@ -563,7 +563,7 @@ struct ReviewView: View {
     }
 
     private func reloadSelectedDayStones() {
-        let interval = DateHelpers.dayInterval(for: selectedDay)
+        let interval = DateHelpers.reflectionDayInterval(forDay: selectedDay)
         let predicate = #Predicate<Stone> { stone in
             stone.timestamp >= interval.start && stone.timestamp < interval.end
         }
@@ -579,13 +579,13 @@ struct ReviewView: View {
     }
 
     private func reloadChartStones() {
-        let endInterval = DateHelpers.dayInterval(for: chartEndDate)
-        guard let start = Calendar.current.date(byAdding: .day, value: -13, to: endInterval.start) else {
+        guard let firstDay = Calendar.current.date(byAdding: .day, value: -13, to: chartEndDate) else {
             chartStones = []
             return
         }
+        let interval = DateHelpers.reflectionInterval(fromDay: firstDay, days: 14)
         let predicate = #Predicate<Stone> { stone in
-            stone.timestamp >= start && stone.timestamp < endInterval.end
+            stone.timestamp >= interval.start && stone.timestamp < interval.end
         }
         let descriptor = FetchDescriptor<Stone>(
             predicate: predicate,
@@ -599,7 +599,7 @@ struct ReviewView: View {
             selectedStonesForChartDay = []
             return
         }
-        let interval = DateHelpers.dayInterval(for: dayDate)
+        let interval = DateHelpers.reflectionDayInterval(forDay: dayDate)
         let predicate = #Predicate<Stone> { stone in
             stone.timestamp >= interval.start && stone.timestamp < interval.end
         }
@@ -616,7 +616,7 @@ struct ReviewView: View {
         allStones = stones
 
         let dayCounts = stones.reduce(into: [String: (white: Int, total: Int)]()) { partial, stone in
-            let key = DateHelpers.dayKey(for: stone.timestamp)
+            let key = DateHelpers.reflectionDayKey(for: stone.timestamp)
             var value = partial[key] ?? (0, 0)
             if stone.type == .white {
                 value.white += 1
@@ -626,7 +626,7 @@ struct ReviewView: View {
         }
 
         var streak = 0
-        var date = Date.now
+        var date = DateHelpers.currentReflectionDay
         let calendar = Calendar.current
         while true {
             let key = DateHelpers.dayKey(for: date)

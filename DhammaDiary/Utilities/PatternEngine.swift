@@ -147,8 +147,8 @@ enum PatternEngine {
         }
 
         guard let latest = stones.map(\.timestamp).max() else { return nil }
-        let today = calendar.startOfDay(for: now)
-        let latestDay = calendar.startOfDay(for: latest)
+        let today = DateHelpers.reflectionDay(for: now, calendar: calendar)
+        let latestDay = DateHelpers.reflectionDay(for: latest, calendar: calendar)
         let daysSinceLatest = calendar.dateComponents([.day], from: latestDay, to: today).day ?? 0
         if daysSinceLatest >= 3 {
             return PatternObservation(
@@ -165,23 +165,16 @@ enum PatternEngine {
         now: Date,
         calendar: Calendar
     ) -> [Stone] {
-        let todayStart = calendar.startOfDay(for: now)
-        guard let start = calendar.date(byAdding: .day, value: -(days - 1), to: todayStart),
-              let end = calendar.date(byAdding: .day, value: 1, to: todayStart) else {
+        let today = DateHelpers.reflectionDay(for: now, calendar: calendar)
+        guard let firstDay = calendar.date(byAdding: .day, value: -(days - 1), to: today) else {
             return []
         }
-        return stones.filter { $0.timestamp >= start && $0.timestamp < end }
+        let interval = DateHelpers.reflectionInterval(fromDay: firstDay, days: days, calendar: calendar)
+        return stones.filter { $0.timestamp >= interval.start && $0.timestamp < interval.end }
     }
 
     private static func dayKey(for date: Date, calendar: Calendar) -> String {
-        let components = calendar.dateComponents([.year, .month, .day], from: date)
-        return [
-            components.year ?? 0,
-            components.month ?? 0,
-            components.day ?? 0,
-        ]
-        .map(String.init)
-        .joined(separator: "-")
+        DateHelpers.reflectionDayKey(for: date, calendar: calendar)
     }
 
     private static func mostFrequentThenAlphabetical(

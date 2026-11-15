@@ -5,7 +5,7 @@ import SwiftUI
 /// passage, question and journal entry, saved through `JournalStore`.
 struct ReflectionTodayView: View {
     private var today: Date {
-        Calendar.current.startOfDay(for: .now)
+        DateHelpers.currentReflectionDay
     }
 
     var body: some View {

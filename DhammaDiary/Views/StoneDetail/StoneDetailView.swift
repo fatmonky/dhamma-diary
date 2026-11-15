@@ -128,7 +128,7 @@ struct StoneDetailView: View {
                             }
                             Button("Save") {
                                 stone.note = editedNote
-                                stone.timestamp = editedDate
+                                stone.setTimestamp(editedDate)
                                 stone.roots = selectedRootsInDisplayOrder(for: stone.type)
                                 stone.rootDescriptor = customRootDescriptorsForSave().joined(separator: "\n")
                                 rememberCustomRootDescriptors(customRootDescriptorsForSave(), for: stone.type)

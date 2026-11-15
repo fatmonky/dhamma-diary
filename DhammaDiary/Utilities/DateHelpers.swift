@@ -14,7 +14,7 @@ enum DateHelpers {
     }
 
     static var todayKey: String {
-        dayKey(for: .now)
+        reflectionDayKey(for: .now)
     }
 
     static func date(from dayKey: String) -> Date? {
@@ -22,6 +22,74 @@ enum DateHelpers {
     }
 
     private static var calendar: Calendar { Calendar.current }
+
+    // MARK: - Reflection day (the 3am rule, spec 3.1)
+    //
+    // A reflection day runs from 03:00 to 03:00 the next morning in the
+    // phone's time zone. "Day" parameters below are calendar dates (start of
+    // day), e.g. a calendar cell or `JournalEntry.day`. "Date" parameters are
+    // instants, e.g. `Stone.timestamp` or `.now`.
+
+    static let reflectionDayStartHour = 3
+
+    /// The calendar date (start of day) that the instant `date` belongs to.
+    /// Compares against 03:00 local on the same date rather than subtracting
+    /// three elapsed hours, so it stays right on daylight-saving days.
+    static func reflectionDay(for date: Date, calendar: Calendar = .current) -> Date {
+        let start = calendar.startOfDay(for: date)
+        if date >= reflectionDayStart(ofDay: start, calendar: calendar) {
+            return start
+        }
+        return calendar.date(byAdding: .day, value: -1, to: start)!
+    }
+
+    /// 03:00 local on the calendar date `day`.
+    static func reflectionDayStart(ofDay day: Date, calendar: Calendar = .current) -> Date {
+        calendar.date(
+            bySettingHour: reflectionDayStartHour, minute: 0, second: 0,
+            of: calendar.startOfDay(for: day)
+        )!
+    }
+
+    /// The reflection day containing the instant `date`.
+    static func reflectionDayInterval(for date: Date, calendar: Calendar = .current) -> DateInterval {
+        reflectionDayInterval(forDay: reflectionDay(for: date, calendar: calendar), calendar: calendar)
+    }
+
+    /// The reflection day for the calendar date `day`: 03:00 on `day` to 03:00 the next day.
+    static func reflectionDayInterval(forDay day: Date, calendar: Calendar = .current) -> DateInterval {
+        reflectionInterval(fromDay: day, days: 1, calendar: calendar)
+    }
+
+    /// `days` reflection days starting with the calendar date `day`.
+    static func reflectionInterval(fromDay day: Date, days: Int, calendar: Calendar = .current) -> DateInterval {
+        let start = reflectionDayStart(ofDay: day, calendar: calendar)
+        let lastDay = calendar.date(byAdding: .day, value: days, to: calendar.startOfDay(for: day))!
+        return DateInterval(start: start, end: reflectionDayStart(ofDay: lastDay, calendar: calendar))
+    }
+
+    /// The reflection days of the calendar month containing `date`.
+    static func reflectionMonthInterval(for date: Date, calendar: Calendar = .current) -> DateInterval {
+        let first = calendar.dateInterval(of: .month, for: date)!.start
+        let days = calendar.range(of: .day, in: .month, for: date)!.count
+        return reflectionInterval(fromDay: first, days: days, calendar: calendar)
+    }
+
+    /// "yyyy-MM-dd" of the reflection day the instant `date` belongs to.
+    static func reflectionDayKey(for date: Date, calendar: Calendar = .current) -> String {
+        dayKey(forDay: reflectionDay(for: date, calendar: calendar), calendar: calendar)
+    }
+
+    /// "yyyy-MM-dd" of the calendar date `day`.
+    static func dayKey(forDay day: Date, calendar: Calendar) -> String {
+        let c = calendar.dateComponents([.year, .month, .day], from: day)
+        return String(format: "%04d-%02d-%02d", c.year ?? 0, c.month ?? 0, c.day ?? 0)
+    }
+
+    /// The reflection day the user is in now.
+    static var currentReflectionDay: Date {
+        reflectionDay(for: .now)
+    }
 
     static func dayInterval(for date: Date) -> DateInterval {
         calendar.dateInterval(of: .day, for: date)!
@@ -120,7 +188,7 @@ enum DateHelpers {
     /// All dayKeys for the past `weeks` weeks ending at the current week.
     static func dayKeysForPastWeeks(_ weeks: Int) -> [[String]] {
         var result: [[String]] = []
-        let today = Date.now
+        let today = currentReflectionDay
         for weekOffset in stride(from: -(weeks - 1), through: 0, by: 1) {
             let weekStart = calendar.date(byAdding: .weekOfYear, value: weekOffset, to: startOfWeek(for: today))!
             var week: [String] = []
