@@ -28,6 +28,10 @@ struct ReviewView: View {
     private let weekdaySymbols = ["M", "T", "W", "T", "F", "S", "S"]
 
     private static let brownAccent = ColorHelpers.accent
+    #if DEBUG
+    /// For simulator screenshots: `simctl launch … -debug.selectedTab 1 -debug.openWeek YES`.
+    @State private var debugOpenWeek = UserDefaults.standard.bool(forKey: "debug.openWeek")
+    #endif
 
     private var ratioByDay: [Date: Double?] {
         let grouped = Dictionary(grouping: monthStones) { DateHelpers.reflectionDay(for: $0.timestamp) }
@@ -155,6 +159,11 @@ struct ReviewView: View {
         .navigationDestination(for: PersistentIdentifier.self) { id in
             StoneDetailView(stoneID: id)
         }
+        #if DEBUG
+        .navigationDestination(isPresented: $debugOpenWeek) {
+            WeekLookBackView(showsPassageLink: true)
+        }
+        #endif
         .onAppear {
             reloadAllData()
         }
@@ -183,6 +192,17 @@ struct ReviewView: View {
             Text("Total days tracked: \(totalDaysTracked)")
             Text("This month: \(monthWhiteCount) white · \(monthBlackCount) black")
             Text("Streak: \(currentStreak)d")
+            NavigationLink {
+                WeekLookBackView(showsPassageLink: true)
+            } label: {
+                HStack(spacing: 4) {
+                    Text("This week")
+                    Image(systemName: "chevron.right")
+                        .imageScale(.small)
+                }
+                .foregroundStyle(Self.brownAccent)
+            }
+            .padding(.top, 2)
         }
         .font(.subheadline)
         .foregroundStyle(.secondary)

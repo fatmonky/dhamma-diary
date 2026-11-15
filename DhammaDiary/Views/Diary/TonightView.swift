@@ -166,6 +166,21 @@ struct TonightView: View {
             if dayEndedBeforeSave {
                 dayEndedNote
             }
+
+            if WeekLookBack.isSunday(day) {
+                NavigationLink {
+                    WeekLookBackView()
+                } label: {
+                    HStack(spacing: 4) {
+                        Text("Look back on this week")
+                        Image(systemName: "chevron.right")
+                            .imageScale(.small)
+                    }
+                    .font(.subheadline)
+                    .foregroundStyle(accent)
+                }
+                .padding(.top, 8)
+            }
         }
     }
 
