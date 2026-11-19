@@ -20,7 +20,7 @@ final class OnboardingTests: XCTestCase {
     }
 
     func testMidFlowStepsArePreserved() {
-        for current in [OnboardingStep.firstLog, .reviewTour, .diaryTour] {
+        for current in [OnboardingStep.firstLog, .reviewTour, .diaryTour, .mindInvite] {
             XCTAssertEqual(step(current, hasStones: true), current)
         }
     }

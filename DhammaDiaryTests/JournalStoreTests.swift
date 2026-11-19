@@ -31,11 +31,11 @@ final class JournalStoreTests: XCTestCase {
         (try? context.fetch(FetchDescriptor<JournalEntry>())) ?? []
     }
 
-    func testContainerUsesVersionedSchemaWithStoneAndJournalEntry() {
+    func testContainerUsesVersionedSchemaWithMindChecks() {
         let names = Set(container.schema.entities.map(\.name))
-        XCTAssertEqual(names, ["Stone", "JournalEntry"])
-        XCTAssertEqual(SchemaV1.versionIdentifier, Schema.Version(1, 0, 0))
-        XCTAssertEqual(DhammaDiaryMigrationPlan.schemas.count, 1)
+        XCTAssertEqual(names, ["Stone", "JournalEntry", "MindCheck"])
+        XCTAssertEqual(SchemaV2.versionIdentifier, Schema.Version(2, 0, 0))
+        XCTAssertEqual(DhammaDiaryMigrationPlan.schemas.count, 2)
     }
 
     func testSavingCreatesOneEntryWithPassageCopies() throws {

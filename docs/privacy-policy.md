@@ -1,11 +1,11 @@
 # Privacy Policy
 
 **Dhamma Diary**
-*Last updated: 15 November 2026*
+*Last updated: 20 November 2026*
 
 ## Overview
 
-Dhamma Diary is a daily reflection journal for Dhamma practitioners. Each day it offers one short sutta passage and one question, with an optional journal entry and optional white and black stones for wholesome and unwholesome thoughts and actions. Your privacy is important to us.
+Dhamma Diary is a daily reflection journal for Dhamma practitioners. Each day it offers one short sutta passage and one question, with an optional journal entry, optional white and black stones for wholesome and unwholesome thoughts and actions, and optional check-ins on how noisy or still your mind is. Your privacy is important to us.
 
 ## Data Collection
 
@@ -18,14 +18,18 @@ Dhamma Diary does **not** collect, store, or transmit any personal data to exter
 - We do not require an account or login
 - We do not sync your data to any server or cloud service
 - We do not access your contacts, location, camera, microphone, or any other device sensors
-- We do not send notifications
+- We do not send push notifications from a server
 - We do not share any data with third parties
 
 ## Local Data
 
-The only data Dhamma Diary stores is the stones you log and the journal entries you write, on your device. A stone holds its colour, time, and any roots or note you add. A journal entry holds its date, the text you write, and a copy of that day's passage reference, title, and question. The app also remembers a few settings on your device, such as the day you first opened it, which sets the order of passages.
+The only data Dhamma Diary stores is the stones you log, the journal entries you write and your mind check-ins, on your device. A stone holds its colour, time, and any roots or note you add. A mind check-in holds its time, how noisy or still you marked your mind, and whether it was answered from a reminder. A journal entry holds its date, the text you write, and a copy of that day's passage reference, title, and question. The app also remembers a few settings on your device, such as the day you first opened it, which sets the order of passages.
 
 This data lives entirely on your device and is never transmitted anywhere. If you delete the app, all of its data is permanently removed from your device.
+
+## Reminders
+
+If you turn on mind check-ins, Dhamma Diary asks iOS for permission to show notifications, then schedules three reminders a day at random times between 9am and 9pm. They are scheduled on your device by the app itself; nothing is sent to or from a server. You can stop them in the Mind tab or in iOS Settings.
 
 ## Links
 

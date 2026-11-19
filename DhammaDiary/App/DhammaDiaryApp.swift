@@ -3,9 +3,15 @@ import SwiftData
 
 @main
 struct DhammaDiaryApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let container: ModelContainer
 
     init() {
+        do {
+            try DhammaDiaryStore.settleStoreLocation()
+        } catch {
+            fatalError("Could not move the Dhamma Diary store: \(error)")
+        }
         do {
             container = try DhammaDiaryStore.makeContainer()
         } catch {

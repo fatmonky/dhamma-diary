@@ -2,7 +2,7 @@
 
 ## Project
 
-Dhamma Diary is a native iOS app: a daily sutta-reflection journal with optional white and black stones for wholesome and unwholesome thoughts/actions. It is a fork of White Stone. The build spec is `docs/spec/v1.md`. Keep the app quiet, local-first, and contemplative. Do not add analytics, telemetry, badges, achievements, streak milestones, notifications, or gamified copy unless explicitly requested.
+Dhamma Diary is a native iOS app: a daily sutta-reflection journal with optional white and black stones for wholesome and unwholesome thoughts/actions. It is a fork of White Stone. The build spec is `docs/spec/v1.md`. Keep the app quiet, local-first, and contemplative. Do not add analytics, telemetry, badges, achievements, streak milestones, notifications, or gamified copy unless explicitly requested. The one exception PJ asked for is the mind check-in notifications (spec section 9): opt-in, local only, three a day. Don't add other notifications.
 
 ## Stack
 
@@ -28,6 +28,8 @@ Dhamma Diary is a native iOS app: a daily sutta-reflection journal with optional
 - Passages: `DhammaDiary/Resources/passages.json` (generated, never edit by hand), loaded by `DhammaDiary/Models/Passage.swift`; tonight's passage from `DhammaDiary/Utilities/PassageSequence.swift`
 - Passage generator: `scripts/passages/build_passages.py` with input `scripts/passages/passages-source.json`. Add or reword passages in the source file, then regenerate (instructions at the top of the script). Passage IDs are permanent: never reuse or rename one.
 - Widget (tonight's question, Home and Lock Screen): `DhammaDiaryWidget/TonightWidget.swift`. It compiles `Passage.swift`, `PassageSequence.swift`, `DateHelpers.swift` and `passages.json` from the app, so keep those free of SwiftData and UIKit. The first day lives in the App Group `group.com.whitestone.DhammaDiary` (`PassageSequence.sharedDefaults`).
+- Mind tab (check-ins, spec 9): `DhammaDiary/Views/Mind/MindView.swift`, model `DhammaDiary/Models/MindCheck.swift`, schedule `DhammaDiary/Utilities/MindCheckSchedule.swift`, notifications `DhammaDiary/Utilities/MindCheckNotifications.swift`, day line `DhammaDiary/Utilities/MindDaySummary.swift`. Notification taps arrive in `DhammaDiary/App/AppDelegate.swift`.
+- SwiftData store location: `DhammaDiaryStore.appStoreURL`, the app's own container. Never use SwiftData's default configuration: with the App Group in the entitlements it would open a different, empty store in the group container. `settleStoreLocation()` moves a group-container store back once.
 - Week look-back: `DhammaDiary/Utilities/WeekLookBack.swift`, `DhammaDiary/Views/Week/WeekLookBackView.swift`
 - App icon: `scripts/icon/make_icon.py` draws `AppIcon.png`; change the script, not the PNG.
 - Privacy policy: `docs/privacy-policy.md` (published on inquivision.com).
@@ -70,7 +72,7 @@ If `iPhone 17` is unavailable, list simulators and use the closest available iPh
 The current onboarding flow is:
 
 ```text
-welcome -> todayCoach -> firstLog -> reviewTour -> diaryTour -> completed
+welcome -> todayCoach -> firstLog -> reviewTour -> diaryTour -> mindInvite -> completed
 ```
 
 Rules:
@@ -79,7 +81,8 @@ Rules:
 - Fresh users with no stones start at `welcome`.
 - Existing users with stones should not see onboarding.
 - Completed onboarding must not restart if the user later deletes all stones.
-- Preserve mid-flow states: `firstLog`, `reviewTour`, `diaryTour`.
+- Preserve mid-flow states: `firstLog`, `reviewTour`, `diaryTour`, `mindInvite`.
+- `mindInvite` is a sheet after the Diary tour asking to turn on mind check-ins; skipping the Diary tour skips it too.
 - Sync `reviewTour` to the Review tab and `diaryTour` to the Diary tab.
 - Today coach sub-step is local UI state and should reset when re-shown.
 - Tour overlays should block underlying content interaction.

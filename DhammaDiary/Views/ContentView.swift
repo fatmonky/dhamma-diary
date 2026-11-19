@@ -8,6 +8,8 @@ enum OnboardingStep: String {
     case firstLog
     case reviewTour
     case diaryTour
+    /// Asks once whether to turn on mind check-ins (spec 9.2).
+    case mindInvite
     case completed
 
     /// The step to use when the app appears or the stone count changes.
@@ -27,7 +29,7 @@ enum OnboardingStep: String {
             return current ?? .welcome
         }
         switch current {
-        case .firstLog, .reviewTour, .diaryTour:
+        case .firstLog, .reviewTour, .diaryTour, .mindInvite:
             return current!
         default:
             return showingPostFirstEntry ? (current ?? .completed) : .completed
@@ -44,6 +46,9 @@ struct ContentView: View {
     @State private var showPostFirstEntry = false
     /// Where the Diary tab should open next, set from Today, Review or the widget.
     @State private var diaryRequest: DiaryDestination?
+    /// True while the Mind tab's check-in was opened from a notification.
+    @State private var mindOpenedFromNotification = false
+    @State private var mindRouter = MindCheckRouter.shared
 
     @AppStorage("onboarding.step") private var onboardingStepRaw = ""
 
@@ -109,7 +114,9 @@ struct ContentView: View {
                 DiaryView(
                     request: $diaryRequest,
                     showTourOverlay: shouldShowDiaryTour,
-                    onFinishTour: finishOnboarding,
+                    onFinishTour: {
+                        onboardingStep = .mindInvite
+                    },
                     onSkipTour: finishOnboarding
                 )
             }
@@ -117,15 +124,24 @@ struct ContentView: View {
             .tag(2)
 
             NavigationStack {
+                MindView(openedFromNotification: $mindOpenedFromNotification)
+            }
+            .tabItem { Label("Mind", systemImage: "waveform") }
+            .tag(3)
+
+            NavigationStack {
                 AboutView()
             }
             .tabItem { Label("About", systemImage: "info.circle") }
-            .tag(3)
+            .tag(4)
         }
         .tint(ColorHelpers.accent)
         .environment(\.openDiary) { destination in
             diaryRequest = destination
             selectedTab = 2
+        }
+        .environment(\.openMind) {
+            selectedTab = 3
         }
         // The widget opens dhammadiary://tonight (spec 8.4).
         .onOpenURL { url in
@@ -136,11 +152,16 @@ struct ContentView: View {
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
                 WidgetCenter.shared.reloadAllTimelines()
+                Task { await MindCheckNotifications.topUp() }
             }
+        }
+        .onChange(of: mindRouter.openRequested) { _, _ in
+            openMindFromNotification()
         }
         .onAppear {
             bootstrapOnboardingState()
             syncTabWithOnboardingStep()
+            openMindFromNotification()
             #if DEBUG
             // For simulator screenshots: `simctl launch … -debug.selectedTab 2`.
             if let tab = UserDefaults.standard.string(forKey: "debug.selectedTab").flatMap(Int.init) {
@@ -162,6 +183,18 @@ struct ContentView: View {
                     showWelcome = false
                     finishOnboarding()
                 }
+            )
+        }
+        .sheet(isPresented: Binding(
+            get: { onboardingStep == .mindInvite },
+            set: { if !$0 { finishOnboarding() } }
+        )) {
+            MindInviteSheet(
+                onTurnOn: {
+                    finishOnboarding()
+                    Task { await MindCheckNotifications.start() }
+                },
+                onNotNow: finishOnboarding
             )
         }
         .sheet(isPresented: $showPostFirstEntry) {
@@ -203,6 +236,14 @@ struct ContentView: View {
         default:
             break
         }
+    }
+
+    /// A tapped check-in notification opens the Mind tab, also on a cold launch.
+    private func openMindFromNotification() {
+        guard mindRouter.openRequested else { return }
+        mindRouter.openRequested = false
+        mindOpenedFromNotification = true
+        selectedTab = 3
     }
 
     private func finishOnboarding() {
@@ -251,6 +292,52 @@ private struct WelcomeOnboardingSheet: View {
             }
             .padding(24)
             .navigationTitle("Welcome")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        .interactiveDismissDisabled()
+    }
+}
+
+private struct MindInviteSheet: View {
+    let onTurnOn: () -> Void
+    let onNotNow: () -> Void
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 18) {
+                Spacer(minLength: 12)
+
+                Image(systemName: "waveform")
+                    .font(.system(size: 42))
+                    .foregroundStyle(ColorHelpers.accent)
+
+                Text("How noisy is your mind now?")
+                    .font(.system(.title3, design: .serif).weight(.semibold))
+                    .multilineTextAlignment(.center)
+
+                Text("Three times a day, at a random moment between 9am and 9pm, Dhamma Diary can ask you this. You answer with one slide, from still to noisy. At night, the Mind tab shows how the day went. You can turn this off at any time in the Mind tab.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 8)
+
+                Spacer()
+
+                Button("Turn On Check-ins") {
+                    onTurnOn()
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(ColorHelpers.accent)
+                .controlSize(.large)
+
+                Button("Not Now") {
+                    onNotNow()
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.large)
+            }
+            .padding(24)
+            .navigationTitle("Check-ins")
             .navigationBarTitleDisplayMode(.inline)
         }
         .interactiveDismissDisabled()

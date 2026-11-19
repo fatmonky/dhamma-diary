@@ -16,7 +16,9 @@ struct TonightView: View {
     @State private var passage: Passage?
     @State private var entry: JournalEntry?
     @State private var stoneSummary: StoneDaySummary?
+    @State private var mindSummary: MindDaySummary?
     @State private var earlierEntryCount = 0
+    @Environment(\.openMind) private var openMind
 
     /// Held by DiaryView so unsaved text survives switching to Passages.
     @Binding var text: String
@@ -43,6 +45,10 @@ struct TonightView: View {
 
                 if let stoneSummary {
                     StoneSummaryView(summary: stoneSummary)
+                }
+
+                if let mindSummary {
+                    mindLine(mindSummary)
                 }
 
                 if let passage {
@@ -201,6 +207,26 @@ struct TonightView: View {
         }
     }
 
+    /// The day's mind check-ins in one line, linking to the Mind tab (spec 9.3).
+    @ViewBuilder
+    private func mindLine(_ summary: MindDaySummary) -> some View {
+        let label = HStack(alignment: .firstTextBaseline, spacing: 8) {
+            Image(systemName: "waveform")
+                .foregroundStyle(.secondary)
+            Text(summary.text())
+                .foregroundStyle(openMind == nil ? Color.secondary : accent)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .font(.footnote)
+
+        if let openMind {
+            Button(action: openMind) { label }
+                .buttonStyle(.plain)
+        } else {
+            label
+        }
+    }
+
     private var earlierEntriesText: String {
         "You've written on this passage \(earlierEntryCount) \(earlierEntryCount == 1 ? "time" : "times") before."
     }
@@ -220,6 +246,7 @@ struct TonightView: View {
         let set = PassageSet.bundled
         passage = entry.flatMap { set.passage(withID: $0.passageID) } ?? PassageSequence.passage(for: day, in: set)
         stoneSummary = StoneDaySummary(stones: stones(on: day))
+        mindSummary = MindDaySummary(checks: MindCheckStore.checks(onDay: day, in: modelContext))
 
         let key = DateHelpers.dayKey(for: day)
         earlierEntryCount = passage.map { passage in
