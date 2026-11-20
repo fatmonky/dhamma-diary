@@ -18,6 +18,8 @@ targets:
         CFBundleURLTypes:
           - CFBundleURLName: com.whitestone.DhammaDiary
             CFBundleURLSchemes: [dhammadiary]
+        # No encryption beyond what iOS provides, so TestFlight doesn't ask each build.
+        ITSAppUsesNonExemptEncryption: false
     entitlements:
       path: DhammaDiary/DhammaDiary.entitlements
       properties:
