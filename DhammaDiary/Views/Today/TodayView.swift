@@ -39,8 +39,15 @@ struct TodayView: View {
     /// While sliding, the rest of Today steps back behind the noise.
     private var othersOpacity: Double { mindSliding ? 0.12 : 1 }
 
-    /// How far up or down (in points) reaches fully noisy or fully still.
-    private let slideRange: CGFloat = 170
+    @State private var haptics = NoiseHaptics()
+    /// When the last press ended, so its finger-lift isn't read as a flip.
+    @State private var pressEndedAt = Date.distantPast
+
+    /// How far up the stone travels to "Noisy Mind" (to about the date
+    /// line), and down to "Still" (to about the counts). It follows the
+    /// finger one to one.
+    private var slideUp: CGFloat { UIScreen.main.bounds.height * 0.27 }
+    private var slideDown: CGFloat { UIScreen.main.bounds.height * 0.14 }
 
     private func reloadTodayStones() {
         let interval = DateHelpers.reflectionDayInterval(for: currentDate)
@@ -144,7 +151,7 @@ struct TodayView: View {
                             .font(.title3)
                             .fontWeight(.medium)
                             .foregroundStyle(.secondary)
-                            .opacity(arrowPulse ? 0.6 : 0.2)
+                            .opacity(mindSliding ? 0 : (arrowPulse ? 0.6 : 0.2))
                             .accessibilityHidden(true)
 
                         HStack(spacing: 24) {
@@ -163,6 +170,8 @@ struct TodayView: View {
                                 .offset(y: stoneOffset)
                                 .contentShape(Circle())
                                 .gesture(stoneGesture)
+                                // Simultaneous, so a flick up or down still scrolls Today.
+                                .simultaneousGesture(flipGesture)
                                 .accessibilityElement()
                                 .accessibilityLabel("\(displayedStoneType == .white ? "White" : "Black") stone")
                                 .accessibilityHint("Double-tap and hold to log this stone.")
@@ -183,7 +192,7 @@ struct TodayView: View {
                             .font(.title3)
                             .fontWeight(.medium)
                             .foregroundStyle(.secondary)
-                            .opacity(arrowPulse ? 0.6 : 0.2)
+                            .opacity(mindSliding ? 0 : (arrowPulse ? 0.6 : 0.2))
                             .accessibilityHidden(true)
                     }
                     .onAppear {
@@ -379,7 +388,7 @@ struct TodayView: View {
                 stonePressed = true
                 mindSliding = true
                 mindNoise = value
-                stoneOffset = CGFloat(50 - value) / 50 * 44
+                stoneOffset = value >= 50 ? -CGFloat(value - 50) / 50 * slideUp : CGFloat(50 - value) / 50 * slideDown
             }
         }
         #endif
@@ -417,7 +426,8 @@ struct TodayView: View {
 extension TodayView {
     /// Hold still for a moment, then either keep holding (log a stone, as
     /// before) or slide up/down (a mind check-in). A quick swipe left or
-    /// right fails the hold and flips the stone instead.
+    /// right fails the hold and flips the stone; a quick flick up or down
+    /// fails it too and scrolls the page.
     var stoneGesture: some Gesture {
         LongPressGesture(minimumDuration: 0.2, maximumDistance: 12)
             .sequenced(before: DragGesture(minimumDistance: 0))
@@ -433,15 +443,15 @@ extension TodayView {
             .onEnded { _ in
                 endPress()
             }
-            .exclusively(before: flipGesture)
     }
 
-    private var flipGesture: some Gesture {
+    /// Only a sideways swipe flips, and never the end of a press.
+    var flipGesture: some Gesture {
         DragGesture(minimumDistance: 30)
             .onEnded { value in
-                if abs(value.translation.width) > abs(value.translation.height) {
-                    flipStone(direction: value.translation.width)
-                }
+                guard !stonePressed, Date.now.timeIntervalSince(pressEndedAt) > 0.3,
+                      abs(value.translation.width) > abs(value.translation.height) * 1.5 else { return }
+                flipStone(direction: value.translation.width)
             }
     }
 
@@ -476,18 +486,19 @@ extension TodayView {
             withAnimation(.easeOut(duration: 0.15)) {
                 holdScale = 1.0
             }
+            haptics.start(noise: mindNoise)
         }
-        let previousWord = MindDaySummary.word(for: mindNoise)
-        // Up is noisy, down is still; the press starts in between.
-        mindNoise = MindDaySummary.noise(forSlide: Double(dy), range: Double(slideRange))
-        stoneOffset = min(max(dy * 0.25, -44), 44)
-        if MindDaySummary.word(for: mindNoise) != previousWord {
-            UISelectionFeedbackGenerator().selectionChanged()
-        }
+        // Up is noisy, down is still; the press starts in between. The
+        // stone follows the finger as far as either end.
+        mindNoise = MindDaySummary.noise(forSlide: Double(dy), up: Double(slideUp), down: Double(slideDown))
+        stoneOffset = min(max(dy, -slideUp), slideDown)
+        haptics.update(noise: mindNoise)
     }
 
     private func endPress() {
         holdToLogTask?.cancel()
+        haptics.stop()
+        pressEndedAt = .now
         if mindSliding {
             recordMind(noise: mindNoise)
         }
@@ -540,21 +551,24 @@ extension TodayView {
         }
     }
 
-    /// "Noisy Mind" near the top and "Still" near the bottom, fading in as
-    /// the slide reaches either end.
+    /// "Noisy Mind" and "Still" fade in as the slide nears either end, each
+    /// in the space the stone has left: "Noisy Mind" below the risen stone,
+    /// "Still" above the sunken one.
     var mindWords: some View {
         let noisy = mindSliding ? min(max((mindNoise - 60) / 40, 0), 1) : 0
         let still = mindSliding ? min(max((40 - mindNoise) / 40, 0), 1) : 0
-        return VStack {
-            Text("Noisy Mind")
-                .opacity(0.55 * noisy)
-            Spacer()
-            Text("Still")
-                .opacity(0.55 * still)
+        return GeometryReader { proxy in
+            ZStack {
+                Text("Noisy Mind")
+                    .opacity(0.55 * noisy)
+                    .position(x: proxy.size.width / 2, y: proxy.size.height * 0.66)
+                Text("Still")
+                    .opacity(0.55 * still)
+                    .position(x: proxy.size.width / 2, y: proxy.size.height * 0.36)
+            }
         }
         .font(.system(size: 34, weight: .regular, design: .serif).italic())
         .foregroundStyle(.primary)
-        .padding(.vertical, 40)
         .allowsHitTesting(false)
         .accessibilityHidden(true)
         .animation(.easeOut(duration: 0.2), value: mindSliding)

@@ -35,11 +35,12 @@ struct MindDaySummary: Equatable {
     }
 
     /// Press-and-slide on Today's stone (spec 9.6): the press starts in
-    /// between (50); sliding up `range` points is fully noisy (100), down
-    /// `range` points fully still (0). `dy` is negative upwards.
-    static func noise(forSlide dy: Double, range: Double) -> Double {
-        guard range > 0 else { return 50 }
-        return min(max(50 - dy / range * 50, 0), 100)
+    /// between (50); sliding up `up` points is fully noisy (100), down
+    /// `down` points fully still (0). `dy` is negative upwards.
+    static func noise(forSlide dy: Double, up: Double, down: Double) -> Double {
+        guard up > 0, down > 0 else { return 50 }
+        let value = dy < 0 ? 50 - dy / up * 50 : 50 - dy / down * 50
+        return min(max(value, 0), 100)
     }
 
     /// Words for a slider position, used on screen and by VoiceOver.

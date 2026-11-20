@@ -30,8 +30,11 @@ struct MindReviewSection: View {
                 .font(.headline)
 
             if let summary = MindDaySummary(checks: checks) {
-                MindDayChart(checks: checks, day: day)
+                MindDayChart(checks: checks, day: day, zoomable: true)
                     .frame(height: 140)
+                Text("Pinch to zoom in on part of the day. Double-tap to see it all.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
                 Text(summary.text())
                     .font(.footnote)
                     .foregroundStyle(.secondary)
@@ -138,12 +141,26 @@ enum MindCheckStore {
 }
 
 /// The day's check-ins as points across the day, still at the bottom and
-/// noisy at the top.
+/// noisy at the top. With `zoomable`, pinch to zoom the time axis; once
+/// zoomed, drag sideways to move along the day; double-tap to zoom out.
 struct MindDayChart: View {
     let checks: [MindCheck]
     let day: Date
+    var zoomable = false
+
+    /// Seconds of the day on screen; nil shows the whole day.
+    @State private var visibleLength: TimeInterval?
+    @State private var lengthAtPinchStart: TimeInterval?
+    @State private var scrollStart: Date = .distantPast
+
+    /// Closest zoom: half an hour across the chart.
+    private static let shortestLength: TimeInterval = 30 * 60
 
     var body: some View {
+        let domain = Self.domain(for: checks.map(\.timestamp), day: day)
+        let full = domain.upperBound.timeIntervalSince(domain.lowerBound)
+        let length = min(visibleLength ?? full, full)
+
         Chart(checks) { check in
             LineMark(x: .value("Time", check.timestamp), y: .value("Noise", check.noise))
                 .foregroundStyle(ColorHelpers.accent.opacity(0.3))
@@ -152,8 +169,11 @@ struct MindDayChart: View {
                 .foregroundStyle(ColorHelpers.accent)
                 .symbolSize(60)
         }
-        .chartXScale(domain: MindDayChart.domain(for: checks.map(\.timestamp), day: day))
+        .chartXScale(domain: domain)
         .chartYScale(domain: 0...100)
+        .chartScrollableAxes(length < full ? .horizontal : [])
+        .chartXVisibleDomain(length: length)
+        .chartScrollPosition(x: $scrollStart)
         .chartYAxis {
             AxisMarks(position: .leading, values: [0, 100]) { value in
                 AxisGridLine()
@@ -163,13 +183,55 @@ struct MindDayChart: View {
             }
         }
         .chartXAxis {
-            AxisMarks(values: .stride(by: .hour, count: 4)) { _ in
-                AxisGridLine()
-                AxisValueLabel(format: .dateTime.hour())
+            if length > 6 * 3600 {
+                AxisMarks(values: .stride(by: .hour, count: 4)) { _ in
+                    AxisGridLine()
+                    AxisValueLabel(format: .dateTime.hour())
+                }
+            } else if length > 2 * 3600 {
+                AxisMarks(values: .stride(by: .hour, count: 1)) { _ in
+                    AxisGridLine()
+                    AxisValueLabel(format: .dateTime.hour())
+                }
+            } else {
+                AxisMarks(values: .stride(by: .minute, count: 15)) { _ in
+                    AxisGridLine()
+                    AxisValueLabel(format: .dateTime.hour().minute())
+                }
             }
+        }
+        .simultaneousGesture(zoomable ? pinch(domain: domain, full: full, length: length) : nil)
+        .onTapGesture(count: 2) {
+            guard zoomable else { return }
+            withAnimation(.easeInOut(duration: 0.25)) {
+                visibleLength = nil
+                scrollStart = domain.lowerBound
+            }
+        }
+        .onAppear {
+            if scrollStart < domain.lowerBound { scrollStart = domain.lowerBound }
         }
         .accessibilityLabel("Today's check-ins")
         .accessibilityValue(MindDaySummary(checks: checks)?.text() ?? "")
+    }
+
+    /// Pinching out zooms in around the middle of what's on screen.
+    private func pinch(domain: ClosedRange<Date>, full: TimeInterval, length: TimeInterval) -> some Gesture {
+        MagnifyGesture()
+            .onChanged { value in
+                let start = lengthAtPinchStart ?? length
+                lengthAtPinchStart = start
+                let newLength = min(max(start / value.magnification, Self.shortestLength), full)
+                let currentStart = max(scrollStart, domain.lowerBound)
+                let middle = currentStart.addingTimeInterval(min(length, full) / 2)
+                let latestStart = domain.upperBound.addingTimeInterval(-newLength)
+                let newStart = min(max(middle.addingTimeInterval(-newLength / 2), domain.lowerBound), latestStart)
+                visibleLength = newLength >= full ? nil : newLength
+                scrollStart = newStart
+            }
+            .onEnded { _ in
+                lengthAtPinchStart = nil
+            }
     }
 
     /// At least 7am to 11pm, widened for check-ins outside it.

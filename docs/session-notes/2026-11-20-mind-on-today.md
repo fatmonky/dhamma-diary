@@ -33,3 +33,16 @@ Also: notifications now open Today; the onboarding invite describes the stone an
 - The gesture by touch: hold-then-slide vs. hold-to-log vs. swipe-to-flip, and that the page doesn't scroll while sliding. The screenshots use a frozen slide. This needs PJ's phone.
 - The particle animation's smoothness on a device.
 - Haptics.
+
+## Round 2: PJ's notes from an evening's use (spec 9.7)
+
+- Upward flick on the stone didn't scroll Today: the flip `DragGesture` was attached with `.exclusively`, which claimed vertical drags. It's now a `simultaneousGesture` that only flips on a clearly sideways swipe, and ignores the end of a press.
+- The stone barely moved (±44pt). It now follows the finger one to one: up to the date line (27% of screen height) for fully noisy, down over the counts (14%) for fully still. The words moved into the space the stone leaves, and the up/down arrows hide while sliding.
+- Haptics: `NoiseHaptics` plays a continuous Core Haptics buzz whose intensity follows the slide (0.45 at noisy → 0 at still).
+- Review chart: pinch to zoom the time axis, drag sideways once zoomed, double-tap to reset.
+
+Screenshots: [08 noisy, full travel](../session-artifacts/2026-11-20-today-mind-08-noisy-travel.png), [09 still, full travel](../session-artifacts/2026-11-20-today-mind-09-still-travel.png), [10 Review with the zoom hint](../session-artifacts/2026-11-20-today-mind-10-review-zoom-hint.png).
+
+Tests: 87/87 (new: asymmetric slide mapping, buzz intensity).
+
+Not verified (needs a phone): the flick scrolls while a held press doesn't; the buzz (simulators have no haptics); pinch and drag on the chart.

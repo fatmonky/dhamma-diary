@@ -112,13 +112,21 @@ final class MindDaySummaryTests: XCTestCase {
     }
 
     func testSlideMapsUpToNoisyAndDownToStill() {
-        XCTAssertEqual(MindDaySummary.noise(forSlide: 0, range: 170), 50)
-        XCTAssertEqual(MindDaySummary.noise(forSlide: -170, range: 170), 100)
-        XCTAssertEqual(MindDaySummary.noise(forSlide: 170, range: 170), 0)
-        XCTAssertEqual(MindDaySummary.noise(forSlide: -85, range: 170), 75)
+        // Further to travel up than down, as on Today.
+        XCTAssertEqual(MindDaySummary.noise(forSlide: 0, up: 230, down: 120), 50)
+        XCTAssertEqual(MindDaySummary.noise(forSlide: -230, up: 230, down: 120), 100)
+        XCTAssertEqual(MindDaySummary.noise(forSlide: -115, up: 230, down: 120), 75)
+        XCTAssertEqual(MindDaySummary.noise(forSlide: 120, up: 230, down: 120), 0)
+        XCTAssertEqual(MindDaySummary.noise(forSlide: 60, up: 230, down: 120), 25)
         // Past either end stays at the end.
-        XCTAssertEqual(MindDaySummary.noise(forSlide: -400, range: 170), 100)
-        XCTAssertEqual(MindDaySummary.noise(forSlide: 400, range: 170), 0)
+        XCTAssertEqual(MindDaySummary.noise(forSlide: -400, up: 230, down: 120), 100)
+        XCTAssertEqual(MindDaySummary.noise(forSlide: 400, up: 230, down: 120), 0)
+    }
+
+    func testBuzzIsLightAtNoisyAndGoneAtStill() {
+        XCTAssertEqual(NoiseHaptics.intensity(for: 100), 0.45, accuracy: 0.0001)
+        XCTAssertEqual(NoiseHaptics.intensity(for: 0), 0)
+        XCTAssertLessThan(NoiseHaptics.intensity(for: 50), NoiseHaptics.intensity(for: 80))
     }
 
     func testWords() {
