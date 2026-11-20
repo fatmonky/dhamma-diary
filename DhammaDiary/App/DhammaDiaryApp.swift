@@ -17,7 +17,6 @@ struct DhammaDiaryApp: App {
         } catch {
             fatalError("Could not open the Dhamma Diary store: \(error)")
         }
-        OneOffFixes.run(in: container.mainContext)
         PassageSequence.moveFirstDayToSharedStore()
         PassageSequence.recordFirstDayIfNeeded()
     }
