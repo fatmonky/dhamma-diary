@@ -4,6 +4,9 @@ options:
   deploymentTarget:
     iOS: "17.0"
   xcodeVersion: "16.0"
+settings:
+  base:
+    DEVELOPMENT_TEAM: T5LYL3TGLN
 targets:
   DhammaDiary:
     type: application
