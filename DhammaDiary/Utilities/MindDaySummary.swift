@@ -34,6 +34,14 @@ struct MindDaySummary: Equatable {
         return "\(count) check-ins today. Stillest at \(time(stillest.timestamp)), noisiest at \(time(noisiest.timestamp))."
     }
 
+    /// Press-and-slide on Today's stone (spec 9.6): the press starts in
+    /// between (50); sliding up `range` points is fully noisy (100), down
+    /// `range` points fully still (0). `dy` is negative upwards.
+    static func noise(forSlide dy: Double, range: Double) -> Double {
+        guard range > 0 else { return 50 }
+        return min(max(50 - dy / range * 50, 0), 100)
+    }
+
     /// Words for a slider position, used on screen and by VoiceOver.
     static func word(for noise: Double) -> String {
         switch noise {

@@ -29,7 +29,7 @@ This data lives entirely on your device and is never transmitted anywhere. If yo
 
 ## Reminders
 
-If you turn on mind check-ins, Dhamma Diary asks iOS for permission to show notifications, then schedules three reminders a day at random times between 9am and 9pm. They are scheduled on your device by the app itself; nothing is sent to or from a server. You can stop them in the Mind tab or in iOS Settings.
+If you turn on mind check-ins, Dhamma Diary asks iOS for permission to show notifications, then schedules three reminders a day at random times between 9am and 9pm. They are scheduled on your device by the app itself; nothing is sent to or from a server. You can stop them in the Review tab or in iOS Settings.
 
 ## Links
 

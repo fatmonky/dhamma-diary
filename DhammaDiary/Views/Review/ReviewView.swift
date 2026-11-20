@@ -139,6 +139,7 @@ struct ReviewView: View {
         ZStack {
             ScrollView {
                 VStack(spacing: 22) {
+                    MindReviewSection(day: DateHelpers.currentReflectionDay)
                     statStrip
                     secondarySection
                     Divider()

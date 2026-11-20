@@ -20,3 +20,16 @@ extension EnvironmentValues {
         set { self[OpenDiaryKey.self] = newValue }
     }
 }
+
+/// Switches to the Review tab (from Today's mind chart outline). Set by
+/// ContentView; nil where no such route exists.
+private struct OpenReviewKey: EnvironmentKey {
+    static let defaultValue: (() -> Void)? = nil
+}
+
+extension EnvironmentValues {
+    var openReview: (() -> Void)? {
+        get { self[OpenReviewKey.self] }
+        set { self[OpenReviewKey.self] = newValue }
+    }
+}

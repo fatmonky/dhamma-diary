@@ -4,11 +4,14 @@ import SwiftData
 struct TodayView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.openReview) private var openReview
 
     var showOnboardingCoach: Bool = false
     var onCompleteCoach: () -> Void = {}
     var onDismissCoach: () -> Void = {}
     var onStoneSaved: () -> Void = {}
+    /// True while the next mind check-in was opened from a notification.
+    var mindPrompted: Binding<Bool> = .constant(false)
 
     @State private var addStoneType: StoneType? = nil
     @State private var currentDate = Date.now
@@ -17,10 +20,27 @@ struct TodayView: View {
     @State private var tonightQuestion: String?
     @State private var displayedStoneType: StoneType = .white
     @State private var flipAngle: Double = 0
-    @State private var verticalFlipAngle: Double = 0
     @State private var holdScale: CGFloat = 1.0
     @State private var arrowPulse: Bool = false
     @State private var coachStep: Int = 0
+
+    // Press-and-slide mind check-in (spec 9.6).
+    /// The stone has been held long enough to be either a log or a slide.
+    @State private var stonePressed = false
+    /// The press became a slide, so it records a check-in, not a stone.
+    @State private var mindSliding = false
+    @State private var mindNoise: Double = 50
+    @State private var stoneOffset: CGFloat = 0
+    @State private var holdToLogTask: Task<Void, Never>?
+    @State private var holdToLogFired = false
+    @State private var lastRecorded: MindCheck?
+    @State private var recordedMessageTask: Task<Void, Never>?
+
+    /// While sliding, the rest of Today steps back behind the noise.
+    private var othersOpacity: Double { mindSliding ? 0.12 : 1 }
+
+    /// How far up or down (in points) reaches fully noisy or fully still.
+    private let slideRange: CGFloat = 170
 
     private func reloadTodayStones() {
         let interval = DateHelpers.reflectionDayInterval(for: currentDate)
@@ -83,6 +103,10 @@ struct TodayView: View {
 
     var body: some View {
         ZStack {
+            NoiseBackdrop(level: mindSliding ? mindNoise / 100 : 0)
+                .ignoresSafeArea()
+                .animation(.easeOut(duration: 0.35), value: mindSliding)
+
             ScrollView {
                 VStack(spacing: 0) {
                     // Header: date + ratio bar
@@ -109,26 +133,20 @@ struct TodayView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
                     .padding(.top, 8)
+                    .opacity(othersOpacity)
 
                     Spacer(minLength: 40)
 
-                    // Counts display
-                    HStack(spacing: 32) {
-                        HStack(spacing: 6) {
-                            StoneIcon(type: .white, size: 20)
-                            Text("\(whiteCount)")
-                                .font(.system(size: 20, weight: .light))
-                        }
-                        HStack(spacing: 6) {
-                            StoneIcon(type: .black, size: 20)
-                            Text("\(blackCount)")
-                                .font(.system(size: 20, weight: .light))
-                        }
-                    }
-                    .padding(.bottom, 16)
-
-                    // Single flippable stone
+                    // Single flippable stone: swipe to flip, hold to log,
+                    // press and slide up/down for a mind check-in.
                     VStack(spacing: 12) {
+                        Image(systemName: "chevron.up")
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.secondary)
+                            .opacity(arrowPulse ? 0.6 : 0.2)
+                            .accessibilityHidden(true)
+
                         HStack(spacing: 24) {
                             Image(systemName: "chevron.left")
                                 .font(.title)
@@ -142,59 +160,75 @@ struct TodayView: View {
                                     .degrees(flipAngle),
                                     axis: (x: 0, y: 1, z: 0)
                                 )
-                                .rotation3DEffect(
-                                    .degrees(verticalFlipAngle),
-                                    axis: (x: 1, y: 0, z: 0)
-                                )
-                                .gesture(
-                                    DragGesture(minimumDistance: 30)
-                                        .onEnded { value in
-                                            if abs(value.translation.width) > abs(value.translation.height) {
-                                                flipStone(direction: value.translation.width)
-                                            } else if abs(value.translation.height) > abs(value.translation.width) {
-                                                playFlipHaptic()
-                                                withAnimation(.easeInOut(duration: 0.6)) {
-                                                    verticalFlipAngle += value.translation.height >= 0 ? 360 : -360
-                                                }
-                                            }
-                                        }
-                                )
-                                .onLongPressGesture(minimumDuration: 0.8) {
-                                    let generator = UIImpactFeedbackGenerator(style: .heavy)
-                                    generator.impactOccurred()
-                                    addStone(displayedStoneType)
-                                    withAnimation(.easeOut(duration: 0.15)) {
-                                        holdScale = 1.0
-                                    }
-                                } onPressingChanged: { pressing in
-                                    if pressing {
-                                        let generator = UIImpactFeedbackGenerator(style: .heavy)
-                                        generator.impactOccurred()
-                                        withAnimation(.easeInOut(duration: 0.6)) {
-                                            holdScale = 1.1
-                                        }
-                                    } else {
-                                        withAnimation(.easeOut(duration: 0.15)) {
-                                            holdScale = 1.0
-                                        }
-                                    }
-                                }
+                                .offset(y: stoneOffset)
+                                .contentShape(Circle())
+                                .gesture(stoneGesture)
+                                .accessibilityElement()
+                                .accessibilityLabel("\(displayedStoneType == .white ? "White" : "Black") stone")
+                                .accessibilityHint("Double-tap and hold to log this stone.")
+                                .accessibilityAction(named: "Flip stone") { flipStone(direction: 1) }
+                                .accessibilityAction(named: "Log this stone") { addStone(displayedStoneType) }
+                                .accessibilityAction(named: "Mind check-in: still") { recordMind(noise: 10) }
+                                .accessibilityAction(named: "Mind check-in: in between") { recordMind(noise: 50) }
+                                .accessibilityAction(named: "Mind check-in: noisy") { recordMind(noise: 90) }
+
                             Image(systemName: "chevron.right")
                                 .font(.title)
                                 .fontWeight(.medium)
                                 .foregroundStyle(.secondary)
                                 .opacity(arrowPulse ? 0.8 : 0.3)
                         }
-                        .onAppear {
-                            withAnimation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true)) {
-                                arrowPulse = true
-                            }
-                        }
 
-                        Text("Swipe left/right to flip stone \u{2022} Hold to log")
-                            .font(.caption)
+                        Image(systemName: "chevron.down")
+                            .font(.title3)
+                            .fontWeight(.medium)
                             .foregroundStyle(.secondary)
+                            .opacity(arrowPulse ? 0.6 : 0.2)
+                            .accessibilityHidden(true)
                     }
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true)) {
+                            arrowPulse = true
+                        }
+                    }
+
+                    VStack(spacing: 4) {
+                        Text("Swipe left/right to flip stone \u{2022} Hold to log")
+                        Text("Press and slide up/down to log how noisy your mind is now.")
+                    }
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+                    .padding(.top, 6)
+                    .opacity(othersOpacity)
+
+                    recordedLine
+                        .frame(height: 22)
+                        .padding(.top, 4)
+
+                    // Counts, and the outline of the day's noisy–still chart.
+                    HStack(spacing: 28) {
+                        HStack(spacing: 6) {
+                            StoneIcon(type: .white, size: 20)
+                            Text("\(whiteCount)")
+                                .font(.system(size: 20, weight: .light))
+                        }
+                        HStack(spacing: 6) {
+                            StoneIcon(type: .black, size: 20)
+                            Text("\(blackCount)")
+                                .font(.system(size: 20, weight: .light))
+                        }
+                        Button {
+                            openReview?()
+                        } label: {
+                            MindSparkline(day: DateHelpers.reflectionDay(for: currentDate))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityHint("Opens Review")
+                    }
+                    .padding(.top, 10)
+                    .opacity(othersOpacity)
 
                     Spacer(minLength: 40)
 
@@ -253,11 +287,16 @@ struct TodayView: View {
                             }
                         }
                         .padding(.top, 8)
+                        .opacity(othersOpacity)
                     }
                 }
+                .animation(.easeOut(duration: 0.25), value: mindSliding)
                 .frame(minHeight: UIScreen.main.bounds.height * 0.75)
             }
+            .scrollDisabled(stonePressed)
             .allowsHitTesting(!showOnboardingCoach)
+
+            mindWords
 
             if showOnboardingCoach {
                 Color.black.opacity(0.35)
@@ -322,6 +361,28 @@ struct TodayView: View {
             )
         }
         .onAppear(perform: reloadTodayStones)
+        #if DEBUG
+        // For simulator screenshots: `simctl launch … -debug.mindSlide 95`
+        // freezes a slide at that noise level.
+        .onAppear {
+            // `-debug.seedMind YES` (throwaway simulators only) adds three check-ins today.
+            let today = DateHelpers.reflectionDay(for: currentDate)
+            if UserDefaults.standard.bool(forKey: "debug.seedMind"),
+               MindCheckStore.checks(onDay: today, in: modelContext).isEmpty {
+                for (hour, minute, noise) in [(9, 40, 82.0), (14, 10, 18.0), (19, 25, 47.0)] {
+                    let time = Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: today)!
+                    modelContext.insert(MindCheck(timestamp: time, noise: noise, prompted: true))
+                }
+                try? modelContext.save()
+            }
+            if let value = UserDefaults.standard.string(forKey: "debug.mindSlide").flatMap(Double.init) {
+                stonePressed = true
+                mindSliding = true
+                mindNoise = value
+                stoneOffset = CGFloat(50 - value) / 50 * 44
+            }
+        }
+        #endif
         .onChange(of: showOnboardingCoach) { _, isVisible in
             if isVisible {
                 coachStep = 0
@@ -348,6 +409,155 @@ struct TodayView: View {
             guard !Task.isCancelled else { return }
             currentDate = .now
         }
+    }
+}
+
+// MARK: - Press and slide: mind check-in (spec 9.6)
+
+extension TodayView {
+    /// Hold still for a moment, then either keep holding (log a stone, as
+    /// before) or slide up/down (a mind check-in). A quick swipe left or
+    /// right fails the hold and flips the stone instead.
+    var stoneGesture: some Gesture {
+        LongPressGesture(minimumDuration: 0.2, maximumDistance: 12)
+            .sequenced(before: DragGesture(minimumDistance: 0))
+            .onChanged { value in
+                guard case .second(true, let drag) = value else { return }
+                if !stonePressed {
+                    beginPress()
+                }
+                if let drag {
+                    slide(drag.translation.height)
+                }
+            }
+            .onEnded { _ in
+                endPress()
+            }
+            .exclusively(before: flipGesture)
+    }
+
+    private var flipGesture: some Gesture {
+        DragGesture(minimumDistance: 30)
+            .onEnded { value in
+                if abs(value.translation.width) > abs(value.translation.height) {
+                    flipStone(direction: value.translation.width)
+                }
+            }
+    }
+
+    private func beginPress() {
+        stonePressed = true
+        holdToLogFired = false
+        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        withAnimation(.easeInOut(duration: 0.6)) {
+            holdScale = 1.1
+        }
+        // Held still for 0.8s in all: log a stone, as before.
+        holdToLogTask?.cancel()
+        holdToLogTask = Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(600))
+            guard !Task.isCancelled, !mindSliding else { return }
+            holdToLogFired = true
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+            withAnimation(.easeOut(duration: 0.15)) {
+                holdScale = 1.0
+            }
+            addStone(displayedStoneType)
+        }
+    }
+
+    private func slide(_ dy: CGFloat) {
+        guard !holdToLogFired else { return }
+        if !mindSliding {
+            guard abs(dy) > 10 else { return }
+            holdToLogTask?.cancel()
+            mindSliding = true
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            withAnimation(.easeOut(duration: 0.15)) {
+                holdScale = 1.0
+            }
+        }
+        let previousWord = MindDaySummary.word(for: mindNoise)
+        // Up is noisy, down is still; the press starts in between.
+        mindNoise = MindDaySummary.noise(forSlide: Double(dy), range: Double(slideRange))
+        stoneOffset = min(max(dy * 0.25, -44), 44)
+        if MindDaySummary.word(for: mindNoise) != previousWord {
+            UISelectionFeedbackGenerator().selectionChanged()
+        }
+    }
+
+    private func endPress() {
+        holdToLogTask?.cancel()
+        if mindSliding {
+            recordMind(noise: mindNoise)
+        }
+        withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+            stoneOffset = 0
+            holdScale = 1.0
+        }
+        stonePressed = false
+        mindSliding = false
+        holdToLogFired = false
+        mindNoise = 50
+    }
+
+    func recordMind(noise: Double) {
+        let check = MindCheck(noise: noise, prompted: mindPrompted.wrappedValue)
+        modelContext.insert(check)
+        try? modelContext.save()
+        mindPrompted.wrappedValue = false
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+
+        lastRecorded = check
+        recordedMessageTask?.cancel()
+        recordedMessageTask = Task { @MainActor in
+            try? await Task.sleep(for: .seconds(6))
+            guard !Task.isCancelled else { return }
+            withAnimation { lastRecorded = nil }
+        }
+    }
+
+    private func undoLastRecorded() {
+        guard let lastRecorded else { return }
+        modelContext.delete(lastRecorded)
+        try? modelContext.save()
+        recordedMessageTask?.cancel()
+        withAnimation { self.lastRecorded = nil }
+    }
+
+    /// "Noted at 20:53: fairly noisy. Undo", for a few seconds after a check-in.
+    @ViewBuilder
+    var recordedLine: some View {
+        if let lastRecorded, !lastRecorded.isDeleted {
+            HStack(spacing: 8) {
+                Text("Noted at \(DateHelpers.timeString(for: lastRecorded.timestamp)): \(MindDaySummary.word(for: lastRecorded.noise).lowercased()).")
+                    .foregroundStyle(.secondary)
+                Button("Undo", action: undoLastRecorded)
+                    .foregroundStyle(ColorHelpers.accent)
+            }
+            .font(.footnote)
+            .transition(.opacity)
+        }
+    }
+
+    /// "Noisy Mind" near the top and "Still" near the bottom, fading in as
+    /// the slide reaches either end.
+    var mindWords: some View {
+        let noisy = mindSliding ? min(max((mindNoise - 60) / 40, 0), 1) : 0
+        let still = mindSliding ? min(max((40 - mindNoise) / 40, 0), 1) : 0
+        return VStack {
+            Text("Noisy Mind")
+                .opacity(0.55 * noisy)
+            Spacer()
+            Text("Still")
+                .opacity(0.55 * still)
+        }
+        .font(.system(size: 34, weight: .regular, design: .serif).italic())
+        .foregroundStyle(.primary)
+        .padding(.vertical, 40)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+        .animation(.easeOut(duration: 0.2), value: mindSliding)
     }
 }
 

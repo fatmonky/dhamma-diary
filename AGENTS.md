@@ -28,7 +28,7 @@ Dhamma Diary is a native iOS app: a daily sutta-reflection journal with optional
 - Passages: `DhammaDiary/Resources/passages.json` (generated, never edit by hand), loaded by `DhammaDiary/Models/Passage.swift`; tonight's passage from `DhammaDiary/Utilities/PassageSequence.swift`
 - Passage generator: `scripts/passages/build_passages.py` with input `scripts/passages/passages-source.json`. Add or reword passages in the source file, then regenerate (instructions at the top of the script). Passage IDs are permanent: never reuse or rename one.
 - Widget (tonight's question, Home and Lock Screen): `DhammaDiaryWidget/TonightWidget.swift`. It compiles `Passage.swift`, `PassageSequence.swift`, `DateHelpers.swift` and `passages.json` from the app, so keep those free of SwiftData and UIKit. The first day lives in the App Group `group.com.whitestone.DhammaDiary` (`PassageSequence.sharedDefaults`).
-- Mind tab (check-ins, spec 9): `DhammaDiary/Views/Mind/MindView.swift`, model `DhammaDiary/Models/MindCheck.swift`, schedule `DhammaDiary/Utilities/MindCheckSchedule.swift`, notifications `DhammaDiary/Utilities/MindCheckNotifications.swift`, day line `DhammaDiary/Utilities/MindDaySummary.swift`. Notification taps arrive in `DhammaDiary/App/AppDelegate.swift`.
+- Mind check-ins (spec 9, 9.6): taken on Today by pressing the stone and sliding up/down (`TodayView` `stoneGesture`, backdrop `DhammaDiary/Views/Today/NoiseBackdrop.swift`); shown in Review by `DhammaDiary/Views/Mind/MindReviewSection.swift` (also the chart, sparkline and row views). Model `DhammaDiary/Models/MindCheck.swift`, schedule `DhammaDiary/Utilities/MindCheckSchedule.swift`, notifications `DhammaDiary/Utilities/MindCheckNotifications.swift`, day line and slide mapping `DhammaDiary/Utilities/MindDaySummary.swift`. Notification taps arrive in `DhammaDiary/App/AppDelegate.swift` and open Today. There is no Mind tab.
 - SwiftData store location: `DhammaDiaryStore.appStoreURL`, the app's own container. Never use SwiftData's default configuration: with the App Group in the entitlements it would open a different, empty store in the group container. `settleStoreLocation()` moves a group-container store back once.
 - Week look-back: `DhammaDiary/Utilities/WeekLookBack.swift`, `DhammaDiary/Views/Week/WeekLookBackView.swift`
 - App icon: `scripts/icon/make_icon.py` draws `AppIcon.png`; change the script, not the PNG.
@@ -82,7 +82,7 @@ Rules:
 - Existing users with stones should not see onboarding.
 - Completed onboarding must not restart if the user later deletes all stones.
 - Preserve mid-flow states: `firstLog`, `reviewTour`, `diaryTour`, `mindInvite`.
-- `mindInvite` is a sheet after the Diary tour asking to turn on mind check-ins; skipping the Diary tour skips it too.
+- `mindInvite` is a sheet after the Diary tour asking to turn on mind check-in reminders; skipping the Diary tour skips it too.
 - Sync `reviewTour` to the Review tab and `diaryTour` to the Diary tab.
 - Today coach sub-step is local UI state and should reset when re-shown.
 - Tour overlays should block underlying content interaction.

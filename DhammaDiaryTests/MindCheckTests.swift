@@ -111,6 +111,16 @@ final class MindDaySummaryTests: XCTestCase {
         XCTAssertEqual(summary.text(time: hourLabel), "2 check-ins today, all about the same.")
     }
 
+    func testSlideMapsUpToNoisyAndDownToStill() {
+        XCTAssertEqual(MindDaySummary.noise(forSlide: 0, range: 170), 50)
+        XCTAssertEqual(MindDaySummary.noise(forSlide: -170, range: 170), 100)
+        XCTAssertEqual(MindDaySummary.noise(forSlide: 170, range: 170), 0)
+        XCTAssertEqual(MindDaySummary.noise(forSlide: -85, range: 170), 75)
+        // Past either end stays at the end.
+        XCTAssertEqual(MindDaySummary.noise(forSlide: -400, range: 170), 100)
+        XCTAssertEqual(MindDaySummary.noise(forSlide: 400, range: 170), 0)
+    }
+
     func testWords() {
         XCTAssertEqual(MindDaySummary.word(for: 0), "Very still")
         XCTAssertEqual(MindDaySummary.word(for: 50), "In between")

@@ -46,7 +46,7 @@ struct ContentView: View {
     @State private var showPostFirstEntry = false
     /// Where the Diary tab should open next, set from Today, Review or the widget.
     @State private var diaryRequest: DiaryDestination?
-    /// True while the Mind tab's check-in was opened from a notification.
+    /// True while the next mind check-in on Today was opened from a notification.
     @State private var mindOpenedFromNotification = false
     @State private var mindRouter = MindCheckRouter.shared
 
@@ -91,7 +91,8 @@ struct ContentView: View {
                     onStoneSaved: {
                         guard onboardingStep == .firstLog else { return }
                         showPostFirstEntry = true
-                    }
+                    },
+                    mindPrompted: $mindOpenedFromNotification
                 )
             }
             .tabItem { Label("Today", systemImage: "circle.fill") }
@@ -124,24 +125,18 @@ struct ContentView: View {
             .tag(2)
 
             NavigationStack {
-                MindView(openedFromNotification: $mindOpenedFromNotification)
-            }
-            .tabItem { Label("Mind", systemImage: "waveform") }
-            .tag(3)
-
-            NavigationStack {
                 AboutView()
             }
             .tabItem { Label("About", systemImage: "info.circle") }
-            .tag(4)
+            .tag(3)
         }
         .tint(ColorHelpers.accent)
         .environment(\.openDiary) { destination in
             diaryRequest = destination
             selectedTab = 2
         }
-        .environment(\.openMind) {
-            selectedTab = 3
+        .environment(\.openReview) {
+            selectedTab = 1
         }
         // The widget opens dhammadiary://tonight (spec 8.4).
         .onOpenURL { url in
@@ -238,12 +233,13 @@ struct ContentView: View {
         }
     }
 
-    /// A tapped check-in notification opens the Mind tab, also on a cold launch.
+    /// A tapped check-in notification opens Today, where the stone takes
+    /// the check-in, also on a cold launch.
     private func openMindFromNotification() {
         guard mindRouter.openRequested else { return }
         mindRouter.openRequested = false
         mindOpenedFromNotification = true
-        selectedTab = 3
+        selectedTab = 0
     }
 
     private func finishOnboarding() {
@@ -315,7 +311,7 @@ private struct MindInviteSheet: View {
                     .font(.system(.title3, design: .serif).weight(.semibold))
                     .multilineTextAlignment(.center)
 
-                Text("Three times a day, at a random moment between 9am and 9pm, Dhamma Diary can ask you this. You answer with one slide, from still to noisy. At night, the Mind tab shows how the day went. You can turn this off at any time in the Mind tab.")
+                Text("Three times a day, at a random moment between 9am and 9pm, Dhamma Diary can remind you to ask. On Today, press the stone and slide up for noisy or down for still. Review shows how the day went, and you can turn the reminders off there at any time.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -323,7 +319,7 @@ private struct MindInviteSheet: View {
 
                 Spacer()
 
-                Button("Turn On Check-ins") {
+                Button("Turn On Reminders") {
                     onTurnOn()
                 }
                 .buttonStyle(.borderedProminent)
