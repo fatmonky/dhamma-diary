@@ -48,6 +48,9 @@ targets:
       - DhammaDiary/Models/Passage.swift
       - DhammaDiary/Utilities/PassageSequence.swift
       - DhammaDiary/Utilities/DateHelpers.swift
+      # The widget's buttons queue taps for the app (spec 9.8).
+      - DhammaDiary/Utilities/WidgetLogQueue.swift
+      - DhammaDiary/Intents/WidgetIntents.swift
       - DhammaDiary/Resources/passages.json
       - DhammaDiary/Assets.xcassets
     info:

@@ -7,6 +7,10 @@ import WidgetKit
 struct DhammaDiaryWidgets: WidgetBundle {
     var body: some Widget {
         TonightWidget()
+        CheckInWidget()
+        if #available(iOS 18.0, *) {
+            MindCheckInControl()
+        }
     }
 }
 

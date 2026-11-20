@@ -408,6 +408,9 @@ struct TodayView: View {
                 reloadTodayStones()
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .widgetLogsImported)) { _ in
+            reloadTodayStones()
+        }
         .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
             currentDate = .now
             reloadTodayStones()

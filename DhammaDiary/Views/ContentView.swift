@@ -40,6 +40,7 @@ enum OnboardingStep: String {
 struct ContentView: View {
     @Query private var allStones: [Stone]
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.modelContext) private var modelContext
 
     @State private var selectedTab = 0
     @State private var showWelcome = false
@@ -140,12 +141,25 @@ struct ContentView: View {
         }
         // The widget opens dhammadiary://tonight (spec 8.4).
         .onOpenURL { url in
-            guard url.scheme == "dhammadiary", url.host == "tonight" else { return }
-            diaryRequest = .tonight
-            selectedTab = 2
+            guard url.scheme == "dhammadiary" else { return }
+            switch url.host {
+            case "tonight":
+                diaryRequest = .tonight
+                selectedTab = 2
+            case "today":
+                // The check-in widget (spec 9.8).
+                selectedTab = 0
+            default:
+                break
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .openTodayRequested)) { _ in
+            openTodayIfRequested()
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
+                importWidgetLogs()
+                openTodayIfRequested()
                 WidgetCenter.shared.reloadAllTimelines()
                 Task { await MindCheckNotifications.topUp() }
             }
@@ -154,9 +168,11 @@ struct ContentView: View {
             openMindFromNotification()
         }
         .onAppear {
+            importWidgetLogs()
             bootstrapOnboardingState()
             syncTabWithOnboardingStep()
             openMindFromNotification()
+            openTodayIfRequested()
             #if DEBUG
             // For simulator screenshots: `simctl launch … -debug.selectedTab 2`.
             if let tab = UserDefaults.standard.string(forKey: "debug.selectedTab").flatMap(Int.init) {
@@ -239,6 +255,21 @@ struct ContentView: View {
         guard mindRouter.openRequested else { return }
         mindRouter.openRequested = false
         mindOpenedFromNotification = true
+        selectedTab = 0
+    }
+
+    /// Check-ins and stones tapped on the widget become real records (spec 9.8).
+    private func importWidgetLogs() {
+        if WidgetLogImporter.run(into: modelContext) > 0 {
+            NotificationCenter.default.post(name: .widgetLogsImported, object: nil)
+        }
+    }
+
+    /// The Control Center control asked for Today.
+    private func openTodayIfRequested() {
+        let shared = PassageSequence.sharedDefaults
+        guard shared.bool(forKey: WidgetLogQueue.openTodayKey) else { return }
+        shared.removeObject(forKey: WidgetLogQueue.openTodayKey)
         selectedTab = 0
     }
 
