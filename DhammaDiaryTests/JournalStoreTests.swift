@@ -119,3 +119,34 @@ final class JournalStoreTests: XCTestCase {
         XCTAssertEqual(entries.map(\.responseText), ["A", "B"])
     }
 }
+
+@MainActor
+final class OneOffFixesTests: XCTestCase {
+    func testOnlyThe20NovAN1061EntryWithTheOldQuestionChanges() throws {
+        let container = try DhammaDiaryStore.makeContainer(inMemory: true)
+        let context = container.mainContext
+        let calendar = Calendar.current
+        let nov20 = calendar.date(from: DateComponents(year: 2026, month: 11, day: 20))!
+        let nov7 = calendar.date(from: DateComponents(year: 2026, month: 11, day: 7))!
+        let old = OneOffFixes.oldAN1061Question
+        let target = JournalEntry(day: nov20, passageID: "an10.61-true-persons", passageRef: "AN 10.61", passageTitle: "Ignorance", question: old, responseText: "today filled up about work.")
+        let earlier = JournalEntry(day: nov7, passageID: "an10.61-true-persons", passageRef: "AN 10.61", passageTitle: "Ignorance", question: old, responseText: "Earlier.")
+        context.insert(target)
+        context.insert(earlier)
+        try context.save()
+        let updatedAt = target.updatedAt
+
+        XCTAssertTrue(OneOffFixes.rewordAN1061EntryOn20Nov(in: context))
+        XCTAssertEqual(target.question, OneOffFixes.newAN1061Question)
+        XCTAssertEqual(target.responseText, "today filled up about work.")
+        XCTAssertEqual(target.updatedAt, updatedAt)
+        XCTAssertEqual(earlier.question, old)
+        // Runs once: nothing left to change.
+        XCTAssertFalse(OneOffFixes.rewordAN1061EntryOn20Nov(in: context))
+    }
+
+    func testNewWordingMatchesThePassageSet() throws {
+        let set = try PassageSet.load(from: .main)
+        XCTAssertEqual(set.passage(withID: "an10.61-true-persons")?.question, OneOffFixes.newAN1061Question)
+    }
+}
