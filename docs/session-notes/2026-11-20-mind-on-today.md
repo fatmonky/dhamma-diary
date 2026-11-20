@@ -46,3 +46,5 @@ Screenshots: [08 noisy, full travel](../session-artifacts/2026-11-20-today-mind-
 Tests: 87/87 (new: asymmetric slide mapping, buzz intensity).
 
 Not verified (needs a phone): the flick scrolls while a held press doesn't; the buzz (simulators have no haptics); pinch and drag on the chart.
+
+Round 3: the outline beside the counts became just the line (brown, 2pt, no frame or dots), on its own row under the counts. [Screenshot 11](../session-artifacts/2026-11-20-today-mind-11-line-under-counts.png).

@@ -216,17 +216,19 @@ struct TodayView: View {
                         .frame(height: 22)
                         .padding(.top, 4)
 
-                    // Counts, and the outline of the day's noisy–still chart.
-                    HStack(spacing: 28) {
-                        HStack(spacing: 6) {
-                            StoneIcon(type: .white, size: 20)
-                            Text("\(whiteCount)")
-                                .font(.system(size: 20, weight: .light))
-                        }
-                        HStack(spacing: 6) {
-                            StoneIcon(type: .black, size: 20)
-                            Text("\(blackCount)")
-                                .font(.system(size: 20, weight: .light))
+                    // Counts, and under them the shape of the day's noisy–still line.
+                    VStack(spacing: 10) {
+                        HStack(spacing: 32) {
+                            HStack(spacing: 6) {
+                                StoneIcon(type: .white, size: 20)
+                                Text("\(whiteCount)")
+                                    .font(.system(size: 20, weight: .light))
+                            }
+                            HStack(spacing: 6) {
+                                StoneIcon(type: .black, size: 20)
+                                Text("\(blackCount)")
+                                    .font(.system(size: 20, weight: .light))
+                            }
                         }
                         Button {
                             openReview?()

@@ -246,8 +246,9 @@ struct MindDayChart: View {
     }
 }
 
-/// The outline of the day's noisy–still chart, small, beside Today's
-/// stone counts. Tapping it opens Review.
+/// The shape of the day's noisy–still line, under Today's stone counts:
+/// just the line, no frame or dots. Nothing shows before the first
+/// check-in. Tapping it opens Review.
 struct MindSparkline: View {
     @Query private var checks: [MindCheck]
     let day: Date
@@ -268,7 +269,7 @@ struct MindSparkline: View {
         let span = domain.upperBound.timeIntervalSince(domain.lowerBound)
 
         Canvas { context, size in
-            let inset: CGFloat = 5
+            let inset: CGFloat = 2
             let width = size.width - inset * 2
             let height = size.height - inset * 2
             let points = checks.map { check in
@@ -277,23 +278,17 @@ struct MindSparkline: View {
                     y: inset + height * (1 - check.noise / 100)
                 )
             }
-            // A faint midline, so an empty day still reads as a chart.
-            var mid = Path()
-            mid.move(to: CGPoint(x: inset, y: size.height / 2))
-            mid.addLine(to: CGPoint(x: size.width - inset, y: size.height / 2))
-            context.stroke(mid, with: .color(.secondary.opacity(0.25)), style: StrokeStyle(lineWidth: 0.5, dash: [2, 2]))
-
+            let colour = GraphicsContext.Shading.color(ColorHelpers.accent)
             if points.count > 1 {
                 var line = Path()
                 line.addLines(points)
-                context.stroke(line, with: .color(ColorHelpers.accent.opacity(0.5)), lineWidth: 1)
-            }
-            for point in points {
-                context.fill(Path(ellipseIn: CGRect(x: point.x - 2, y: point.y - 2, width: 4, height: 4)), with: .color(ColorHelpers.accent))
+                context.stroke(line, with: colour, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+            } else if let point = points.first {
+                // One check-in: a mark the width of the line.
+                context.fill(Path(ellipseIn: CGRect(x: point.x - 1.5, y: point.y - 1.5, width: 3, height: 3)), with: colour)
             }
         }
-        .frame(width: 72, height: 30)
-        .background(RoundedRectangle(cornerRadius: 6).stroke(Color.secondary.opacity(0.4), lineWidth: 0.75))
+        .frame(width: 200, height: checks.isEmpty ? 0 : 30)
         .accessibilityElement()
         .accessibilityLabel("Mind today")
         .accessibilityValue(MindDaySummary(checks: checks)?.text() ?? "No check-ins yet")
