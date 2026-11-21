@@ -166,56 +166,6 @@ struct CheckInWidgetView: View {
     }
 }
 
-/// Control Center, Lock Screen and Action button (spec 9.8). Controls can
-/// only be buttons or toggles, so each level is its own control; place them
-/// side by side. The icons are custom symbols from
-/// scripts/icon/make_control_symbols.py.
-@available(iOS 18.0, *)
-struct MindCheckInControl: ControlWidget {
-    var body: some ControlWidgetConfiguration {
-        StaticControlConfiguration(kind: "com.whitestone.DhammaDiary.MindCheckInControl") {
-            ControlWidgetButton(action: OpenTodayIntent()) {
-                Label("Mind check-in", image: "stone.book")
-            }
-        }
-        .displayName("Mind check-in")
-        .description("Opens Today, ready to slide the stone.")
-    }
-}
-
-@available(iOS 18.0, *)
-struct MindStillControl: ControlWidget {
-    var body: some ControlWidgetConfiguration {
-        mindLevelControl(kind: "com.whitestone.DhammaDiary.MindStillControl", title: "Still", symbol: "mind.still", noise: 10)
-    }
-}
-
-@available(iOS 18.0, *)
-struct MindBetweenControl: ControlWidget {
-    var body: some ControlWidgetConfiguration {
-        mindLevelControl(kind: "com.whitestone.DhammaDiary.MindBetweenControl", title: "In between", symbol: "mind.between", noise: 50)
-    }
-}
-
-@available(iOS 18.0, *)
-struct MindNoisyControl: ControlWidget {
-    var body: some ControlWidgetConfiguration {
-        mindLevelControl(kind: "com.whitestone.DhammaDiary.MindNoisyControl", title: "Noisy", symbol: "mind.noisy", noise: 90)
-    }
-}
-
-/// One tap notes this level, without opening the app.
-@available(iOS 18.0, *)
-private func mindLevelControl(kind: String, title: String, symbol: String, noise: Double) -> some ControlWidgetConfiguration {
-    StaticControlConfiguration(kind: kind) {
-        ControlWidgetButton(action: LogMindCheckIntent(noise: noise)) {
-            Label(title, image: symbol)
-        }
-    }
-    .displayName("Mind: \(title)")
-    .description("Notes that your mind is \(title.lowercased()) now, without opening the app.")
-}
-
 #Preview(as: .systemMedium) {
     CheckInWidget()
 } timeline: {

@@ -36,8 +36,6 @@ enum WidgetLogQueue {
 
         var key: String { "widget.lastNoted.\(rawValue)" }
     }
-    /// Set by the Control Center control; the app opens Today and clears it.
-    static let openTodayKey = "widget.openToday"
 
     static func append(_ log: WidgetLog, defaults: UserDefaults = PassageSequence.sharedDefaults) {
         var logs = pending(defaults: defaults)

@@ -153,13 +153,9 @@ struct ContentView: View {
                 break
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: .openTodayRequested)) { _ in
-            openTodayIfRequested()
-        }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
                 importWidgetLogs()
-                openTodayIfRequested()
                 WidgetCenter.shared.reloadAllTimelines()
                 Task { await MindCheckNotifications.topUp() }
             }
@@ -172,7 +168,6 @@ struct ContentView: View {
             bootstrapOnboardingState()
             syncTabWithOnboardingStep()
             openMindFromNotification()
-            openTodayIfRequested()
             #if DEBUG
             // For simulator screenshots: `simctl launch … -debug.selectedTab 2`.
             if let tab = UserDefaults.standard.string(forKey: "debug.selectedTab").flatMap(Int.init) {
@@ -263,14 +258,6 @@ struct ContentView: View {
         if WidgetLogImporter.run(into: modelContext) > 0 {
             NotificationCenter.default.post(name: .widgetLogsImported, object: nil)
         }
-    }
-
-    /// The Control Center control asked for Today.
-    private func openTodayIfRequested() {
-        let shared = PassageSequence.sharedDefaults
-        guard shared.bool(forKey: WidgetLogQueue.openTodayKey) else { return }
-        shared.removeObject(forKey: WidgetLogQueue.openTodayKey)
-        selectedTab = 0
     }
 
     private func finishOnboarding() {
