@@ -98,15 +98,15 @@ struct TodayView: View {
         }
     }
 
-    private var coachTitle: String {
-        coachStep == 0 ? "Swipe to switch stone" : "Hold to log this stone"
-    }
+    /// The Today coach: swipe, slide, then hold (spec 4.5, 9.6).
+    private static let coachSteps: [(title: String, message: String)] = [
+        ("Swipe to switch stone", "Swipe left or right on the stone to switch between White and Black."),
+        ("Slide to note your mind", "Press the stone and slide up if your mind is noisy, or down if it's still. Let go to note it."),
+        ("Hold to log this stone", "Press and hold the stone for a moment to open the log sheet."),
+    ]
 
-    private var coachMessage: String {
-        coachStep == 0
-            ? "Swipe left or right on the stone to switch between White and Black."
-            : "Press and hold the stone for a moment to open the log sheet."
-    }
+    private var coachTitle: String { Self.coachSteps[coachStep].title }
+    private var coachMessage: String { Self.coachSteps[coachStep].message }
 
     var body: some View {
         ZStack {
@@ -324,9 +324,9 @@ struct TodayView: View {
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
 
-                        if coachStep == 0 {
+                        if coachStep < Self.coachSteps.count - 1 {
                             Button("Next") {
-                                coachStep = 1
+                                coachStep += 1
                             }
                             .buttonStyle(.borderedProminent)
                             .tint(ColorHelpers.accent)
@@ -385,6 +385,11 @@ struct TodayView: View {
                     modelContext.insert(MindCheck(timestamp: time, noise: noise, prompted: true))
                 }
                 try? modelContext.save()
+            }
+            // `-debug.coachStep 1` opens the Today coach at that card.
+            if let step = UserDefaults.standard.string(forKey: "debug.coachStep").flatMap(Int.init),
+               Self.coachSteps.indices.contains(step) {
+                coachStep = step
             }
             if let value = UserDefaults.standard.string(forKey: "debug.mindSlide").flatMap(Double.init) {
                 stonePressed = true

@@ -1,28 +1,42 @@
 import Foundation
 
-/// When the mind check-in notifications fire (spec 9.2): three a day, one at
-/// a random moment in each of 9–13, 13–17 and 17–21, at least an hour apart.
+/// When the mind check-in notifications fire (spec 9.2): `perDay` a day
+/// (1–6, three by default), one at a random moment in each of `perDay`
+/// equal windows between 9am and 9pm, at least an hour apart. Three gives
+/// the windows 9–13, 13–17 and 17–21.
 enum MindCheckSchedule {
-    /// Start and end hours of each window.
-    static let windows: [(start: Int, end: Int)] = [(9, 13), (13, 17), (17, 21)]
+    static let firstMinute = 9 * 60
+    static let lastMinute = 21 * 60
+    static let perDayRange = 1...6
+    static let defaultPerDay = 3
     static let minimumGapMinutes = 60
     /// How many days ahead are kept scheduled.
     static let daysAhead = 7
 
-    /// The three times for the calendar date `day`, earliest first.
+    /// Start and end of each window, in minutes after midnight.
+    static func windows(perDay: Int) -> [(start: Int, end: Int)] {
+        let count = min(max(perDay, perDayRange.lowerBound), perDayRange.upperBound)
+        let length = (lastMinute - firstMinute) / count
+        return (0..<count).map { i in
+            (firstMinute + i * length, firstMinute + (i + 1) * length)
+        }
+    }
+
+    /// The times for the calendar date `day`, earliest first.
     static func times<R: RandomNumberGenerator>(
         forDay day: Date,
+        perDay: Int = defaultPerDay,
         calendar: Calendar = .current,
         using generator: inout R
     ) -> [Date] {
         let start = calendar.startOfDay(for: day)
         var times: [Date] = []
         var earliestMinute = 0
-        for window in windows {
-            // Minutes after midnight; the gap can push the start later, but
-            // a four-hour window always leaves room.
-            let lower = max(window.start * 60, earliestMinute)
-            let upper = window.end * 60
+        for window in windows(perDay: perDay) {
+            // The gap can push the start later, but every window (two hours
+            // at six a day) is longer than the gap, so there's always room.
+            let lower = max(window.start, earliestMinute)
+            let upper = window.end
             let minute = Int.random(in: lower..<upper, using: &generator)
             earliestMinute = minute + minimumGapMinutes
             let hour = minute / 60
@@ -44,6 +58,7 @@ enum MindCheckSchedule {
     static func plan<R: RandomNumberGenerator>(
         now: Date,
         plannedThrough: Date?,
+        perDay: Int = defaultPerDay,
         calendar: Calendar = .current,
         using generator: inout R
     ) -> Plan {
@@ -56,7 +71,7 @@ enum MindCheckSchedule {
         }
         var times: [Date] = []
         while day <= last {
-            times += Self.times(forDay: day, calendar: calendar, using: &generator).filter { $0 > now }
+            times += Self.times(forDay: day, perDay: perDay, calendar: calendar, using: &generator).filter { $0 > now }
             day = calendar.date(byAdding: .day, value: 1, to: day)!
         }
         let through = max(last, plannedThrough.map { calendar.startOfDay(for: $0) } ?? last)

@@ -8,6 +8,7 @@ enum MindCheckNotifications {
     static let identifierPrefix = "mindcheck."
     static let enabledKey = "mindCheck.enabled"
     static let plannedThroughKey = "mindCheck.plannedThrough"
+    static let perDayKey = "mindCheck.perDay"
     static let question = "How noisy is your mind now?"
 
     enum Status: Equatable {
@@ -22,6 +23,23 @@ enum MindCheckNotifications {
     private static var center: UNUserNotificationCenter { .current() }
 
     static var isEnabled: Bool { defaults.bool(forKey: enabledKey) }
+
+    /// How many reminders a day (1–6, three until changed).
+    static var perDay: Int {
+        let stored = defaults.integer(forKey: perDayKey)
+        return MindCheckSchedule.perDayRange.contains(stored) ? stored : MindCheckSchedule.defaultPerDay
+    }
+
+    /// Changes how many a day, and replaces what's scheduled if reminders are on.
+    static func setPerDay(_ count: Int) async {
+        let clamped = min(max(count, MindCheckSchedule.perDayRange.lowerBound), MindCheckSchedule.perDayRange.upperBound)
+        guard clamped != perDay else { return }
+        defaults.set(clamped, forKey: perDayKey)
+        guard isEnabled else { return }
+        await removePending()
+        defaults.removeObject(forKey: plannedThroughKey)
+        await topUp()
+    }
 
     static func status() async -> Status {
         guard isEnabled else { return .off }
@@ -45,6 +63,10 @@ enum MindCheckNotifications {
     static func stop() async {
         defaults.set(false, forKey: enabledKey)
         defaults.removeObject(forKey: plannedThroughKey)
+        await removePending()
+    }
+
+    private static func removePending() async {
         let pending = await center.pendingNotificationRequests()
             .map(\.identifier)
             .filter { $0.hasPrefix(identifierPrefix) }
@@ -59,7 +81,7 @@ enum MindCheckNotifications {
         // If the app was away longer than the week ahead, start again from today.
         let stillAhead = plannedThrough.flatMap { $0 >= Calendar.current.startOfDay(for: now) ? $0 : nil }
         var generator = SystemRandomNumberGenerator()
-        let plan = MindCheckSchedule.plan(now: now, plannedThrough: stillAhead, using: &generator)
+        let plan = MindCheckSchedule.plan(now: now, plannedThrough: stillAhead, perDay: perDay, using: &generator)
 
         for time in plan.times {
             let content = UNMutableNotificationContent()

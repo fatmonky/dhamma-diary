@@ -525,7 +525,7 @@ struct ReviewView: View {
                     Text("Review")
                         .font(.headline)
 
-                    Text("Review combines the calendar and trends into one place. Start with the month grid, then use the sections below it for recent bars, all-time totals, and quiet pattern notes.")
+                    Text("At the top, Mind today charts how noisy your mind has been. Below it are the month grid, recent bars, all-time totals and quiet pattern notes.")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
 

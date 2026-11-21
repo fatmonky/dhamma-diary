@@ -2,7 +2,7 @@
 
 ## Project
 
-Dhamma Diary is a native iOS app: a daily sutta-reflection journal with optional white and black stones for wholesome and unwholesome thoughts/actions. It is a fork of White Stone. The build spec is `docs/spec/v1.md`. Keep the app quiet, local-first, and contemplative. Do not add analytics, telemetry, badges, achievements, streak milestones, notifications, or gamified copy unless explicitly requested. The one exception PJ asked for is the mind check-in notifications (spec section 9): opt-in, local only, three a day. Don't add other notifications.
+Dhamma Diary is a native iOS app: a daily sutta-reflection journal with optional white and black stones for wholesome and unwholesome thoughts/actions. It is a fork of White Stone. The build spec is `docs/spec/v1.md`. Keep the app quiet, local-first, and contemplative. Do not add analytics, telemetry, badges, achievements, streak milestones, notifications, or gamified copy unless explicitly requested. The one exception PJ asked for is the mind check-in notifications (spec section 9): opt-in, local only, 1–6 a day (three by default). Don't add other notifications.
 
 ## Stack
 
@@ -83,7 +83,7 @@ Rules:
 - Existing users with stones should not see onboarding.
 - Completed onboarding must not restart if the user later deletes all stones.
 - Preserve mid-flow states: `firstLog`, `reviewTour`, `diaryTour`, `mindInvite`.
-- `mindInvite` is a sheet after the Diary tour asking to turn on mind check-in reminders; skipping the Diary tour skips it too.
+- `mindInvite` is a sheet after the Diary tour asking to turn on mind check-in reminders and how many a day. Skipping at any point (welcome, Today coach, first-stone sheet, Review or Diary tour) still leads to `mindInvite`, after any open sheet has closed.
 - Sync `reviewTour` to the Review tab and `diaryTour` to the Diary tab.
 - Today coach sub-step is local UI state and should reset when re-shown.
 - Tour overlays should block underlying content interaction.

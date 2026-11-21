@@ -45,6 +45,9 @@ struct ContentView: View {
     @State private var selectedTab = 0
     @State private var showWelcome = false
     @State private var showPostFirstEntry = false
+    /// Set when a sheet's Skip should lead to the check-in invite once that
+    /// sheet has gone (two sheets can't be shown at once).
+    @State private var inviteAfterSheet = false
     /// Where the Diary tab should open next, set from Today, Review or the widget.
     @State private var diaryRequest: DiaryDestination?
     /// True while the next mind check-in on Today was opened from a notification.
@@ -86,9 +89,7 @@ struct ContentView: View {
                     onCompleteCoach: {
                         onboardingStep = .firstLog
                     },
-                    onDismissCoach: {
-                        finishOnboarding()
-                    },
+                    onDismissCoach: skipToMindInvite,
                     onStoneSaved: {
                         guard onboardingStep == .firstLog else { return }
                         showPostFirstEntry = true
@@ -106,7 +107,7 @@ struct ContentView: View {
                         onboardingStep = .diaryTour
                         selectedTab = 2
                     },
-                    onSkipTour: finishOnboarding
+                    onSkipTour: skipToMindInvite
                 )
             }
             .tabItem { Label("Review", systemImage: "calendar") }
@@ -119,7 +120,7 @@ struct ContentView: View {
                     onFinishTour: {
                         onboardingStep = .mindInvite
                     },
-                    onSkipTour: finishOnboarding
+                    onSkipTour: skipToMindInvite
                 )
             }
             .tabItem { Label("Diary", systemImage: "text.book.closed") }
@@ -178,7 +179,7 @@ struct ContentView: View {
         .onChange(of: allStones.count) { _, _ in
             bootstrapOnboardingState()
         }
-        .sheet(isPresented: $showWelcome) {
+        .sheet(isPresented: $showWelcome, onDismiss: showInviteIfSkipped) {
             WelcomeOnboardingSheet(
                 onStart: {
                     showWelcome = false
@@ -186,8 +187,8 @@ struct ContentView: View {
                     selectedTab = 0
                 },
                 onSkip: {
+                    inviteAfterSheet = true
                     showWelcome = false
-                    finishOnboarding()
                 }
             )
         }
@@ -196,14 +197,17 @@ struct ContentView: View {
             set: { if !$0 { finishOnboarding() } }
         )) {
             MindInviteSheet(
-                onTurnOn: {
+                onTurnOn: { perDay in
                     finishOnboarding()
-                    Task { await MindCheckNotifications.start() }
+                    Task {
+                        await MindCheckNotifications.setPerDay(perDay)
+                        await MindCheckNotifications.start()
+                    }
                 },
                 onNotNow: finishOnboarding
             )
         }
-        .sheet(isPresented: $showPostFirstEntry) {
+        .sheet(isPresented: $showPostFirstEntry, onDismiss: showInviteIfSkipped) {
             FirstStoneSuccessSheet(
                 onContinue: {
                     showPostFirstEntry = false
@@ -211,8 +215,8 @@ struct ContentView: View {
                     selectedTab = 1
                 },
                 onSkip: {
+                    inviteAfterSheet = true
                     showPostFirstEntry = false
-                    finishOnboarding()
                 }
             )
         }
@@ -258,6 +262,18 @@ struct ContentView: View {
         if WidgetLogImporter.run(into: modelContext) > 0 {
             NotificationCenter.default.post(name: .widgetLogsImported, object: nil)
         }
+    }
+
+    /// Skipping any part of the tour still asks about check-in reminders,
+    /// once (spec 9.2).
+    private func skipToMindInvite() {
+        onboardingStep = .mindInvite
+    }
+
+    private func showInviteIfSkipped() {
+        guard inviteAfterSheet else { return }
+        inviteAfterSheet = false
+        skipToMindInvite()
     }
 
     private func finishOnboarding() {
@@ -313,15 +329,17 @@ private struct WelcomeOnboardingSheet: View {
 }
 
 private struct MindInviteSheet: View {
-    let onTurnOn: () -> Void
+    let onTurnOn: (Int) -> Void
     let onNotNow: () -> Void
+
+    @State private var perDay = MindCheckNotifications.perDay
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 18) {
                 Spacer(minLength: 12)
 
-                Image(systemName: "waveform")
+                Image(systemName: "bell")
                     .font(.system(size: 42))
                     .foregroundStyle(ColorHelpers.accent)
 
@@ -329,16 +347,28 @@ private struct MindInviteSheet: View {
                     .font(.system(.title3, design: .serif).weight(.semibold))
                     .multilineTextAlignment(.center)
 
-                Text("Three times a day, at a random moment between 9am and 9pm, Dhamma Diary can remind you to ask. On Today, press the stone and slide up for noisy or down for still. Review shows how the day went, and you can turn the reminders off there at any time.")
+                Text("Dhamma Diary can remind you to ask, at random moments between 9am and 9pm. You can change how often, or turn the reminders off, in Review.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 8)
 
+                VStack(spacing: 8) {
+                    Text("How many a day?")
+                        .font(.subheadline)
+                    Picker("Reminders a day", selection: $perDay) {
+                        ForEach(MindCheckSchedule.perDayRange, id: \.self) { count in
+                            Text("\(count)").tag(count)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
+                .padding(.top, 6)
+
                 Spacer()
 
                 Button("Turn On Reminders") {
-                    onTurnOn()
+                    onTurnOn(perDay)
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(ColorHelpers.accent)

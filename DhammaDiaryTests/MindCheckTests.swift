@@ -44,6 +44,32 @@ final class MindCheckScheduleTests: XCTestCase {
         }
     }
 
+    func testAnyCountFromOneToSixFitsBetweenNineAndNineAnHourApart() {
+        for perDay in 1...6 {
+            for seed in 0..<300 {
+                var generator = SeededGenerator(state: UInt64(seed))
+                let m = MindCheckSchedule.times(forDay: date(20), perDay: perDay, calendar: calendar, using: &generator).map(minutes)
+                XCTAssertEqual(m.count, perDay)
+                XCTAssertTrue(m.allSatisfy { (9 * 60..<21 * 60).contains($0) }, "\(perDay) a day, seed \(seed): \(m)")
+                for (a, b) in zip(m, m.dropFirst()) {
+                    XCTAssertGreaterThanOrEqual(b - a, 60, "\(perDay) a day, seed \(seed): \(m)")
+                }
+            }
+        }
+    }
+
+    func testCountIsKeptInRange() {
+        XCTAssertEqual(MindCheckSchedule.windows(perDay: 0).count, 1)
+        XCTAssertEqual(MindCheckSchedule.windows(perDay: 9).count, 6)
+        XCTAssertEqual(MindCheckSchedule.windows(perDay: 3).map(\.start), [9 * 60, 13 * 60, 17 * 60])
+    }
+
+    func testPlanUsesTheCount() {
+        var generator = SeededGenerator(state: 7)
+        let plan = MindCheckSchedule.plan(now: date(20, 0, 0), plannedThrough: nil, perDay: 6, calendar: calendar, using: &generator)
+        XCTAssertEqual(plan.times.count, 42)
+    }
+
     func testTimesVaryFromDayToDay() {
         var generator = SeededGenerator(state: 42)
         let first = MindCheckSchedule.times(forDay: date(20), calendar: calendar, using: &generator).map(minutes)

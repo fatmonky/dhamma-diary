@@ -9,6 +9,7 @@ struct MindReviewSection: View {
     @Environment(\.scenePhase) private var scenePhase
     @Query private var checks: [MindCheck]
     @State private var status: MindCheckNotifications.Status = .off
+    @State private var perDay = MindCheckNotifications.perDay
 
     let day: Date
     private let accent = ColorHelpers.accent
@@ -87,13 +88,19 @@ struct MindReviewSection: View {
             case .off:
                 Text("Reminders are off.")
                     .foregroundStyle(.secondary)
-                Button("Remind me 3 times a day") {
+                Button("Turn on") {
                     Task { status = await MindCheckNotifications.start() }
                 }
                 .foregroundStyle(accent)
             case .on:
-                Text("Reminders: 3 a day, at random, 9am–9pm.")
-                    .foregroundStyle(.secondary)
+                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                    Text("Reminders:")
+                        .foregroundStyle(.secondary)
+                    perDayMenu
+                    Text("9am–9pm")
+                        .foregroundStyle(.secondary)
+                }
+                Spacer(minLength: 0)
                 Button("Stop") {
                     Task {
                         await MindCheckNotifications.stop()
@@ -119,6 +126,28 @@ struct MindReviewSection: View {
         }
         .font(.footnote)
         .buttonStyle(.plain)
+    }
+
+    /// "3 a day ⌄": how many reminders a day, 1–6.
+    private var perDayMenu: some View {
+        Menu {
+            Picker("Reminders a day", selection: $perDay) {
+                ForEach(MindCheckSchedule.perDayRange.reversed(), id: \.self) { count in
+                    Text(count == 1 ? "Once a day" : "\(count) times a day").tag(count)
+                }
+            }
+        } label: {
+            HStack(spacing: 2) {
+                Text("\(perDay) a day")
+                Image(systemName: "chevron.up.chevron.down")
+                    .imageScale(.small)
+            }
+            .foregroundStyle(accent)
+        }
+        .onChange(of: perDay) { _, count in
+            Task { await MindCheckNotifications.setPerDay(count) }
+        }
+        .accessibilityLabel("Reminders a day: \(perDay)")
     }
 
     private func refreshStatus() {

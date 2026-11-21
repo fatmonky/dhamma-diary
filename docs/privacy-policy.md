@@ -29,7 +29,7 @@ If you use the check-in widget, each tap is kept briefly in storage the widget s
 
 ## Reminders
 
-If you turn on mind check-ins, Dhamma Diary asks iOS for permission to show notifications, then schedules three reminders a day at random times between 9am and 9pm. They are scheduled on your device by the app itself; nothing is sent to or from a server. You can stop them in the Review tab or in iOS Settings.
+If you turn on mind check-ins, Dhamma Diary asks iOS for permission to show notifications, then schedules reminders at random times (three a day unless you choose between one and six) between 9am and 9pm. They are scheduled on your device by the app itself; nothing is sent to or from a server. You can stop them in the Review tab or in iOS Settings.
 
 ## Links
 
