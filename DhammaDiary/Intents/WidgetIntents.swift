@@ -1,5 +1,6 @@
 import AppIntents
 import Foundation
+import WidgetKit
 
 /// The widget's buttons and the Control Center control (spec 9.8). Compiled
 /// into both the app and the widget; no SwiftData here, the app imports the
@@ -20,6 +21,8 @@ struct LogMindCheckIntent: AppIntent {
 
     func perform() async throws -> some IntentResult {
         WidgetLogQueue.append(WidgetLog(kind: .mind, timestamp: .now, noise: min(max(noise, 0), 100)))
+        // A Control Center tap doesn't refresh the widget by itself.
+        WidgetCenter.shared.reloadTimelines(ofKind: "MindCheckIn")
         return .result()
     }
 }
@@ -39,6 +42,7 @@ struct LogStoneIntent: AppIntent {
 
     func perform() async throws -> some IntentResult {
         WidgetLogQueue.append(WidgetLog(kind: white ? .whiteStone : .blackStone, timestamp: .now))
+        WidgetCenter.shared.reloadTimelines(ofKind: "MindCheckIn")
         return .result()
     }
 }

@@ -74,6 +74,17 @@ final class WidgetLogTests: XCTestCase {
         XCTAssertEqual(WidgetLogQueue.lastNoted(defaults: shared), tapTime)
     }
 
+    func testCheckInsAndStonesKeepTheirOwnNotedTime() {
+        let stoneTime = tapTime.addingTimeInterval(60)
+        WidgetLogQueue.append(WidgetLog(kind: .mind, timestamp: tapTime, noise: 10), defaults: shared)
+        XCTAssertEqual(WidgetLogQueue.lastNoted(.mind, defaults: shared), tapTime)
+        XCTAssertNil(WidgetLogQueue.lastNoted(.stone, defaults: shared))
+
+        WidgetLogQueue.append(WidgetLog(kind: .blackStone, timestamp: stoneTime), defaults: shared)
+        XCTAssertEqual(WidgetLogQueue.lastNoted(.mind, defaults: shared), tapTime)
+        XCTAssertEqual(WidgetLogQueue.lastNoted(.stone, defaults: shared), stoneTime)
+    }
+
     func testEmptyQueueDoesNothing() {
         XCTAssertEqual(WidgetLogImporter.run(into: context, shared: shared, local: local), 0)
     }

@@ -17,10 +17,25 @@ struct WidgetLog: Codable, Equatable, Identifiable {
     var noise: Double?
 }
 
+extension WidgetLog.Kind {
+    /// Which half of the medium widget shows this tap's "Noted at …" line.
+    var notedGroup: WidgetLogQueue.NotedGroup {
+        self == .mind ? .mind : .stone
+    }
+}
+
 enum WidgetLogQueue {
     static let queueKey = "widget.pendingLogs"
-    /// The time of the last widget tap, for its "Noted at …" line.
+    /// The time of the last widget tap of any kind.
     static let lastNotedKey = "widget.lastNoted"
+    /// The last check-in tap and the last stone tap, each for its own half
+    /// of the medium widget.
+    enum NotedGroup: String {
+        case mind
+        case stone
+
+        var key: String { "widget.lastNoted.\(rawValue)" }
+    }
     /// Set by the Control Center control; the app opens Today and clears it.
     static let openTodayKey = "widget.openToday"
 
@@ -29,6 +44,7 @@ enum WidgetLogQueue {
         logs.append(log)
         save(logs, defaults: defaults)
         defaults.set(log.timestamp.timeIntervalSinceReferenceDate, forKey: lastNotedKey)
+        defaults.set(log.timestamp.timeIntervalSinceReferenceDate, forKey: log.kind.notedGroup.key)
     }
 
     static func pending(defaults: UserDefaults = PassageSequence.sharedDefaults) -> [WidgetLog] {
@@ -42,7 +58,15 @@ enum WidgetLogQueue {
     }
 
     static func lastNoted(defaults: UserDefaults = PassageSequence.sharedDefaults) -> Date? {
-        let value = defaults.double(forKey: lastNotedKey)
+        date(forKey: lastNotedKey, defaults: defaults)
+    }
+
+    static func lastNoted(_ group: NotedGroup, defaults: UserDefaults = PassageSequence.sharedDefaults) -> Date? {
+        date(forKey: group.key, defaults: defaults)
+    }
+
+    private static func date(forKey key: String, defaults: UserDefaults) -> Date? {
+        let value = defaults.double(forKey: key)
         return value > 0 ? Date(timeIntervalSinceReferenceDate: value) : nil
     }
 

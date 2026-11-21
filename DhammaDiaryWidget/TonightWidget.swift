@@ -10,6 +10,9 @@ struct DhammaDiaryWidgets: WidgetBundle {
         CheckInWidget()
         if #available(iOS 18.0, *) {
             MindCheckInControl()
+            MindStillControl()
+            MindBetweenControl()
+            MindNoisyControl()
         }
     }
 }
