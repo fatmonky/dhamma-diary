@@ -141,21 +141,36 @@ struct HighlightWidgetView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 .accessibilityLabel("\(entry.ref): \(entry.highlight)")
         } else {
-            VStack(alignment: .leading, spacing: 6) {
-                Text("TONIGHT · \(entry.ref)")
-                    .font(.caption2.weight(.semibold))
-                    .foregroundStyle(Color("AccentColor"))
-                    .tracking(0.5)
-                    .lineLimit(1)
-                Text(entry.highlight)
-                    .font(.system(.subheadline, design: .serif).italic())
-                    .lineSpacing(1)
-                    .lineLimit(6)
-                    .minimumScaleFactor(0.8)
-                Spacer(minLength: 0)
+            SimplifiedReader { simplified in
+                if simplified {
+                    // At a glance (for example on CarPlay): the line alone, larger.
+                    Text(entry.highlight)
+                        .font(.system(.body, design: .serif).italic())
+                        .lineLimit(5)
+                        .minimumScaleFactor(0.7)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                } else {
+                    detailedSmall
+                }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .accessibilityElement(children: .combine)
         }
+    }
+
+    private var detailedSmall: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("TONIGHT · \(entry.ref)")
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(Color("AccentColor"))
+                .tracking(0.5)
+                .lineLimit(1)
+            Text(entry.highlight)
+                .font(.system(.subheadline, design: .serif).italic())
+                .lineSpacing(1)
+                .lineLimit(6)
+                .minimumScaleFactor(0.8)
+            Spacer(minLength: 0)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .accessibilityElement(children: .combine)
     }
 }

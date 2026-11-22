@@ -85,6 +85,12 @@ final class WidgetLogTests: XCTestCase {
         XCTAssertEqual(WidgetLogQueue.lastNoted(.stone, defaults: shared), stoneTime)
     }
 
+    func testVoiceAnswersUseTheWidgetValues() {
+        XCTAssertEqual(MindNoise.noisy.noise, 90)
+        XCTAssertEqual(MindNoise.inBetween.noise, 50)
+        XCTAssertEqual(MindNoise.still.noise, 10)
+    }
+
     func testEmptyQueueDoesNothing() {
         XCTAssertEqual(WidgetLogImporter.run(into: context, shared: shared, local: local), 0)
     }

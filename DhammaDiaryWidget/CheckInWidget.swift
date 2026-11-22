@@ -215,7 +215,7 @@ struct StoneButton: View {
     }
 }
 
-/// Log a white or black stone (spec 9.10): a small Home Screen widget, and a
+/// Log a white or black stone (spec 8.9): a small Home Screen widget, and a
 /// round Lock Screen one where the white stone is a ring and the black stone
 /// a filled disc, since the Lock Screen draws everything in one tint.
 struct LogStoneWidget: Widget {
@@ -245,7 +245,23 @@ struct LogStoneWidgetView: View {
         }
     }
 
+    /// Simplified (for example on CarPlay): just the two stones, larger, to
+    /// tap at a glance.
     private var small: some View {
+        SimplifiedReader { simplified in
+            if simplified {
+                HStack(spacing: 12) {
+                    StoneButton(white: true, size: 62)
+                    StoneButton(white: false, size: 62)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                detailedSmall
+            }
+        }
+    }
+
+    private var detailedSmall: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Log stone?")
                 .font(.system(.subheadline, design: .serif).weight(.semibold))
