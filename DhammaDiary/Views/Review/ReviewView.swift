@@ -139,6 +139,9 @@ struct ReviewView: View {
         ZStack {
             ScrollView {
                 VStack(spacing: 22) {
+                    if isSunday {
+                        weekLookBackCard
+                    }
                     MindReviewSection(day: DateHelpers.currentReflectionDay)
                     statStrip
                     secondarySection
@@ -188,22 +191,58 @@ struct ReviewView: View {
         .padding(.bottom, 8)
     }
 
+    private var isSunday: Bool {
+        WeekLookBack.isSunday(DateHelpers.currentReflectionDay)
+    }
+
+    /// Sundays only (spec 8.3): the same look-back Tonight links to.
+    private var weekLookBackCard: some View {
+        NavigationLink {
+            WeekLookBackView(showsPassageLink: true)
+        } label: {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Sunday")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                    Text("Look back on this week")
+                        .font(.system(.body, design: .serif).weight(.semibold))
+                        .foregroundStyle(Self.brownAccent)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(Color(.secondarySystemBackground))
+            )
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal)
+    }
+
     private var statStrip: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Total days tracked: \(totalDaysTracked)")
             Text("This month: \(monthWhiteCount) white · \(monthBlackCount) black")
             Text("Streak: \(currentStreak)d")
-            NavigationLink {
-                WeekLookBackView(showsPassageLink: true)
-            } label: {
-                HStack(spacing: 4) {
-                    Text("This week")
-                    Image(systemName: "chevron.right")
-                        .imageScale(.small)
+            // On Sundays the card at the top takes its place.
+            if !isSunday {
+                NavigationLink {
+                    WeekLookBackView(showsPassageLink: true)
+                } label: {
+                    HStack(spacing: 4) {
+                        Text("This week")
+                        Image(systemName: "chevron.right")
+                            .imageScale(.small)
+                    }
+                    .foregroundStyle(Self.brownAccent)
                 }
-                .foregroundStyle(Self.brownAccent)
+                .padding(.top, 2)
             }
-            .padding(.top, 2)
         }
         .font(.subheadline)
         .foregroundStyle(.secondary)

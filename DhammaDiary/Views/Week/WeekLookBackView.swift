@@ -10,6 +10,7 @@ struct WeekLookBackView: View {
     var showsPassageLink = false
 
     @State private var week: WeekLookBack?
+    @State private var openEntry: PersistentIdentifier?
 
     var body: some View {
         List {
@@ -34,24 +35,37 @@ struct WeekLookBackView: View {
                 }
 
                 Section {
+                    // Not NavigationLinks: a row-wide link would swallow taps on
+                    // the sutta link inside it.
                     ForEach(week.days) { day in
                         if let entry = day.entry {
-                            NavigationLink {
-                                JournalEntryDetailView(entryID: entry.persistentModelID, showsPassageLink: showsPassageLink)
-                            } label: {
-                                DayRow(day: day)
-                            }
+                            DayRow(day: day, opensEntry: true)
+                                .contentShape(Rectangle())
+                                .onTapGesture { openEntry = entry.persistentModelID }
+                                .accessibilityAddTraits(.isButton)
+                                .accessibilityAction { openEntry = entry.persistentModelID }
                         } else {
-                            DayRow(day: day)
+                            DayRow(day: day, opensEntry: false)
                         }
                     }
                 }
             }
         }
         .listStyle(.insetGrouped)
+        .navigationDestination(item: $openEntry) { id in
+            JournalEntryDetailView(entryID: id, showsPassageLink: showsPassageLink)
+        }
         .navigationTitle("This week")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear(perform: reload)
+        .onAppear {
+            reload()
+            #if DEBUG
+            // For simulator screenshots: `simctl launch … -debug.openWeek YES -debug.openEntry YES`.
+            if UserDefaults.standard.bool(forKey: "debug.openEntry") {
+                openEntry = week?.days.last { $0.entry != nil }?.entry?.persistentModelID
+            }
+            #endif
+        }
     }
 
     private func reload() {
@@ -70,6 +84,7 @@ struct WeekLookBackView: View {
 
 private struct DayRow: View {
     let day: WeekLookBack.Day
+    let opensEntry: Bool
 
     private static let weekday: DateFormatter = {
         let f = DateFormatter()
@@ -91,17 +106,24 @@ private struct DayRow: View {
                 }
             }
             if let entry = day.entry {
-                Text("\(entry.passageRef) · \(entry.passageTitle)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Text(firstLine(of: entry.responseText))
-                    .font(.system(.subheadline, design: .serif))
-                    .foregroundStyle(.primary)
-                    .lineLimit(2)
+                PassageRefLink(passageID: entry.passageID, ref: entry.passageRef, title: entry.passageTitle, font: .caption)
+                HStack {
+                    Text(firstLine(of: entry.responseText))
+                        .font(.system(.subheadline, design: .serif))
+                        .foregroundStyle(.primary)
+                        .lineLimit(2)
+                    Spacer(minLength: 8)
+                    if opensEntry {
+                        Image(systemName: "chevron.right")
+                            .font(.footnote.weight(.semibold))
+                            .foregroundStyle(.tertiary)
+                            .accessibilityHidden(true)
+                    }
+                }
             }
         }
         .padding(.vertical, 2)
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .contain)
     }
 
     private func count(_ type: StoneType, _ n: Int) -> some View {

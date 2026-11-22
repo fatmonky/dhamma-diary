@@ -33,9 +33,16 @@ struct JournalEntryDetailView: View {
                         Text("Last saved \(ReflectionDateFormatters.detailTimestamp.string(from: entry.updatedAt))")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
-                        Text("\(entry.passageRef) · \(entry.passageTitle)")
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
+                        PassageRefLink(passageID: entry.passageID, ref: entry.passageRef, title: entry.passageTitle)
+                        if let excerpt = PassageSet.bundled.passage(withID: entry.passageID)?.excerpt {
+                            Text(excerpt.joined(separator: " "))
+                                .font(.system(.subheadline, design: .serif).italic())
+                                .foregroundStyle(.secondary)
+                                .lineSpacing(2)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .textSelection(.enabled)
+                                .padding(.vertical, 2)
+                        }
                         Text(entry.question)
                             .font(.system(.title3, design: .serif).weight(.semibold))
 
