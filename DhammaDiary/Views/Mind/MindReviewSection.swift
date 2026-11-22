@@ -275,8 +275,9 @@ struct MindDayChart: View {
     }
 }
 
-/// The shape of the day's noisy–still line, under Today's stone counts:
-/// just the line, no frame or dots. Nothing shows before the first
+/// The day's noisy–still line under Today's stone counts (spec 9.6), small
+/// but with its axes: Noisy at the top, Still at the bottom, and hours along
+/// the bottom, so it reads at a glance. Nothing shows before the first
 /// check-in. Tapping it opens Review.
 struct MindSparkline: View {
     @Query private var checks: [MindCheck]
@@ -294,33 +295,57 @@ struct MindSparkline: View {
     }
 
     var body: some View {
-        let domain = MindDayChart.domain(for: checks.map(\.timestamp), day: day)
-        let span = domain.upperBound.timeIntervalSince(domain.lowerBound)
+        if checks.isEmpty {
+            EmptyView()
+        } else {
+            MindSparklineChart(checks: checks, day: day)
+                .frame(width: 280, height: 90)
+                .accessibilityElement()
+                .accessibilityLabel("Mind today")
+                .accessibilityValue(MindDaySummary(checks: checks)?.text() ?? "")
+        }
+    }
 
-        Canvas { context, size in
-            let inset: CGFloat = 2
-            let width = size.width - inset * 2
-            let height = size.height - inset * 2
-            let points = checks.map { check in
-                CGPoint(
-                    x: inset + width * check.timestamp.timeIntervalSince(domain.lowerBound) / span,
-                    y: inset + height * (1 - check.noise / 100)
-                )
-            }
-            let colour = GraphicsContext.Shading.color(ColorHelpers.accent)
-            if points.count > 1 {
-                var line = Path()
-                line.addLines(points)
-                context.stroke(line, with: colour, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
-            } else if let point = points.first {
-                // One check-in: a mark the width of the line.
-                context.fill(Path(ellipseIn: CGRect(x: point.x - 1.5, y: point.y - 1.5, width: 3, height: 3)), with: colour)
+}
+
+/// The drawing for `MindSparkline`, apart from the query so it can be rendered on its own.
+struct MindSparklineChart: View {
+    let checks: [MindCheck]
+    let day: Date
+
+    var body: some View {
+        let domain = MindDayChart.domain(for: checks.map(\.timestamp), day: day)
+
+        return Chart(checks) { check in
+            LineMark(x: .value("Time", check.timestamp), y: .value("Noise", check.noise))
+                .foregroundStyle(ColorHelpers.accent)
+                .lineStyle(StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+            if checks.count == 1 {
+                PointMark(x: .value("Time", check.timestamp), y: .value("Noise", check.noise))
+                    .foregroundStyle(ColorHelpers.accent)
+                    .symbolSize(20)
             }
         }
-        .frame(width: 200, height: checks.isEmpty ? 0 : 30)
-        .accessibilityElement()
-        .accessibilityLabel("Mind today")
-        .accessibilityValue(MindDaySummary(checks: checks)?.text() ?? "No check-ins yet")
+        .chartXScale(domain: domain)
+        .chartYScale(domain: 0...100)
+        .chartYAxis {
+            AxisMarks(position: .leading, values: [0, 50, 100]) { value in
+                AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, dash: value.as(Double.self) == 50 ? [2, 3] : []))
+                if let noise = value.as(Double.self), noise != 50 {
+                    AxisValueLabel {
+                        Text(noise == 0 ? "Still" : "Noisy")
+                            .font(.caption2)
+                    }
+                }
+            }
+        }
+        .chartXAxis {
+            AxisMarks(values: .stride(by: .hour, count: 4)) { _ in
+                AxisTick(length: 3)
+                AxisValueLabel(format: .dateTime.hour())
+                    .font(.caption2)
+            }
+        }
     }
 }
 
