@@ -23,6 +23,8 @@ targets:
             CFBundleURLSchemes: [dhammadiary]
         # No encryption beyond what iOS provides, so TestFlight doesn't ask each build.
         ITSAppUsesNonExemptEncryption: false
+        # Always dark: light mode is too stimulating for an evening journal (PJ, 22 Nov 2026).
+        UIUserInterfaceStyle: Dark
     entitlements:
       path: DhammaDiary/DhammaDiary.entitlements
       properties:

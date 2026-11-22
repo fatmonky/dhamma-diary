@@ -28,6 +28,7 @@ Dhamma Diary is a native iOS app: a daily sutta-reflection journal with optional
 - Passages: `DhammaDiary/Resources/passages.json` (generated, never edit by hand), loaded by `DhammaDiary/Models/Passage.swift`; tonight's passage from `DhammaDiary/Utilities/PassageSequence.swift`
 - Passage generator: `scripts/passages/build_passages.py` with input `scripts/passages/passages-source.json`. Add or reword passages in the source file, then regenerate (instructions at the top of the script). Passage IDs are permanent: never reuse or rename one.
 - Widget (tonight's question, Home and Lock Screen): `DhammaDiaryWidget/TonightWidget.swift`. It compiles `Passage.swift`, `PassageSequence.swift`, `DateHelpers.swift` and `passages.json` from the app, so keep those free of SwiftData and UIKit. The first day lives in the App Group `group.com.whitestone.DhammaDiary` (`PassageSequence.sharedDefaults`).
+- Passage widget (spec 8.6, medium and large): `DhammaDiaryWidget/PassageWidget.swift`. It shows each passage's `excerpt`, which is picked by hand in `passages-source.json` and generated like the rest of the passage.
 - Check-in widget (spec 9.8): `DhammaDiaryWidget/CheckInWidget.swift`. There is no Control Center control (removed 21 Nov 2026). Its buttons run intents in `DhammaDiary/Intents/WidgetIntents.swift`, which append to `WidgetLogQueue` (`DhammaDiary/Utilities/WidgetLogQueue.swift`, App Group defaults); the app imports the queue with `WidgetLogImporter` on launch and on becoming active. The widget can't open the SwiftData store, so never read or write models from widget code.
 - Mind check-ins (spec 9, 9.6): taken on Today by pressing the stone and sliding up/down (`TodayView` `stoneGesture`, backdrop `DhammaDiary/Views/Today/NoiseBackdrop.swift`); shown in Review by `DhammaDiary/Views/Mind/MindReviewSection.swift` (also the chart, sparkline and row views). Model `DhammaDiary/Models/MindCheck.swift`, schedule `DhammaDiary/Utilities/MindCheckSchedule.swift`, notifications `DhammaDiary/Utilities/MindCheckNotifications.swift`, day line and slide mapping `DhammaDiary/Utilities/MindDaySummary.swift`. Notification taps arrive in `DhammaDiary/App/AppDelegate.swift` and open Today. There is no Mind tab.
 - SwiftData store location: `DhammaDiaryStore.appStoreURL`, the app's own container. Never use SwiftData's default configuration: with the App Group in the entitlements it would open a different, empty store in the group container. `settleStoreLocation()` moves a group-container store back once.
@@ -91,6 +92,7 @@ Rules:
 
 ## UI Tone
 
+- The app is always dark (`UIUserInterfaceStyle: Dark` in `project.yml`, PJ 22 Nov 2026): light mode is too stimulating. Design for dark; light-mode colours are never shown in the app.
 - Use the existing white/black/brown visual language. The brown is the robe brown #894E26 (`ColorHelpers.accent`, the `AccentColor` asset); don't add other browns.
 - Avoid green/red judgment framing except where already used for system confirmation.
 - Avoid flashy celebration language.
