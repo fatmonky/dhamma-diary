@@ -33,6 +33,17 @@ final class PassageSetTests: XCTestCase {
         }
     }
 
+    func testEveryExcerptIsShortAndFromItsPassage() {
+        for passage in set.passages {
+            XCTAssertFalse(passage.excerpt.isEmpty, passage.id)
+            XCTAssertLessThanOrEqual(passage.excerpt.joined(separator: " ").count, 340, passage.id)
+            let segments = passage.blocks.flatMap { $0 }
+            for part in passage.excerpt {
+                XCTAssertTrue(segments.contains { $0.contains(part) }, "\(passage.id): \(part)")
+            }
+        }
+    }
+
     func testFirstPassageIsAN1051() {
         let first = set.passages.first
         XCTAssertEqual(first?.id, "an10.51-mirror")

@@ -14,6 +14,9 @@ The checkout must be bilara-data's `published` branch; a sparse checkout of
 Text is copied verbatim from Bhikkhu Sujato's translation, by segment ID.
 The only change: an unpaired quotation mark at the very first or very last
 character of an excerpt is removed. See docs/spec/v1.md section 3.3.
+
+Each passage also names a short `excerpt` range, inside its ranges, for the
+passage widget (spec 8.6). Keep it to about 200 characters.
 """
 import glob
 import json
@@ -92,6 +95,19 @@ def strip_unpaired_edge_quotes(blocks):
     return blocks
 
 
+def excerpt_for(passage, text):
+    """The widget's short excerpt: one range that lies inside one of the passage's ranges."""
+    r = passage.get("excerpt")
+    if not r:
+        raise BuildError(f"{passage['id']}: no excerpt")
+    start, end = range_number(r["start"]), range_number(r["end"])
+    if start > end or not any(
+        range_number(outer["start"]) <= start and end <= range_number(outer["end"]) for outer in passage["ranges"]
+    ):
+        raise BuildError(f"{passage['id']}: excerpt {r['start']}–{r['end']} is not inside one of its ranges")
+    return strip_unpaired_edge_quotes([block_for(passage, text, r)])[0]
+
+
 def git_commit(bilara):
     try:
         return subprocess.run(
@@ -114,6 +130,7 @@ def build(bilara, source):
             raise BuildError(f"{p['id']}: no ranges")
         text = load_translation(bilara, p["uid"])
         blocks = strip_unpaired_edge_quotes([block_for(p, text, r) for r in p["ranges"]])
+        excerpt = excerpt_for(p, text)
         passages.append({
             "id": p["id"],
             "ref": p["ref"],
@@ -121,6 +138,7 @@ def build(bilara, source):
             "uid": p["uid"],
             "ranges": [{"start": r["start"], "end": r["end"]} for r in p["ranges"]],
             "blocks": blocks,
+            "excerpt": excerpt,
             "question": p["question"].strip(),
             "url": f"https://suttacentral.net/{p['uid']}/en/sujato",
         })
@@ -158,7 +176,8 @@ def main(argv):
 
     for i, p in enumerate(passages, 1):
         words = sum(len(s.split()) for block in p["blocks"] for s in block)
-        print(f"{i:>3}. {p['id']:<24} {p['ref']:<10} {words:>4} words  {p['title']}")
+        excerpt = len(" ".join(p["excerpt"]))
+        print(f"{i:>3}. {p['id']:<24} {p['ref']:<10} {words:>4} words  excerpt {excerpt:>3} chars  {p['title']}")
     print(f"wrote {os.path.relpath(OUTPUT, REPO)}: {len(passages)} passages, bilara-data {commit[:7]}")
     return 0
 

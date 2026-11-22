@@ -24,6 +24,8 @@ struct Passage: Codable, Identifiable, Equatable {
     let ranges: [SegmentRange]
     /// One block per range; each block is its segments in order.
     let blocks: [[String]]
+    /// A few segments from inside `blocks`, short enough for the passage widget.
+    let excerpt: [String]
     let question: String
     let url: URL
 

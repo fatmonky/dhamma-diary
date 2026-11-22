@@ -7,6 +7,7 @@ import WidgetKit
 struct DhammaDiaryWidgets: WidgetBundle {
     var body: some Widget {
         TonightWidget()
+        PassageWidget()
         CheckInWidget()
     }
 }
