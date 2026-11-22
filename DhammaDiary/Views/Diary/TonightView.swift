@@ -24,6 +24,10 @@ struct TonightView: View {
     @State private var lastSavedAt: Date?
     @State private var dayEndedBeforeSave = false
     @FocusState private var isEditorFocused: Bool
+    /// Height of the visible scroll area, which shrinks while the keyboard is up.
+    @State private var visibleHeight: CGFloat = 0
+
+    private static let editorID = "journalEditor"
 
     private let accent = ColorHelpers.accent
 
@@ -35,6 +39,30 @@ struct TonightView: View {
     }
 
     var body: some View {
+        ScrollViewReader { proxy in
+            scrollView
+                .onChange(of: isEditorFocused) { _, focused in
+                    if focused { scrollToEditor(proxy) }
+                }
+                .onChange(of: visibleHeight) {
+                    if isEditorFocused { scrollToEditor(proxy) }
+                }
+        }
+    }
+
+    /// While writing, the editor fills the space above the keyboard and
+    /// scrolls inside itself, so the line being typed stays in view.
+    private func scrollToEditor(_ proxy: ScrollViewProxy) {
+        withAnimation(.easeOut(duration: 0.25)) {
+            proxy.scrollTo(Self.editorID, anchor: .top)
+        }
+    }
+
+    private var focusedEditorHeight: CGFloat {
+        max(visibleHeight - 24, 220)
+    }
+
+    private var scrollView: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 Text(DateHelpers.fullDateString(for: day))
@@ -65,6 +93,7 @@ struct TonightView: View {
         .defaultScrollAnchor(UserDefaults.standard.string(forKey: "debug.scroll") == "bottom" ? .bottom : .top)
         #endif
         .scrollDismissesKeyboard(.interactively)
+        .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { visibleHeight = $0 }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
@@ -76,6 +105,15 @@ struct TonightView: View {
         .onAppear {
             followClock()
             reload()
+            #if DEBUG
+            // For simulator checks: `simctl launch … -debug.writeEntry YES`
+            // fills the editor with a long draft and starts writing;
+            // `-debug.writeEntry save` saves it instead.
+            if let mode = UserDefaults.standard.string(forKey: "debug.writeEntry") {
+                text = Array(repeating: "A line of a long draft, to check the line being typed stays in view.", count: 14).joined(separator: "\n\n")
+                if mode == "save" { save() } else { isEditorFocused = true }
+            }
+            #endif
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
@@ -129,6 +167,9 @@ struct TonightView: View {
 
             TextEditor(text: $text)
                 .focused($isEditorFocused)
+                .frame(height: isEditorFocused ? focusedEditorHeight : nil)
+                // Room under the last line for the keyboard's floating Done button.
+                .contentMargins(.bottom, isEditorFocused ? 48 : 0, for: .scrollContent)
                 .frame(minHeight: 220)
                 .padding(10)
                 .scrollContentBackground(.hidden)
@@ -146,6 +187,7 @@ struct TonightView: View {
                     }
                 }
                 .accessibilityLabel("Journal entry")
+                .id(Self.editorID)
 
             Text("Each day keeps one entry. Saving again replaces it.")
                 .font(.footnote)
@@ -182,6 +224,8 @@ struct TonightView: View {
                 .padding(.top, 8)
             }
         }
+        // Clear of the floating tab bar at the end of the page.
+        .padding(.bottom, 32)
     }
 
     private var dayEndedNote: some View {
@@ -358,7 +402,7 @@ struct PassageView: View {
     }
 }
 
-private struct TrailingIconLabelStyle: LabelStyle {
+struct TrailingIconLabelStyle: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         HStack(spacing: 4) {
             configuration.title
