@@ -8,7 +8,9 @@ struct DhammaDiaryWidgets: WidgetBundle {
     var body: some Widget {
         TonightWidget()
         PassageWidget()
+        HighlightWidget()
         CheckInWidget()
+        LogStoneWidget()
     }
 }
 

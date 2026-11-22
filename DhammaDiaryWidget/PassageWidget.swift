@@ -23,6 +23,7 @@ struct PassageEntry: TimelineEntry {
     let date: Date
     let ref: String
     let excerpt: String
+    let highlight: String
     let question: String
 }
 
@@ -32,6 +33,7 @@ struct PassageProvider: TimelineProvider {
             date: .now,
             ref: "AN 10.51",
             excerpt: "Suppose there was a woman or man who was young, youthful, and fond of adornments, and they check their own reflection in a clean bright mirror or a clear bowl of water. If they see any dirt or blemish there, they’d try to remove it.",
+            highlight: "…checking is very helpful for a mendicant’s skillful qualities.",
             question: "Look back at today as if in a clear mirror: which of these qualities did you see in yourself, and which did you not?"
         )
     }
@@ -55,6 +57,7 @@ struct PassageProvider: TimelineProvider {
             date: date,
             ref: passage.ref,
             excerpt: passage.excerpt.joined(separator: " "),
+            highlight: passage.highlightText,
             question: passage.question
         )
     }
@@ -103,6 +106,56 @@ struct PassageWidgetView: View {
         date: .now,
         ref: "AN 4.14",
         excerpt: "When a mendicant sees a sight with their eyes, they don’t get caught up in the features and details.",
+        highlight: "…they don’t get caught up in the features and details.",
         question: "When you saw, heard, smelled, tasted, touched or thought of something today, where did you get caught up in its features and details?"
     )
+}
+
+/// One line from tonight's passage, its essence (spec 8.9): a small Home
+/// Screen widget and a rectangular Lock Screen one.
+struct HighlightWidget: Widget {
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: "PassageHighlight", provider: PassageProvider()) { entry in
+            HighlightWidgetView(entry: entry)
+                .containerBackground(for: .widget) {
+                    Color(.systemBackground)
+                }
+                .widgetURL(URL(string: "dhammadiary://tonight"))
+        }
+        .configurationDisplayName("Tonight's line")
+        .description("One line that holds the heart of this evening's passage.")
+        .supportedFamilies([.systemSmall, .accessoryRectangular])
+    }
+}
+
+struct HighlightWidgetView: View {
+    @Environment(\.widgetFamily) private var family
+    let entry: PassageEntry
+
+    var body: some View {
+        if family == .accessoryRectangular {
+            Text(entry.highlight)
+                .font(.system(.footnote, design: .serif).italic())
+                .lineLimit(3)
+                .minimumScaleFactor(0.8)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                .accessibilityLabel("\(entry.ref): \(entry.highlight)")
+        } else {
+            VStack(alignment: .leading, spacing: 6) {
+                Text("TONIGHT · \(entry.ref)")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(Color("AccentColor"))
+                    .tracking(0.5)
+                    .lineLimit(1)
+                Text(entry.highlight)
+                    .font(.system(.subheadline, design: .serif).italic())
+                    .lineSpacing(1)
+                    .lineLimit(6)
+                    .minimumScaleFactor(0.8)
+                Spacer(minLength: 0)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .accessibilityElement(children: .combine)
+        }
+    }
 }

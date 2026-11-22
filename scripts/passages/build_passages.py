@@ -16,7 +16,9 @@ The only change: an unpaired quotation mark at the very first or very last
 character of an excerpt is removed. See docs/spec/v1.md section 3.3.
 
 Each passage also names a short `excerpt` range, inside its ranges, for the
-passage widget (spec 8.6). Keep it to about 200 characters.
+passage widget (spec 8.6), and a one-line `highlight`, the passage's essence,
+for the small widgets (spec 8.9). The highlight is a verbatim piece of one
+segment; keep it under about 100 characters.
 """
 import glob
 import json
@@ -108,6 +110,16 @@ def excerpt_for(passage, text):
     return strip_unpaired_edge_quotes([block_for(passage, text, r)])[0]
 
 
+def highlight_for(passage, blocks):
+    """The one-line essence: text copied exactly from a single segment of the passage."""
+    highlight = passage.get("highlight", "").strip()
+    if not highlight:
+        raise BuildError(f"{passage['id']}: no highlight")
+    if not any(highlight in segment for block in blocks for segment in block):
+        raise BuildError(f"{passage['id']}: highlight is not verbatim from one segment: {highlight}")
+    return highlight
+
+
 def git_commit(bilara):
     try:
         return subprocess.run(
@@ -131,6 +143,7 @@ def build(bilara, source):
         text = load_translation(bilara, p["uid"])
         blocks = strip_unpaired_edge_quotes([block_for(p, text, r) for r in p["ranges"]])
         excerpt = excerpt_for(p, text)
+        highlight = highlight_for(p, blocks)
         passages.append({
             "id": p["id"],
             "ref": p["ref"],
@@ -139,6 +152,7 @@ def build(bilara, source):
             "ranges": [{"start": r["start"], "end": r["end"]} for r in p["ranges"]],
             "blocks": blocks,
             "excerpt": excerpt,
+            "highlight": highlight,
             "question": p["question"].strip(),
             "url": f"https://suttacentral.net/{p['uid']}/en/sujato",
         })
@@ -177,7 +191,7 @@ def main(argv):
     for i, p in enumerate(passages, 1):
         words = sum(len(s.split()) for block in p["blocks"] for s in block)
         excerpt = len(" ".join(p["excerpt"]))
-        print(f"{i:>3}. {p['id']:<24} {p['ref']:<10} {words:>4} words  excerpt {excerpt:>3} chars  {p['title']}")
+        print(f"{i:>3}. {p['id']:<24} {p['ref']:<10} {words:>4} words  excerpt {excerpt:>3}  highlight {len(p['highlight']):>3} chars  {p['title']}")
     print(f"wrote {os.path.relpath(OUTPUT, REPO)}: {len(passages)} passages, bilara-data {commit[:7]}")
     return 0
 

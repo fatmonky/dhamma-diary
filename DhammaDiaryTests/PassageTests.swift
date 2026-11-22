@@ -44,6 +44,23 @@ final class PassageSetTests: XCTestCase {
         }
     }
 
+    func testEveryHighlightIsOneShortLineFromItsPassage() {
+        for passage in set.passages {
+            XCTAssertFalse(passage.highlight.isEmpty, passage.id)
+            XCTAssertLessThanOrEqual(passage.highlight.count, 110, passage.id)
+            XCTAssertTrue(passage.blocks.joined().contains { $0.contains(passage.highlight) }, passage.id)
+        }
+    }
+
+    func testHighlightMarksACutSentence() throws {
+        let restraint = try XCTUnwrap(set.passage(withID: "an4.14-restraint"))
+        XCTAssertEqual(restraint.highlightText, "…they don’t get caught up in the features and details.")
+        let afterActing = try XCTUnwrap(set.passage(withID: "mn61-after-acting"))
+        XCTAssertEqual(afterActing.highlightText, "After you have acted with the body, you should check on that same act…")
+        let speech = try XCTUnwrap(set.passage(withID: "an10.44-speech"))
+        XCTAssertEqual(speech.highlightText, "I will speak lovingly, not from secret hate.")
+    }
+
     func testFirstPassageIsAN1051() {
         let first = set.passages.first
         XCTAssertEqual(first?.id, "an10.51-mirror")

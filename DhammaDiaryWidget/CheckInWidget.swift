@@ -16,7 +16,7 @@ struct CheckInWidget: Widget {
         }
         .configurationDisplayName("Mind check-in")
         .description("Note how noisy your mind is, or log a stone, without opening the app.")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([.systemSmall, .systemMedium, .accessoryRectangular])
     }
 }
 
@@ -60,11 +60,50 @@ struct CheckInWidgetView: View {
     private let accent = Color("AccentColor")
 
     var body: some View {
-        if family == .systemSmall {
-            small
-        } else {
-            medium
+        switch family {
+        case .systemSmall: small
+        case .accessoryRectangular: lockScreen
+        default: medium
         }
+    }
+
+    /// Lock Screen: the question and three buttons in one row. Drawn in the
+    /// Lock Screen's single tint, so the buttons are outlined, not coloured.
+    private var lockScreen: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .firstTextBaseline) {
+                Text("Noisy mind?")
+                    .font(.system(.footnote, design: .serif).weight(.semibold))
+                Spacer(minLength: 4)
+                if let noted = entry.mindNoted {
+                    Text(DateHelpers.timeString(for: noted))
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .accessibilityLabel("Noted at \(DateHelpers.timeString(for: noted))")
+                }
+            }
+            .lineLimit(1)
+            HStack(spacing: 4) {
+                lockScreenButton("Noisy", noise: 90)
+                lockScreenButton("Between", noise: 50)
+                lockScreenButton("Still", noise: 10)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+    }
+
+    private func lockScreenButton(_ title: String, noise: Double) -> some View {
+        Button(intent: LogMindCheckIntent(noise: noise)) {
+            Text(title)
+                .font(.caption2.weight(.semibold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 5)
+                .background(Capsule().fill(Color.primary.opacity(0.18)))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Mind: \(title == "Between" ? "in between" : title.lowercased())")
     }
 
     private var small: some View {
@@ -87,7 +126,7 @@ struct CheckInWidgetView: View {
                 heading("Noisy mind?")
                 mindButtons
                 Spacer(minLength: 0)
-                notedLine(entry.mindNoted)
+                NotedLine(noted: entry.mindNoted)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
 
@@ -97,12 +136,12 @@ struct CheckInWidgetView: View {
                 heading("Log stone?")
                 Spacer(minLength: 0)
                 HStack(spacing: 16) {
-                    stoneButton(white: true)
-                    stoneButton(white: false)
+                    StoneButton(white: true)
+                    StoneButton(white: false)
                 }
                 .frame(maxWidth: .infinity)
                 Spacer(minLength: 0)
-                notedLine(entry.stoneNoted)
+                NotedLine(noted: entry.stoneNoted)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
@@ -122,14 +161,6 @@ struct CheckInWidgetView: View {
         }
     }
 
-    /// Always takes its line, so the halves don't shift after a tap.
-    private func notedLine(_ noted: Date?) -> some View {
-        Text(noted.map { "Noted at \(DateHelpers.timeString(for: $0))." } ?? " ")
-            .font(.caption2)
-            .foregroundStyle(.secondary)
-            .lineLimit(1)
-    }
-
     private func mindButton(_ title: String, noise: Double) -> some View {
         Button(intent: LogMindCheckIntent(noise: noise)) {
             Text(title)
@@ -144,8 +175,26 @@ struct CheckInWidgetView: View {
         .buttonStyle(.plain)
         .accessibilityLabel("Mind: \(title.lowercased())")
     }
+}
 
-    private func stoneButton(white: Bool) -> some View {
+/// "Noted at 14:10." Always takes its line, so the layout doesn't shift after a tap.
+struct NotedLine: View {
+    let noted: Date?
+
+    var body: some View {
+        Text(noted.map { "Noted at \(DateHelpers.timeString(for: $0))." } ?? " ")
+            .font(.caption2)
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
+    }
+}
+
+/// A white or black stone that logs itself when tapped.
+struct StoneButton: View {
+    let white: Bool
+    var size: CGFloat = 52
+
+    var body: some View {
         Button(intent: LogStoneIntent(white: white)) {
             Circle()
                 .fill(
@@ -155,14 +204,88 @@ struct CheckInWidgetView: View {
                             : [Color(white: 0.38), Color(white: 0.06)],
                         center: UnitPoint(x: 0.35, y: 0.3),
                         startRadius: 1,
-                        endRadius: 34
+                        endRadius: size * 0.65
                     )
                 )
                 .overlay(Circle().stroke(Color.secondary.opacity(0.45), lineWidth: 0.75))
-                .frame(width: 52, height: 52)
+                .frame(width: size, height: size)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(white ? "Log a white stone" : "Log a black stone")
+    }
+}
+
+/// Log a white or black stone (spec 9.10): a small Home Screen widget, and a
+/// round Lock Screen one where the white stone is a ring and the black stone
+/// a filled disc, since the Lock Screen draws everything in one tint.
+struct LogStoneWidget: Widget {
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: "LogStone", provider: CheckInProvider()) { entry in
+            LogStoneWidgetView(entry: entry)
+                .containerBackground(for: .widget) {
+                    Color(.systemBackground)
+                }
+                .widgetURL(URL(string: "dhammadiary://today"))
+        }
+        .configurationDisplayName("Log a stone")
+        .description("Log a white or black stone without opening the app.")
+        .supportedFamilies([.systemSmall, .accessoryCircular])
+    }
+}
+
+struct LogStoneWidgetView: View {
+    @Environment(\.widgetFamily) private var family
+    let entry: CheckInEntry
+
+    var body: some View {
+        if family == .accessoryCircular {
+            circular
+        } else {
+            small
+        }
+    }
+
+    private var small: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Log stone?")
+                .font(.system(.subheadline, design: .serif).weight(.semibold))
+                .lineLimit(1)
+            Spacer(minLength: 0)
+            HStack(spacing: 14) {
+                StoneButton(white: true)
+                StoneButton(white: false)
+            }
+            .frame(maxWidth: .infinity)
+            Spacer(minLength: 0)
+            NotedLine(noted: entry.stoneNoted)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    }
+
+    private var circular: some View {
+        ZStack {
+            AccessoryWidgetBackground()
+            HStack(spacing: 5) {
+                Button(intent: LogStoneIntent(white: true)) {
+                    Circle()
+                        .strokeBorder(lineWidth: 2.5)
+                        .frame(width: 24, height: 24)
+                        .padding(2)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Log a white stone")
+
+                Button(intent: LogStoneIntent(white: false)) {
+                    Circle()
+                        .frame(width: 24, height: 24)
+                        .padding(2)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Log a black stone")
+            }
+        }
     }
 }
 

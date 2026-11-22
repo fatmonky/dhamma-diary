@@ -26,8 +26,23 @@ struct Passage: Codable, Identifiable, Equatable {
     let blocks: [[String]]
     /// A few segments from inside `blocks`, short enough for the passage widget.
     let excerpt: [String]
+    /// One line, the passage's essence, copied from a single segment
+    /// (spec 8.9). It can be part of a sentence; see `highlightText`.
+    let highlight: String
     let question: String
     let url: URL
+
+    /// The highlight with "…" where the sentence carries on before or after.
+    var highlightText: String {
+        var text = highlight
+        if let first = text.first, first.isLowercase {
+            text = "…" + text
+        }
+        if let last = text.last, !".?!’”:".contains(last) {
+            text += "…"
+        }
+        return text
+    }
 
     /// What a journal entry keeps a copy of.
     var journalCopy: JournalPassageCopy {
