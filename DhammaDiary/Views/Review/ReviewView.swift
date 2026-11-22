@@ -350,6 +350,12 @@ struct ReviewView: View {
                 .padding(.horizontal)
             }
 
+            // The selected day's mind line, as on Today (PJ, 22 Nov), so it
+            // sits with that day's stones. Nothing shows without check-ins.
+            MindSparkline(day: selectedDay)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 4)
+
             if selectedStones.isEmpty {
                 if selectedEntry == nil {
                     Text("No stones recorded this day.")
