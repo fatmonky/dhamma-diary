@@ -238,10 +238,12 @@ struct TodayView: View {
                         .buttonStyle(.plain)
                         .accessibilityHint("Opens Review")
                     }
-                    .padding(.top, 10)
+                    // More room above, from the instructions; less below, so the
+                    // counts and chart sit with Today's Stones (PJ, 22 Nov).
+                    .padding(.top, 28)
                     .opacity(othersOpacity)
 
-                    Spacer(minLength: 40)
+                    Spacer(minLength: 16)
 
                     // Today's stones timeline
                     if !todayStones.isEmpty {

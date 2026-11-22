@@ -93,33 +93,40 @@ private struct DayRow: View {
     }()
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 12) {
+        HStack(alignment: .center, spacing: 8) {
+            VStack(alignment: .leading, spacing: 6) {
                 Text(Self.weekday.string(from: day.date))
                     .font(.subheadline.weight(.semibold))
-                Spacer()
-                if day.white > 0 {
-                    count(.white, day.white)
-                }
-                if day.black > 0 {
-                    count(.black, day.black)
-                }
-            }
-            if let entry = day.entry {
-                PassageRefLink(passageID: entry.passageID, ref: entry.passageRef, title: entry.passageTitle, font: .caption)
-                HStack {
+                if let entry = day.entry {
+                    PassageRefLink(passageID: entry.passageID, ref: entry.passageRef, title: entry.passageTitle, font: .caption)
+                        .lineLimit(1)
                     Text(firstLine(of: entry.responseText))
                         .font(.system(.subheadline, design: .serif))
                         .foregroundStyle(.primary)
                         .lineLimit(2)
-                    Spacer(minLength: 8)
-                    if opensEntry {
-                        Image(systemName: "chevron.right")
-                            .font(.footnote.weight(.semibold))
-                            .foregroundStyle(.tertiary)
-                            .accessibilityHidden(true)
+                }
+            }
+            Spacer(minLength: 8)
+            // The stone counts, and under them the day's mind line in
+            // Today's style (PJ, 22 Nov). Each shows only if there is one.
+            VStack(alignment: .trailing, spacing: 6) {
+                if day.white > 0 || day.black > 0 {
+                    HStack(spacing: 12) {
+                        if day.white > 0 {
+                            count(.white, day.white)
+                        }
+                        if day.black > 0 {
+                            count(.black, day.black)
+                        }
                     }
                 }
+                MindSparkline(day: day.date, size: CGSize(width: 128, height: 56))
+            }
+            if opensEntry {
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+                    .accessibilityHidden(true)
             }
         }
         .padding(.vertical, 2)

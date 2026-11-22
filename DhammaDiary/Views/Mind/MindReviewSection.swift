@@ -282,9 +282,12 @@ struct MindDayChart: View {
 struct MindSparkline: View {
     @Query private var checks: [MindCheck]
     let day: Date
+    /// 280 × 90 on Today; smaller beside a day in This week.
+    let size: CGSize
 
-    init(day: Date) {
+    init(day: Date, size: CGSize = CGSize(width: 280, height: 90)) {
         self.day = day
+        self.size = size
         let interval = DateHelpers.reflectionDayInterval(forDay: day)
         let start = interval.start
         let end = interval.end
@@ -298,8 +301,8 @@ struct MindSparkline: View {
         if checks.isEmpty {
             EmptyView()
         } else {
-            MindSparklineChart(checks: checks, day: day)
-                .frame(width: 280, height: 90)
+            MindSparklineChart(checks: checks, day: day, compact: size.width < 200)
+                .frame(width: size.width, height: size.height)
                 .accessibilityElement()
                 .accessibilityLabel("Mind today")
                 .accessibilityValue(MindDaySummary(checks: checks)?.text() ?? "")
@@ -312,6 +315,8 @@ struct MindSparkline: View {
 struct MindSparklineChart: View {
     let checks: [MindCheck]
     let day: Date
+    /// Narrow (This week): three short hour labels instead of one every four hours.
+    var compact = false
 
     var body: some View {
         let domain = MindDayChart.domain(for: checks.map(\.timestamp), day: day)
@@ -340,12 +345,27 @@ struct MindSparklineChart: View {
             }
         }
         .chartXAxis {
-            AxisMarks(values: .stride(by: .hour, count: 4)) { _ in
-                AxisTick(length: 3)
-                AxisValueLabel(format: .dateTime.hour())
-                    .font(.caption2)
+            if compact {
+                AxisMarks(values: Self.compactHours(in: domain)) { _ in
+                    AxisTick(length: 3)
+                    AxisValueLabel(format: .dateTime.hour(.defaultDigits(amPM: .narrow)), collisionResolution: .disabled)
+                        .font(.caption2)
+                }
+            } else {
+                AxisMarks(values: .stride(by: .hour, count: 4)) { _ in
+                    AxisTick(length: 3)
+                    AxisValueLabel(format: .dateTime.hour())
+                        .font(.caption2)
+                }
             }
         }
+    }
+
+    /// 8am, 2pm and 8pm, where they fall inside the chart.
+    static func compactHours(in domain: ClosedRange<Date>) -> [Date] {
+        let start = Calendar.current.startOfDay(for: domain.lowerBound)
+        return [8, 14, 20].compactMap { Calendar.current.date(bySettingHour: $0, minute: 0, second: 0, of: start) }
+            .filter { domain.contains($0) }
     }
 }
 
