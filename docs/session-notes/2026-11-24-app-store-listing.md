@@ -23,3 +23,11 @@ PJ: "push and upload build 6. can you also upload all the screenshots and metada
 - App Privacy: "Data Not Collected". Fastlane can't set this with the API key; set it in App Store Connect.
 - Age rating questionnaire, App Review contact details, and the build to attach to 1.0.
 - No This week screenshot: on a Tuesday the demo week has only two days.
+
+## iPhone only (build 7)
+
+Adding the version for review failed: "You must upload a screenshot for 13-inch iPad displays." The app had been built for iPad as well, because `project.yml` never set a device family and XcodeGen's default is iPhone and iPad. The spec says iPhone only, so PJ chose to make it iPhone only rather than add iPad screenshots.
+
+- `project.yml`: `TARGETED_DEVICE_FAMILY: "1"` on the app, widget and test targets (a project-level setting is overridden by XcodeGen's per-target default); the iPad orientations line is gone.
+- Build 7 uploaded; its Info.plist has `UIDeviceFamily` = [1].
+- PJ: select build 7 for version 1.0. The iPad screenshot requirement should then go away. PJ is setting Content Rights.
