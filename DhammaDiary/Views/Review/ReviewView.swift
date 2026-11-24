@@ -390,7 +390,7 @@ struct ReviewView: View {
                 Text("\(entry.passageRef) · \(entry.passageTitle)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Text(entry.question)
+                Text(entry.question.questionLines)
                     .font(.system(.subheadline, design: .serif).weight(.semibold))
                     .foregroundStyle(.primary)
                 Text(entry.responseText)

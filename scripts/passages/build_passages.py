@@ -37,15 +37,6 @@ class BuildError(Exception):
     pass
 
 
-def segment_number(segment_id):
-    """'mn19:2.6' -> (2, 6). Compares on the first two numbers, as the prototype did."""
-    return tuple(int(x) for x in re.findall(r"\d+", segment_id.split(":")[1])[:2])
-
-
-def range_number(value):
-    return tuple(int(x) for x in re.findall(r"\d+", value)[:2])
-
-
 def load_translation(bilara, uid):
     pattern = os.path.join(bilara, "translation", "en", "sujato", "sutta", "**", f"{uid}_translation-en-sujato.json")
     matches = glob.glob(pattern, recursive=True)
@@ -62,18 +53,31 @@ def title_of(uid, text):
     return titles[-1]
 
 
-def block_for(passage, text, r):
-    start, end = range_number(r["start"]), range_number(r["end"])
-    segments = [
-        v.strip()
+def segment_ids(uid, text):
+    """Body segment IDs in file order, as ranges name them: the part after the colon
+    ("3.2", "4-5.1"), or the full ID ("dhp101:1") in files that hold several suttas or verses."""
+    return [
+        (k.split(":")[1] if k.split(":")[0] == uid else k, k)
         for k, v in text.items()
-        if v.strip()
-        and not k.split(":")[1].startswith("0.")
-        and start <= segment_number(k) <= end
+        if v.strip() and not k.split(":")[1].startswith("0.")
     ]
-    if not segments:
-        raise BuildError(f"{passage['id']}: range {r['start']}–{r['end']} matches no segments")
-    return segments
+
+
+def segment_slice(passage, text, r):
+    """The segments from r["start"] to r["end"], inclusive, in file order."""
+    ids = segment_ids(passage["uid"], text)
+    names = [name for name, _ in ids]
+    for key in ("start", "end"):
+        if r[key] not in names:
+            raise BuildError(f"{passage['id']}: segment {r[key]} not found")
+    a, b = names.index(r["start"]), names.index(r["end"])
+    if a > b:
+        raise BuildError(f"{passage['id']}: range {r['start']}–{r['end']} runs backwards")
+    return a, b, [text[full].strip() for _, full in ids[a: b + 1]]
+
+
+def block_for(passage, text, r):
+    return segment_slice(passage, text, r)[2]
 
 
 def closing_single_quotes(s):
@@ -102,9 +106,9 @@ def excerpt_for(passage, text):
     r = passage.get("excerpt")
     if not r:
         raise BuildError(f"{passage['id']}: no excerpt")
-    start, end = range_number(r["start"]), range_number(r["end"])
-    if start > end or not any(
-        range_number(outer["start"]) <= start and end <= range_number(outer["end"]) for outer in passage["ranges"]
+    a, b, _ = segment_slice(passage, text, r)
+    if not any(
+        oa <= a and b <= ob for oa, ob, _ in (segment_slice(passage, text, outer) for outer in passage["ranges"])
     ):
         raise BuildError(f"{passage['id']}: excerpt {r['start']}–{r['end']} is not inside one of its ranges")
     return strip_unpaired_edge_quotes([block_for(passage, text, r)])[0]

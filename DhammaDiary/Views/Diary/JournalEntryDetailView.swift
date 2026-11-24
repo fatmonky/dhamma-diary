@@ -43,7 +43,7 @@ struct JournalEntryDetailView: View {
                                 .textSelection(.enabled)
                                 .padding(.vertical, 2)
                         }
-                        Text(entry.question)
+                        Text(entry.question.questionLines)
                             .font(.system(.title3, design: .serif).weight(.semibold))
 
                         if showsPassageLink, let openDiary {

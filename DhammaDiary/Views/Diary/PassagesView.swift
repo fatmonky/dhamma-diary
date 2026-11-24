@@ -97,7 +97,7 @@ private struct EntryRow: View {
             Text(DateHelpers.fullDateString(for: entry.day))
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            Text(entry.question)
+            Text(entry.question.questionLines)
                 .font(.system(.subheadline, design: .serif).weight(.semibold))
                 .foregroundStyle(.primary)
             Text(entry.responseText)

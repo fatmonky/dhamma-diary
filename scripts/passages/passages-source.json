@@ -180,11 +180,11 @@
         }
       ],
       "excerpt": {
-        "start": "2.1",
-        "end": "2.4"
+        "start": "1.1",
+        "end": "1.3"
       },
       "highlight": "Making decisions unprejudiced by favoritism, hostility, stupidity, and cowardice.",
-      "question": "What decisions did you make out of favouritism, dislike, confusion or fear, in your life so far? How did that pan out for you?"
+      "question": "What decisions did you make out of favouritism, dislike, confusion or fear, today so far? How did that pan out for you?"
     },
     {
       "id": "mn61-after-acting",
@@ -248,6 +248,498 @@
       },
       "highlight": "don’t roam out of your own territory into the domain of others.",
       "question": "Where did you wander out of your own territory today? What brought you back?"
+    },
+    {
+      "id": "sn56.11-rolling-forth-wheel",
+      "ref": "SN 56.11",
+      "uid": "sn56.11",
+      "ranges": [
+        {
+          "start": "2.1",
+          "end": "3.4"
+        }
+      ],
+      "excerpt": {
+        "start": "2.4",
+        "end": "2.4"
+      },
+      "highlight": "peace, direct knowledge, awakening, and extinguishment",
+      "question": "Where did you lean towards an extreme today, indulging yourself or being too hard on yourself? What would the middle way have looked like?"
+    },
+    {
+      "id": "mn139-analysis-no-strife",
+      "ref": "MN 139",
+      "uid": "mn139",
+      "ranges": [
+        {
+          "start": "9.1",
+          "end": "9.13"
+        }
+      ],
+      "excerpt": {
+        "start": "9.11",
+        "end": "9.13"
+      },
+      "highlight": "sensual pleasure—a filthy, common, ignoble pleasure.",
+      "question": "What sensual pleasure did you go after today? Was there a quieter, inner pleasure you could have turned to instead?"
+    },
+    {
+      "id": "sn22.59-characteristic-not-self",
+      "ref": "SN 22.59",
+      "uid": "sn22.59",
+      "ranges": [
+        {
+          "start": "2.1",
+          "end": "5.1"
+        }
+      ],
+      "excerpt": {
+        "start": "2.2",
+        "end": "2.2"
+      },
+      "highlight": "For if form were self, it wouldn’t lead to affliction",
+      "question": "What part of your body or mind did you wish were different today? Could you make it so?"
+    },
+    {
+      "id": "an10.2-making-wish",
+      "ref": "AN 10.2",
+      "uid": "an10.2",
+      "ranges": [
+        {
+          "start": "1.16",
+          "end": "1.21"
+        }
+      ],
+      "excerpt": {
+        "start": "1.16",
+        "end": "1.18"
+      },
+      "highlight": "It’s only natural for the mind to be immersed in samādhi when you feel bliss.",
+      "question": "When did your mind settle today without being forced? What gladness or ease came before it?"
+    },
+    {
+      "id": "sn22.79-bitable",
+      "ref": "SN 22.79",
+      "uid": "sn22.79",
+      "ranges": [
+        {
+          "start": "5.1",
+          "end": "5.4"
+        }
+      ],
+      "excerpt": {
+        "start": "5.2",
+        "end": "5.2"
+      },
+      "highlight": "Choices produce conditioned phenomena; that’s why they’re called ‘choices’.",
+      "question": "What did you keep choosing to dwell on today? How did that shape what you felt and saw?"
+    },
+    {
+      "id": "mn128-corruptions",
+      "ref": "MN 128",
+      "uid": "mn128",
+      "ranges": [
+        {
+          "start": "11.2",
+          "end": "12.23"
+        }
+      ],
+      "excerpt": {
+        "start": "12.4",
+        "end": "12.4"
+      },
+      "highlight": "I consistently treat these venerables with kindness by way of body, speech, and mind",
+      "question": "Who did you spend the day alongside? Where could you have set aside your own ideas and gone along with theirs?"
+    },
+    {
+      "id": "mn41-people-sala",
+      "ref": "MN 41",
+      "uid": "mn41",
+      "ranges": [
+        {
+          "start": "14.1",
+          "end": "14.6"
+        }
+      ],
+      "excerpt": {
+        "start": "14.3",
+        "end": "14.3"
+      },
+      "highlight": "May these sentient beings live free of enmity and ill will, untroubled and happy!",
+      "question": "Did you want something of someone else's today, or wish anyone ill? What kind intentions did you have?"
+    },
+    {
+      "id": "sn45.8-analysis",
+      "ref": "SN 45.8",
+      "uid": "sn45.8",
+      "ranges": [
+        {
+          "start": "10.1",
+          "end": "10.6"
+        }
+      ],
+      "excerpt": {
+        "start": "10.1",
+        "end": "10.2"
+      },
+      "highlight": "rapture and bliss born of seclusion",
+      "question": "Was there a moment today, however brief, when your mind was secluded from sensual pleasures and unskillful thoughts? What was it like?"
+    },
+    {
+      "id": "an3.100-lump-salt",
+      "ref": "AN 3.100",
+      "uid": "an3.100",
+      "ranges": [
+        {
+          "start": "3.1",
+          "end": "5.1"
+        }
+      ],
+      "excerpt": {
+        "start": "3.2",
+        "end": "3.2"
+      },
+      "highlight": "Suppose a person was to drop a lump of salt into the Ganges River",
+      "question": "Think of a small wrong you did today. Was your heart more like the cup of water or the Ganges? What would make it wider?"
+    },
+    {
+      "id": "mn9-right-view",
+      "ref": "MN 9",
+      "uid": "mn9",
+      "ranges": [
+        {
+          "start": "13.2",
+          "end": "14.3"
+        }
+      ],
+      "excerpt": {
+        "start": "14.2",
+        "end": "14.3"
+      },
+      "highlight": "suffering, its origin, its cessation, and the practice that leads to its cessation.",
+      "question": "Where did you meet suffering today? Could you see where it came from, and what would bring it to an end?"
+    },
+    {
+      "id": "sn45.2-half-spiritual-life",
+      "ref": "SN 45.2",
+      "uid": "sn45.2",
+      "ranges": [
+        {
+          "start": "1.3",
+          "end": "2.3"
+        }
+      ],
+      "excerpt": {
+        "start": "2.2",
+        "end": "2.3"
+      },
+      "highlight": "Good friends, companions, and associates are the whole of the spiritual life.",
+      "question": "Who were your good friends today? How did their company, or its absence, shape your practice?"
+    },
+    {
+      "id": "an10.76-three-things",
+      "ref": "AN 10.76",
+      "uid": "an10.76",
+      "ranges": [
+        {
+          "start": "6.1",
+          "end": "6.3"
+        },
+        {
+          "start": "11.6",
+          "end": "11.6"
+        }
+      ],
+      "excerpt": {
+        "start": "6.1",
+        "end": "6.3"
+      },
+      "highlight": "a fault-finding mind you can’t give up unmindfulness, lack of situational awareness,",
+      "question": "When did you find fault with someone today? What did that do to your mindfulness?"
+    },
+    {
+      "id": "an8.53-brief-advice-gotami",
+      "ref": "AN 8.53",
+      "uid": "an8.53",
+      "ranges": [
+        {
+          "start": "3.1",
+          "end": "3.11"
+        }
+      ],
+      "excerpt": {
+        "start": "3.2",
+        "end": "3.6"
+      },
+      "highlight": "to contentment, not lack of contentment;",
+      "question": "What did you do today that led to contentment, fewer desires or seclusion? What led the other way?"
+    },
+    {
+      "id": "dn16-great-discourse-buddha",
+      "ref": "DN 16",
+      "uid": "dn16",
+      "ranges": [
+        {
+          "start": "5.3.9",
+          "end": "5.3.10"
+        }
+      ],
+      "excerpt": {
+        "start": "5.3.9",
+        "end": "5.3.9"
+      },
+      "highlight": "they honor, respect, revere, venerate, and esteem the Realized One with the highest honor.",
+      "question": "Where did you live in line with the teaching today, and where did you fall short of it?"
+    },
+    {
+      "id": "mn10-mindfulness-meditation",
+      "ref": "MN 10",
+      "uid": "mn10",
+      "ranges": [
+        {
+          "start": "34.1",
+          "end": "34.17"
+        }
+      ],
+      "excerpt": {
+        "start": "34.1",
+        "end": "34.5"
+      },
+      "highlight": "understands mind with greed as ‘mind with greed,’",
+      "question": "When did you notice your body today? Could you look at it plainly, part by part, like grains poured out of a bag?"
+    },
+    {
+      "id": "mn135-shorter-analysis-deeds",
+      "ref": "MN 135",
+      "uid": "mn135",
+      "ranges": [
+        {
+          "start": "20.1",
+          "end": "20.3"
+        }
+      ],
+      "excerpt": {
+        "start": "20.1",
+        "end": "20.3"
+      },
+      "highlight": "owners of their deeds and heir to their deeds. Deeds are their womb, their relative, and their refuge.",
+      "question": "What did you do today that you will inherit? Which of today's deeds would you most like to be heir to?"
+    },
+    {
+      "id": "sn12.67-sheaves-reeds",
+      "ref": "SN 12.67",
+      "uid": "sn12.67",
+      "ranges": [
+        {
+          "start": "7.4",
+          "end": "7.16"
+        }
+      ],
+      "excerpt": {
+        "start": "7.10",
+        "end": "7.13"
+      },
+      "highlight": "If the first of those sheaves of reeds were to be pulled away, the other would collapse.",
+      "question": "Think of a moment of suffering today. What was it leaning on, like one sheaf of reeds on another? What would have happened if that had been pulled away?"
+    },
+    {
+      "id": "an4.13-effort",
+      "ref": "AN 4.13",
+      "uid": "an4.13",
+      "ranges": [
+        {
+          "start": "1.1",
+          "end": "1.7"
+        }
+      ],
+      "excerpt": {
+        "start": "1.3",
+        "end": "1.4"
+      },
+      "highlight": "skillful qualities arise.",
+      "question": "Which of the four efforts did you make today: preventing, giving up, arousing or keeping? Which did you neglect?"
+    },
+    {
+      "id": "dhp100-115-8-thousands",
+      "ref": "Dhp 100",
+      "uid": "dhp100-115",
+      "ranges": [
+        {
+          "start": "dhp100:1",
+          "end": "dhp100:4"
+        }
+      ],
+      "excerpt": {
+        "start": "dhp100:1",
+        "end": "dhp100:4"
+      },
+      "highlight": "brings you peace",
+      "question": "Of everything you heard or read today, which single saying brought you peace?"
+    },
+    {
+      "id": "dhp44-59-4-flowers",
+      "ref": "Dhp 55",
+      "uid": "dhp44-59",
+      "ranges": [
+        {
+          "start": "dhp55:1",
+          "end": "dhp55:4"
+        }
+      ],
+      "excerpt": {
+        "start": "dhp55:1",
+        "end": "dhp55:4"
+      },
+      "highlight": "the fragrance of virtue is supreme.",
+      "question": "Whose virtue did you notice today, your own or someone else's? How did it reach you?"
+    },
+    {
+      "id": "dn29-impressive-discourse",
+      "ref": "DN 29",
+      "uid": "dn29",
+      "ranges": [
+        {
+          "start": "24.5",
+          "end": "24.9"
+        },
+        {
+          "start": "24.11",
+          "end": "24.11"
+        },
+        {
+          "start": "24.13",
+          "end": "24.13"
+        },
+        {
+          "start": "24.16",
+          "end": "24.19"
+        }
+      ],
+      "excerpt": {
+        "start": "24.16",
+        "end": "24.19"
+      },
+      "highlight": "The ascetics who follow the Sakyan live indulging in pleasure in these four ways",
+      "question": "What pleasure did you indulge in today? Did it lead towards peace, or away from it?"
+    },
+    {
+      "id": "mn48-mendicants-kosambi",
+      "ref": "MN 48",
+      "uid": "mn48",
+      "ranges": [
+        {
+          "start": "11.7",
+          "end": "11.10"
+        }
+      ],
+      "excerpt": {
+        "start": "11.7",
+        "end": "11.8"
+      },
+      "highlight": "If he puts his hand or foot on a burning coal, he quickly pulls it back",
+      "question": "Did you do something wrong today? How quickly did you pull back, like a hand from a hot coal, and did you tell anyone?"
+    },
+    {
+      "id": "mn5-unblemished",
+      "ref": "MN 5",
+      "uid": "mn5",
+      "ranges": [
+        {
+          "start": "6.1",
+          "end": "6.8"
+        }
+      ],
+      "excerpt": {
+        "start": "6.3",
+        "end": "6.5"
+      },
+      "highlight": "they will focus on the feature of beauty, and because of that, lust will infect their mind.",
+      "question": "Where did you dwell on the beauty of something today? What did that stir up in your mind?"
+    },
+    {
+      "id": "mn75-magandiya",
+      "ref": "MN 75",
+      "uid": "mn75",
+      "ranges": [
+        {
+          "start": "15.1",
+          "end": "16.2"
+        }
+      ],
+      "excerpt": {
+        "start": "16.2",
+        "end": "16.2"
+      },
+      "highlight": "sensual pleasures are actually painful to touch, they have a distorted perception that they are pleasant",
+      "question": "What sensual pleasure did you scratch at today? Looking back, was it truly pleasant, or did it only seem so?"
+    },
+    {
+      "id": "mn82-ratthapala",
+      "ref": "MN 82",
+      "uid": "mn82",
+      "ranges": [
+        {
+          "start": "35.1",
+          "end": "36.8"
+        }
+      ],
+      "excerpt": {
+        "start": "36.1",
+        "end": "36.8"
+      },
+      "highlight": "The world is wanting, insatiable, the slave of craving",
+      "question": "Which of the four summaries rang true for you today: that the world is unstable, without shelter, without an owner, or never satisfied?"
+    },
+    {
+      "id": "sn22.56-rounds-grasping-aggregates",
+      "ref": "SN 22.56",
+      "uid": "sn22.56",
+      "ranges": [
+        {
+          "start": "9.1",
+          "end": "9.7"
+        }
+      ],
+      "excerpt": {
+        "start": "9.5",
+        "end": "9.7"
+      },
+      "highlight": "The practice that leads to the cessation of perceptions is simply this noble eightfold path",
+      "question": "What perception set you off today? What contact did it arise from?"
+    },
+    {
+      "id": "sn22.95-lump-foam",
+      "ref": "SN 22.95",
+      "uid": "sn22.95",
+      "ranges": [
+        {
+          "start": "3.1",
+          "end": "3.2"
+        }
+      ],
+      "excerpt": {
+        "start": "3.1",
+        "end": "3.1"
+      },
+      "highlight": "And it appears to them completely vacuous, hollow, and insubstantial",
+      "question": "What feeling seemed solid and important today? Looking at it now, how much substance did it really have?"
+    },
+    {
+      "id": "sn35.146-cessation-deeds",
+      "ref": "SN 35.146",
+      "uid": "sn35.146",
+      "ranges": [
+        {
+          "start": "1.8",
+          "end": "1.16"
+        }
+      ],
+      "excerpt": {
+        "start": "1.11",
+        "end": "1.12"
+      },
+      "highlight": "When you experience freedom due to the cessation of deeds by body, speech, and mind.",
+      "question": "What new deeds did you do today by body, speech and mind? Which would you rather not repeat?"
     }
   ]
 }

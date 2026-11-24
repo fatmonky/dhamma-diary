@@ -24,3 +24,9 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 Gemfile.lock
+
+# Passage review (scripts/passages/review): generated from private vault notes
+scripts/passages/review/candidates.json
+scripts/passages/review/selections.json.bak
+scripts/passages/review/selections.json.tmp
+scripts/passages/__pycache__/

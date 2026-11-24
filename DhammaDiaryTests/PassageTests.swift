@@ -14,7 +14,7 @@ final class PassageSetTests: XCTestCase {
         XCTAssertEqual(set.source.branch, "published")
         XCTAssertEqual(set.source.translator, "sujato")
         XCTAssertFalse(set.source.commit.isEmpty)
-        XCTAssertEqual(set.passages.count, 13)
+        XCTAssertEqual(set.passages.count, 41)
     }
 
     func testIDsAreUnique() {
@@ -188,5 +188,26 @@ final class SharedFirstDayTests: XCTestCase {
         let shared = UserDefaults(suiteName: sharedName)!
         PassageSequence.moveFirstDayToSharedStore(from: UserDefaults(suiteName: oldName)!, to: shared)
         XCTAssertNil(shared.string(forKey: PassageSequence.firstDayStorageKey))
+    }
+}
+
+final class QuestionLinesTests: XCTestCase {
+    func testEachFurtherQuestionStartsANewLine() {
+        XCTAssertEqual(
+            "Who were your good friends today? How did their company shape your practice?".questionLines,
+            "Who were your good friends today?\nHow did their company shape your practice?"
+        )
+    }
+
+    func testLeadingStatementStaysWithTheFirstQuestion() {
+        XCTAssertEqual(
+            "Think of a small wrong you did today. Was your heart like the cup or the Ganges? What would make it wider?".questionLines,
+            "Think of a small wrong you did today. Was your heart like the cup or the Ganges?\nWhat would make it wider?"
+        )
+    }
+
+    func testSingleQuestionAndLowercaseContinuationAreUnchanged() {
+        XCTAssertEqual("Where did you wander today?".questionLines, "Where did you wander today?")
+        XCTAssertEqual("Was it ‘mine’? or not?".questionLines, "Was it ‘mine’? or not?")
     }
 }

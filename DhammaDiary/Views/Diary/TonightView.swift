@@ -138,7 +138,7 @@ struct TonightView: View {
             Divider()
                 .padding(.bottom, 6)
 
-            Text(question)
+            Text(question.questionLines)
                 .font(.system(.title2, design: .serif).weight(.semibold))
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityAddTraits(.isHeader)
