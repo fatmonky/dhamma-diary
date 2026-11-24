@@ -31,6 +31,14 @@ Build, upload to App Store Connect, and submit for review
 
 Only build and upload the IPA (no submission)
 
+### ios listing
+
+```sh
+[bundle exec] fastlane ios listing
+```
+
+Upload the App Store listing (fastlane/metadata) and screenshots (fastlane/screenshots); no binary, no submission
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

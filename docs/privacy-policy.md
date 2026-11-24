@@ -1,7 +1,7 @@
 # Privacy Policy
 
 **Dhamma Diary**
-*Last updated: 20 November 2026*
+*Last updated: 24 November 2026*
 
 ## Overview
 
@@ -25,11 +25,15 @@ Dhamma Diary does **not** collect, store, or transmit any personal data to exter
 
 The only data Dhamma Diary stores is the stones you log, the journal entries you write and your mind check-ins, on your device. A stone holds its colour, time, and any roots or note you add. A mind check-in holds its time, how noisy or still you marked your mind, and whether it was answered from a reminder. A journal entry holds its date, the text you write, and a copy of that day's passage reference, title, and question. The app also remembers a few settings on your device, such as the day you first opened it, which sets the order of passages.
 
-If you use the check-in widget, each tap is kept briefly in storage the widget shares with the app, on your device, until the app next opens and adds it to your check-ins or stones. This data lives entirely on your device and is never transmitted anywhere. If you delete the app, all of its data is permanently removed from your device.
+If you use the widgets or Siri to log a stone or note your mind, each one is kept briefly in storage the widgets share with the app, on your device, until the app next opens and adds it to your check-ins or stones. This data lives entirely on your device and is never transmitted anywhere. If you delete the app, all of its data is permanently removed from your device.
 
 ## Reminders
 
 If you turn on mind check-ins, Dhamma Diary asks iOS for permission to show notifications, then schedules reminders at random times (three a day unless you choose between one and six) between 9am and 9pm. They are scheduled on your device by the app itself; nothing is sent to or from a server. You can stop them in the Review tab or in iOS Settings.
+
+## Siri
+
+If you ask Siri to log a stone, note your mind or read tonight's question, Apple handles the voice request under its own privacy policy. Dhamma Diary receives only the result (for example, "white stone") and keeps it on your device as described above.
 
 ## Links
 

@@ -165,6 +165,9 @@ struct ContentView: View {
             openMindFromNotification()
         }
         .onAppear {
+            #if DEBUG
+            DemoData.seedIfRequested(in: modelContext)
+            #endif
             importWidgetLogs()
             bootstrapOnboardingState()
             syncTabWithOnboardingStep()
