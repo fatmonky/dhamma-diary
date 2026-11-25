@@ -361,14 +361,18 @@ private struct StoneSummaryView: View {
 struct PassageView: View {
     let passage: Passage
     var accent: Color = ColorHelpers.accent
+    /// Off where a row above already shows the title (Diary's Entries and Passages).
+    var showsTitle = true
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             VStack(alignment: .leading, spacing: 4) {
-                Text(passage.title)
-                    .font(.system(.title2, design: .serif).weight(.semibold))
-                    .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityAddTraits(.isHeader)
+                if showsTitle {
+                    Text(passage.title)
+                        .font(.system(.title2, design: .serif).weight(.semibold))
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityAddTraits(.isHeader)
+                }
                 Text("\(passage.ref) · translated by Bhikkhu Sujato")
                     .font(.footnote)
                     .foregroundStyle(.secondary)

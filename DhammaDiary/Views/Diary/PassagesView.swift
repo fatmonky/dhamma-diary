@@ -1,111 +1,106 @@
 import SwiftUI
 import SwiftData
 
-/// The Diary tab's "Passages" mode (spec 4.2): past journal entries grouped
-/// by passage, newest first. Tapping a passage shows its entries.
+/// The Diary tab's "Passages" mode (spec 4.2, PJ 25 Nov): every passage in
+/// the app, in the order the nights bring them, with its question. Tapping
+/// one opens its text and any entries written for it.
 struct PassagesView: View {
     @Environment(\.modelContext) private var modelContext
     @Binding var expandedPassageID: String?
 
-    @State private var groups: [PassageGroup] = []
+    @State private var entriesByPassage: [String: [JournalEntry]] = [:]
+
+    private let passages = PassageSet.bundled.passages
+    private let tonightID = PassageSequence.passage()?.id
 
     var body: some View {
-        Group {
-            if groups.isEmpty {
-                ContentUnavailableView(
-                    "No entries yet",
-                    systemImage: "text.book.closed",
-                    description: Text("Saved journal entries appear here, grouped by passage.")
-                )
-            } else {
-                ScrollViewReader { proxy in
-                    List {
-                        ForEach(groups) { group in
-                            Section {
-                                header(for: group)
-                                if expandedPassageID == group.id {
-                                    ForEach(group.entries) { entry in
-                                        NavigationLink {
-                                            JournalEntryDetailView(entryID: entry.persistentModelID)
-                                        } label: {
-                                            EntryRow(entry: entry)
-                                        }
-                                    }
+        ScrollViewReader { proxy in
+            List {
+                ForEach(Array(passages.enumerated()), id: \.element.id) { index, passage in
+                    Section {
+                        header(for: passage, night: index + 1)
+                        if expandedPassageID == passage.id {
+                            PassageView(passage: passage, showsTitle: false)
+                                .padding(.vertical, 6)
+                            ForEach(entriesByPassage[passage.id] ?? []) { entry in
+                                NavigationLink {
+                                    JournalEntryDetailView(entryID: entry.persistentModelID)
+                                } label: {
+                                    EntryDateRow(entry: entry, lineLimit: 2)
                                 }
                             }
-                            .id(group.id)
                         }
                     }
-                    .listStyle(.insetGrouped)
-                    .onAppear {
-                        if let expandedPassageID {
-                            proxy.scrollTo(expandedPassageID, anchor: .top)
-                        }
-                    }
+                    .id(passage.id)
+                }
+            }
+            .listStyle(.insetGrouped)
+            .listSectionSpacing(12)
+            .onAppear {
+                if let expandedPassageID {
+                    proxy.scrollTo(expandedPassageID, anchor: .top)
                 }
             }
         }
         .onAppear(perform: reload)
     }
 
-    private func header(for group: PassageGroup) -> some View {
-        Button {
+    private func header(for passage: Passage, night: Int) -> some View {
+        let isOpen = expandedPassageID == passage.id
+        let count = entriesByPassage[passage.id]?.count ?? 0
+        return Button {
             withAnimation(.easeInOut(duration: 0.2)) {
-                expandedPassageID = expandedPassageID == group.id ? nil : group.id
+                expandedPassageID = isOpen ? nil : passage.id
             }
         } label: {
             HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(group.ref)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    Text(group.title)
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack(spacing: 6) {
+                        Text("Night \(night) · \(passage.ref)")
+                            .foregroundStyle(.secondary)
+                        if passage.id == tonightID {
+                            Text("Tonight")
+                                .foregroundStyle(ColorHelpers.accent)
+                        }
+                    }
+                    .font(.caption)
+                    Text(passage.title)
                         .font(.system(.headline, design: .serif))
                         .foregroundStyle(.primary)
-                    Text(countText(for: group.entries.count))
-                        .font(.caption)
+                    Text(passage.question.questionLines)
+                        .font(.system(.subheadline, design: .serif))
                         .foregroundStyle(.secondary)
+                        .lineLimit(isOpen ? nil : 3)
+                        .fixedSize(horizontal: false, vertical: true)
+                    if count > 0 {
+                        Text("\(count) \(count == 1 ? "entry" : "entries")")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
                 }
                 Spacer()
-                Image(systemName: expandedPassageID == group.id ? "chevron.up" : "chevron.down")
+                Image(systemName: isOpen ? "chevron.up" : "chevron.down")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityHint(expandedPassageID == group.id ? "Hides entries" : "Shows entries")
+        .accessibilityHint(isOpen ? "Hides the passage" : "Shows the passage and its entries")
     }
 
     private func reload() {
         let descriptor = FetchDescriptor<JournalEntry>(
             sortBy: [SortDescriptor(\.day, order: .reverse)]
         )
-        groups = PassageGroup.groups(from: modelContext.fetchOrEmpty(descriptor))
-    }
-
-    private func countText(for count: Int) -> String {
-        "\(count) \(count == 1 ? "entry" : "entries")"
-    }
-}
-
-private struct EntryRow: View {
-    let entry: JournalEntry
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(DateHelpers.fullDateString(for: entry.day))
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            Text(entry.question.questionLines)
-                .font(.system(.subheadline, design: .serif).weight(.semibold))
-                .foregroundStyle(.primary)
-            Text(entry.responseText)
-                .font(.body)
-                .foregroundStyle(.primary)
-                .lineLimit(6)
+        let groups = PassageGroup.groups(from: modelContext.fetchOrEmpty(descriptor))
+        entriesByPassage = Dictionary(uniqueKeysWithValues: groups.map { ($0.id, $0.entries) })
+        #if DEBUG
+        // For simulator screenshots: `-debug.expandFirst YES` opens the first passage.
+        if UserDefaults.standard.bool(forKey: "debug.expandFirst"), expandedPassageID == nil {
+            expandedPassageID = passages.first?.id
         }
-        .padding(.vertical, 4)
+        #endif
     }
 }
 

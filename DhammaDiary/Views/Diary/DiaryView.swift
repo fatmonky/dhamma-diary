@@ -1,7 +1,8 @@
 import SwiftUI
 import SwiftData
 
-/// The Diary tab (spec 4.2): Tonight (the default) and Passages (history).
+/// The Diary tab (spec 4.2): Tonight (the default), Entries (every entry by
+/// date) and Passages (every passage and its question), chosen at the top.
 struct DiaryView: View {
     /// Set from outside (Today, Review, the widget) to open a destination.
     @Binding var request: DiaryDestination?
@@ -15,7 +16,16 @@ struct DiaryView: View {
 
     var body: some View {
         ZStack {
-            Group {
+            VStack(spacing: 0) {
+                Picker("Diary", selection: $mode.animation(.easeInOut(duration: 0.2))) {
+                    ForEach(DiaryMode.allCases) { mode in
+                        Text(mode.title).tag(mode)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
+                .padding(.bottom, 8)
+
                 switch mode {
                 case .tonight:
                     TonightView(
@@ -27,6 +37,8 @@ struct DiaryView: View {
                         },
                         text: $draft
                     )
+                case .entries:
+                    EntriesView()
                 case .passages:
                     PassagesView(expandedPassageID: $expandedPassageID)
                 }
@@ -43,26 +55,14 @@ struct DiaryView: View {
             handleRequest()
         }
         #if DEBUG
-        // For simulator screenshots: `simctl launch … -debug.diaryMode passages`.
+        // For simulator screenshots: `simctl launch … -debug.diaryMode entries` (or passages).
         .onAppear {
-            if UserDefaults.standard.string(forKey: "debug.diaryMode") == "passages" {
-                mode = .passages
+            if let raw = UserDefaults.standard.string(forKey: "debug.diaryMode"),
+               let debugMode = DiaryMode(rawValue: raw) {
+                mode = debugMode
             }
         }
         #endif
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        mode = mode == .tonight ? .passages : .tonight
-                    }
-                } label: {
-                    Text(mode == .tonight ? "Passages" : "Tonight")
-                }
-                // Tour overlays block the screen underneath, toolbar included.
-                .disabled(showTourOverlay)
-            }
-        }
     }
 
     private func handleRequest() {
@@ -89,7 +89,7 @@ struct DiaryView: View {
                     Text("Diary")
                         .font(.headline)
 
-                    Text("Each day brings a new passage and one question. Write as much or as little as you like, or nothing at all. An entry written before 3am counts for the day before. Past entries are kept by day and by passage in Passages.")
+                    Text("Each day brings a new passage and one question. Write as much or as little as you like, or nothing at all. An entry written before 3am counts for the day before. Past entries are kept by date in Entries, and every passage and question is in Passages.")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
 
@@ -118,7 +118,18 @@ struct DiaryView: View {
     }
 }
 
-private enum DiaryMode {
+private enum DiaryMode: String, CaseIterable, Identifiable {
     case tonight
+    case entries
     case passages
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .tonight: "Tonight"
+        case .entries: "Entries"
+        case .passages: "Passages"
+        }
+    }
 }
