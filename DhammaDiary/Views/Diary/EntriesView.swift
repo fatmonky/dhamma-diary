@@ -2,8 +2,9 @@ import SwiftUI
 import SwiftData
 
 /// The Diary tab's "Entries" mode (spec 4.2, PJ 25 Nov): every journal entry
-/// by date, newest first. Tapping the date and text opens the entry; the
-/// passage line below drops down to show that day's sutta and question.
+/// by date, newest first. Each row shows only the date and sutta title; it
+/// drops down to show the passage and question, then the entry (PJ 26 Nov),
+/// which opens in full.
 struct EntriesView: View {
     @Environment(\.modelContext) private var modelContext
 
@@ -22,21 +23,31 @@ struct EntriesView: View {
                 List {
                     ForEach(entries) { entry in
                         Section {
-                            NavigationLink {
-                                JournalEntryDetailView(entryID: entry.persistentModelID)
-                            } label: {
-                                EntryDateRow(entry: entry)
-                            }
                             passageToggle(for: entry)
-                            if openPassages.contains(entry.persistentModelID),
-                               let passage = PassageSet.bundled.passage(withID: entry.passageID) {
-                                VStack(alignment: .leading, spacing: 14) {
-                                    PassageView(passage: passage, showsTitle: false)
-                                    Text(entry.question.questionLines)
-                                        .font(.system(.headline, design: .serif))
-                                        .fixedSize(horizontal: false, vertical: true)
+                            if openPassages.contains(entry.persistentModelID) {
+                                if let passage = PassageSet.bundled.passage(withID: entry.passageID) {
+                                    VStack(alignment: .leading, spacing: 14) {
+                                        PassageView(passage: passage, showsTitle: false)
+                                        Text(entry.question.questionLines)
+                                            .font(.system(.headline, design: .serif))
+                                            .fixedSize(horizontal: false, vertical: true)
+                                    }
+                                    .padding(.vertical, 6)
                                 }
-                                .padding(.vertical, 6)
+                                NavigationLink {
+                                    JournalEntryDetailView(entryID: entry.persistentModelID)
+                                } label: {
+                                    VStack(alignment: .leading, spacing: 6) {
+                                        Text("Your entry")
+                                            .font(.caption.weight(.semibold))
+                                            .foregroundStyle(.secondary)
+                                        Text(entry.responseText)
+                                            .font(.system(.body, design: .serif))
+                                            .foregroundStyle(.primary)
+                                            .lineLimit(6)
+                                    }
+                                    .padding(.vertical, 4)
+                                }
                             }
                         }
                     }
@@ -59,12 +70,18 @@ struct EntriesView: View {
                 }
             }
         } label: {
-            HStack {
-                Text("\(entry.passageRef) · \(entry.passageTitle)")
-                    .font(.footnote)
-                    .foregroundStyle(ColorHelpers.accent)
-                    .lineLimit(1)
-                Spacer()
+            HStack(alignment: .center, spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(DateHelpers.fullDateString(for: entry.day))
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                    Text("\(entry.passageRef) \(entry.passageTitle)")
+                        .font(.system(.headline, design: .serif))
+                        .foregroundStyle(.primary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(.vertical, 4)
+                Spacer(minLength: 0)
                 Image(systemName: isOpen ? "chevron.up" : "chevron.down")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -72,7 +89,7 @@ struct EntriesView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityHint(isOpen ? "Hides the sutta" : "Shows the sutta")
+        .accessibilityHint(isOpen ? "Hides the sutta and entry" : "Shows the sutta and entry")
     }
 
     private func reload() {
