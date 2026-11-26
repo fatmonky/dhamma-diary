@@ -31,3 +31,11 @@ PJ asked for the second question of a reflection question to sit on its own line
 - Accepted side effect (spec 3.4): anyone past day 13 of the old loop jumps to a different passage, because the index is now taken mod 41.
 - Not checked by eye: the new passages on screen and in the widgets (the simulator's sequence is on day 10). Tests cover decoding, lengths and verbatim text.
 - Still open for PJ: the Dhammapada IDs `dhp100-115-8-thousands` and `dhp44-59-4-flowers` become permanent once a build with them reaches other people. MN 81 is still Maybe.
+
+## Several passages from one sutta (later the same day)
+
+PJ often wants more than one passage from a sutta, each on a different night. The review page now has **Duplicate sutta**: it adds a row such as "MN 10 · 2" under the sutta, with the usual layout for picking its passage, excerpt, highlight and question. Segments used by the other copies are dashed and labelled ("· 1"). **Remove this copy** deletes a copy (not allowed for passages already in the app).
+
+- Storage: copies live in `selections.json` under keys `uid~2`, `uid~3` … with a `uid` field; the original stays under its uid, so the existing file needed no conversion. Default IDs end `-2`, `-3`.
+- `export_source.py` treats each copy as its own passage (same ref and title as the sutta).
+- Checked headless against PJ's running server: duplicated MN 10, picked a passage, excerpt, highlight and question in the copy, marked it In the set; the list, dashed segments and Sequence row were right, and `export_source.py --check` accepted the copy. The test copy was then removed, restoring `selections.json` exactly. Screenshot: [duplicating MN 10 (test entry)](../session-artifacts/2026-11-24-duplicate-sutta-01.png).

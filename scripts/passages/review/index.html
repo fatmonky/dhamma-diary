@@ -64,6 +64,12 @@
   .seg.quoted { border-left-color: var(--faint); }
   .seg.quoted .id::after { content: " ✎"; color: var(--muted); }
   .seg.in { background: var(--pick); border-left-color: var(--pick-line); }
+  .seg.other { background: rgba(236, 230, 221, .05); border-left-color: var(--faint); border-left-style: dashed; }
+  .seg .tag { display: block; color: var(--muted); font-size: 10px; }
+  .ptabs { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ptabs button { font-size: 12px; padding: 4px 8px; text-align: left; }
+  .ptabs button .s { display: block; color: var(--muted); font-size: 11px; }
+  .ptabs button[aria-pressed="true"] .s { color: #f3e6da; }
   .seg.ex .t { text-decoration: underline; text-decoration-color: var(--ink); text-underline-offset: 4px; }
   .seg.pending { outline: 1px dashed var(--accent-ink); }
   .seg.gap { margin-bottom: 0; }
@@ -126,7 +132,7 @@ const STOP = new Set(["the", "a", "an", "of", "to", "with", "on", "in", "at", "a
 let C = null;          // candidates.json
 let S = null;          // selections.json
 let byUid = {};
-let current = null;    // uid
+let current = null;    // passage key: the sutta's uid, or "uid~2", "uid~3" for duplicates
 let view = "suttas";
 let filter = "all";
 let query = "";
@@ -147,16 +153,35 @@ const h = (tag, attrs = {}, ...kids) => {
 };
 
 // ---------- data helpers ----------
-function sel(uid) {
-  if (!S.suttas[uid]) {
-    const c = byUid[uid];
+const uidOf = key => key.split("~")[0];
+const copyNo = key => key.includes("~") ? parseInt(key.split("~")[1], 10) : 1;
+const cOf = key => byUid[uidOf(key)];
+// The sutta's own key first, then its duplicates in order.
+const keysOf = uid => [uid, ...Object.keys(S.suttas).filter(k => k.startsWith(uid + "~")).sort((a, b) => copyNo(a) - copyNo(b))];
+const hasCopies = uid => keysOf(uid).length > 1;
+const label = key => { const c = cOf(key); return hasCopies(c.uid) ? `${c.ref} · ${copyNo(key)}` : c.ref; };
+function sel(key) {
+  if (!S.suttas[key]) {
+    const c = cOf(key), n = copyNo(key);
     const slug = c.title.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
       .split(/[^a-z0-9]+/).filter(w => w && !STOP.has(w)).slice(0, 3).join("-");
-    S.suttas[uid] = { status: "", id: `${uid}-${slug}`, shipped: false, ranges: [], excerpt: null, highlight: "", question: "", note: "" };
+    S.suttas[key] = { status: "", id: `${c.uid}-${slug}${n > 1 ? "-" + n : ""}`, shipped: false, ranges: [], excerpt: null, highlight: "", question: "", note: "" };
+    if (n > 1) S.suttas[key].uid = c.uid;
   }
-  return S.suttas[uid];
+  return S.suttas[key];
 }
-const statusOf = uid => (S.suttas[uid] && S.suttas[uid].status) || "";
+const statusOf = key => (S.suttas[key] && S.suttas[key].status) || "";
+function duplicate(key) {
+  const uid = uidOf(key), next = Math.max(...keysOf(uid).map(copyNo)) + 1;
+  sel(`${uid}~${next}`); save(); open(`${uid}~${next}`);
+}
+function removeCopy(key) {
+  const s = S.suttas[key];
+  if (!key.includes("~") || (s && s.shipped)) return;
+  delete S.suttas[key];
+  S.order = S.order.filter(k => k !== key);
+  save(); open(uidOf(key));
+}
 const idx = (c, name) => c.segments.findIndex(s => s[0] === name);
 function rangeIdx(c, r) { return [idx(c, r.start), idx(c, r.end)]; }
 function blocks(c, s) {
@@ -190,8 +215,8 @@ function problems(c, s) {
   if (s.highlight.trim().length > MAX_HIGHLIGHT) out.push(`highlight is ${s.highlight.trim().length} characters (the app allows ${MAX_HIGHLIGHT})`);
   if (!s.question.trim()) out.push("no question");
   if (!/^[a-z0-9.\-]+$/.test(s.id)) out.push("ID should be lowercase letters, numbers, dots and hyphens");
-  const clash = Object.entries(S.suttas).find(([u, o]) => u !== c.uid && o.id === s.id && o.status === "include");
-  if (clash) out.push(`ID also used by ${byUid[clash[0]] ? byUid[clash[0]].ref : clash[0]}`);
+  const clash = Object.entries(S.suttas).find(([k, o]) => o !== s && o.id === s.id && o.status === "include");
+  if (clash) out.push(`ID also used by ${cOf(clash[0]) ? label(clash[0]) : clash[0]}`);
   return out;
 }
 
@@ -207,19 +232,21 @@ function save() {
     } catch (e) { $("#save").textContent = "Save failed: is server.py running?"; }
   }, 500);
 }
-function setStatus(uid, status) {
-  const s = sel(uid);
+function setStatus(key, status) {
+  const s = sel(key);
   s.status = s.status === status ? "" : status;
-  S.order = S.order.filter(u => u !== uid);
-  if (s.status === "include") S.order.push(uid);
+  S.order = S.order.filter(k => k !== key);
+  if (s.status === "include") S.order.push(key);
   save(); render();
 }
 
 // ---------- rendering ----------
 function render() {
   const counts = { include: 0, maybe: 0, skip: 0, "": 0 };
-  for (const c of C.suttas) counts[statusOf(c.uid)]++;
-  $("#counts").textContent = `${C.suttas.length} suttas · ${counts.include} in the set · ${counts.maybe} maybe · ${counts.skip} skipped · ${counts[""]} to look at`;
+  const all = C.suttas.flatMap(c => keysOf(c.uid));
+  for (const k of all) counts[statusOf(k)]++;
+  const copies = all.length - C.suttas.length;
+  $("#counts").textContent = `${C.suttas.length} suttas${copies ? ` (+${copies} duplicated)` : ""} · ${counts.include} in the set · ${counts.maybe} maybe · ${counts.skip} skipped · ${counts[""]} to look at`;
   $("#tab-suttas").setAttribute("aria-pressed", view === "suttas");
   $("#tab-seq").setAttribute("aria-pressed", view === "sequence");
   const main = $("#main");
@@ -233,42 +260,50 @@ function render() {
   if ($("#list ol")) $("#list ol").scrollTop = keepList;
 }
 
-function visibleSuttas() {
+function visibleKeys() {
   const q = query.trim().toLowerCase();
-  return C.suttas.filter(c =>
-    (filter === "all" || statusOf(c.uid) === (filter === "todo" ? "" : filter)) &&
-    (!q || `${c.ref} ${c.uid} ${c.title} ${c.mentions.map(m => m.note).join(" ")}`.toLowerCase().includes(q)));
+  return C.suttas.flatMap(c => keysOf(c.uid)).filter(k => {
+    const c = cOf(k);
+    return (filter === "all" || statusOf(k) === (filter === "todo" ? "" : filter)) &&
+      (!q || `${c.ref} ${c.uid} ${c.title} ${c.mentions.map(m => m.note).join(" ")}`.toLowerCase().includes(q));
+  });
 }
 
 function renderList() {
   const f = (key, label) => h("button", { "aria-pressed": filter === key, onclick: () => { filter = key; render(); } }, label);
   const search = h("input", { type: "text", placeholder: "Search ref, title or note", value: query,
     oninput: e => { query = e.target.value; const pos = e.target.selectionStart; render(); const i = $("#list input"); i.focus(); i.setSelectionRange(pos, pos); } });
-  const items = visibleSuttas().map(c => h("li", {}, h("button", { "aria-current": c.uid === current, onclick: () => open(c.uid) },
-    h("span", { class: "dot " + statusOf(c.uid) }),
-    h("span", {}, c.ref, c.inSet ? h("span", { class: "badge" }, "in app") : null, h("span", { class: "title" }, c.title)),
-    h("span", { class: "meta", title: "notes mentioning it · words in the sutta" }, `${c.mentions.length}✎ ${c.words}w`))));
+  const items = visibleKeys().map(k => { const c = cOf(k); return h("li", {}, h("button", { "aria-current": k === current, onclick: () => open(k) },
+    h("span", { class: "dot " + statusOf(k) }),
+    h("span", {}, label(k), S.suttas[k] && S.suttas[k].shipped ? h("span", { class: "badge" }, "in app") : null, h("span", { class: "title" }, c.title)),
+    h("span", { class: "meta", title: "notes mentioning it · words in the sutta" }, `${c.mentions.length}✎ ${c.words}w`))); });
   return h("nav", { id: "list" },
     h("div", { class: "filters" }, f("all", "All"), f("todo", "To look at"), f("include", "In the set"), f("maybe", "Maybe"), f("skip", "Skipped"), search),
     items.length ? h("ol", {}, items) : h("div", { class: "empty-state" }, "Nothing here."));
 }
 
 function renderText() {
-  const c = byUid[current];
+  const c = cOf(current);
   if (!c) return h("div", { id: "text" }, h("div", { class: "empty-state" }, "Pick a sutta on the left."));
   const s = S.suttas[current] || { ranges: [], excerpt: null };
-  const inRange = new Set(), inEx = new Set();
+  const inRange = new Set(), inEx = new Set(), other = new Map(); // segment -> "· 2" labels of the other copies
+  for (const k of keysOf(c.uid)) {
+    if (k === current || !S.suttas[k]) continue;
+    for (const r of S.suttas[k].ranges) { const [a, b] = rangeIdx(c, r); for (let i = a; i <= b; i++) other.set(i, [...(other.get(i) || []), copyNo(k)]); }
+  }
   for (const r of s.ranges) { const [a, b] = rangeIdx(c, r); for (let i = a; i <= b; i++) inRange.add(i); }
   if (s.excerpt) { const [a, b] = rangeIdx(c, s.excerpt); for (let i = a; i <= b; i++) inEx.add(i); }
   const quoted = new Set(c.quoted);
   const segs = c.segments.map(([id, t], i) => h("div", {
-    class: ["seg", quoted.has(id) && "quoted", inRange.has(i) && "in", inEx.has(i) && "ex", pending === i && "pending"].filter(Boolean).join(" "),
-    "data-i": i, onclick: () => clickSeg(i) }, h("span", { class: "id" }, id), h("span", { class: "t" }, t)));
+    class: ["seg", quoted.has(id) && "quoted", inRange.has(i) && "in", !inRange.has(i) && other.has(i) && "other", inEx.has(i) && "ex", pending === i && "pending"].filter(Boolean).join(" "),
+    "data-i": i, onclick: () => clickSeg(i) },
+    h("span", { class: "id" }, id, other.has(i) ? h("span", { class: "tag", title: "Used by another copy of this sutta" }, other.get(i).map(n => "· " + n).join(" ")) : null),
+    h("span", { class: "t" }, t)));
   const firstQuoted = c.segments.findIndex(x => quoted.has(x[0]));
   const firstPicked = Math.min(...[...inRange]);
   const jump = i => { const el = $(`.seg[data-i="${i}"]`); if (el) el.scrollIntoView({ block: "center" }); };
   return h("div", { id: "text" },
-    h("h2", {}, `${c.ref} · ${c.title}`),
+    h("h2", {}, `${label(current)} · ${c.title}`),
     h("div", { class: "sub" }, `${c.words} words · `, h("a", { href: c.url, target: "_blank", rel: "noopener" }, "SuttaCentral ↗")),
     h("div", { class: "toolbar" },
       h("button", { "aria-pressed": mode === "ranges", onclick: () => { mode = "ranges"; pending = null; render(); } }, "Pick passage"),
@@ -284,7 +319,7 @@ function renderText() {
 
 function clickSeg(i) {
   if (window.getSelection().toString().trim()) return; // selecting words for a highlight
-  const c = byUid[current], s = sel(current);
+  const c = cOf(current), s = sel(current);
   if (pending == null) { pending = i; render(); return; }
   const [a, b] = [Math.min(pending, i), Math.max(pending, i)];
   pending = null;
@@ -303,7 +338,7 @@ function useSelectionAsHighlight() {
 function alertish(msg) { $("#save").textContent = msg; }
 
 function renderPanel() {
-  const c = byUid[current];
+  const c = cOf(current);
   if (!c) return h("aside", { id: "panel" });
   const s = sel(current);
   const st = (key, label) => h("button", { "aria-pressed": s.status === key, onclick: () => setStatus(current, key) }, label);
@@ -319,6 +354,11 @@ function renderPanel() {
       h("div", { class: "status" }, st("include", "In the set"), st("maybe", "Maybe"), st("skip", "Skip")),
       pos >= 0 ? h("div", { class: "note" }, `Night ${pos + 1} of ${S.order.length} (change in Sequence).`) : null,
       s.shipped ? h("div", { class: "note" }, "Already in the app. Its ID is permanent.") : null,
+      h("div", { class: "row", style: "margin-top: 8px" },
+        h("button", { onclick: () => duplicate(current), title: "Add another passage from this sutta, for another night" }, "Duplicate sutta"),
+        current.includes("~") ? h("button", { onclick: () => removeCopy(current), disabled: s.shipped,
+          title: s.shipped ? "Already in the app: its ID is permanent" : "Delete this copy and its choices" }, "Remove this copy") : null),
+      hasCopies(c.uid) ? h("div", { class: "note" }, `${keysOf(c.uid).length} copies of ${c.ref}; each is its own passage and night. Segments used by the other copies are dashed.`) : null,
       probs.length ? h("div", { class: "warn" }, "Before export: " + probs.join("; ") + ".") : null),
     h("section", {}, h("h3", {}, "Passage"),
       s.ranges.length ? h("div", { class: "chips" }, s.ranges.map((r, i) => h("span", { class: "chip" }, r.start === r.end ? r.start : `${r.start}–${r.end}`,
@@ -347,7 +387,7 @@ function renderPanel() {
 }
 
 function refreshPreview() {
-  const c = byUid[current], s = sel(current), box = $("#preview");
+  const c = cOf(current), s = sel(current), box = $("#preview");
   if (!box) return;
   const bl = blocks(c, s);
   const passage = h("div", { class: "passage" });
@@ -370,18 +410,18 @@ function refreshPreview() {
 function renderSequence() {
   const list = h("ol");
   let dragFrom = null;
-  S.order.forEach((uid, i) => {
-    const c = byUid[uid], s = S.suttas[uid];
-    if (!c) return;
+  S.order.forEach((key, i) => {
+    const c = cOf(key), s = S.suttas[key];
+    if (!c || !s) return;
     const probs = problems(c, s);
-    const move = to => { to = Math.max(0, Math.min(S.order.length - 1, to)); S.order.splice(i, 1); S.order.splice(to, 0, uid); save(); render(); };
+    const move = to => { to = Math.max(0, Math.min(S.order.length - 1, to)); S.order.splice(i, 1); S.order.splice(to, 0, key); save(); render(); };
     const li = h("li", { draggable: true,
       ondragstart: () => { dragFrom = i; }, ondragover: e => { e.preventDefault(); li.classList.add("drag-over"); },
       ondragleave: () => li.classList.remove("drag-over"),
       ondrop: e => { e.preventDefault(); if (dragFrom != null && dragFrom !== i) { const [u] = S.order.splice(dragFrom, 1); S.order.splice(i, 0, u); save(); render(); } } },
       h("span", { class: "n" }, i + 1),
       h("div", {},
-        h("button", { class: "link", onclick: () => { view = "suttas"; open(uid); } }, `${c.ref} · ${c.title}`),
+        h("button", { class: "link", onclick: () => { view = "suttas"; open(key); } }, `${label(key)} · ${c.title}`),
         s.shipped ? h("span", { class: "badge" }, "in app") : null,
         h("div", { class: "q" }, s.question.trim() || "No question yet"),
         probs.length ? h("div", { class: "warn" }, probs.join("; ")) : null),
@@ -391,15 +431,15 @@ function renderSequence() {
           onkeydown: e => { if (e.key === "Enter") move(parseInt(e.target.value, 10) - 1); } })));
     list.append(li);
   });
-  const ready = S.order.filter(u => byUid[u] && !problems(byUid[u], S.suttas[u]).length).length;
-  const first = S.order[0];
+  const ready = S.order.filter(k => cOf(k) && S.suttas[k] && !problems(cOf(k), S.suttas[k]).length).length;
+  const first = S.order[0] && uidOf(S.order[0]);
   return h("div", { id: "seq" },
     h("p", { class: "lead" }, `${S.order.length} passages, one a night, so the set loops every ${S.order.length} days. ${ready} are ready to export. Drag rows, use the arrows, or type a position.`),
     first !== "an10.51" ? h("p", { class: "warn" }, "AN 10.51 must stay first: the app's tests check it.") : null,
     S.order.length ? list : h("div", { class: "empty-state" }, "Nothing in the set yet."));
 }
 
-function open(uid) { current = uid; pending = null; location.hash = uid; render(); $("#text") && ($("#text").scrollTop = 0); refreshPreview(); }
+function open(key) { current = key; pending = null; location.hash = key; render(); $("#text") && ($("#text").scrollTop = 0); refreshPreview(); }
 
 // ---------- events ----------
 $("#tab-suttas").onclick = () => { view = "suttas"; render(); refreshPreview(); };
@@ -408,9 +448,9 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape" && pending != null) { pending = null; render(); refreshPreview(); return; }
   if (view !== "suttas" || /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
   if (e.key === "j" || e.key === "k") {
-    const list = visibleSuttas(), i = list.findIndex(c => c.uid === current);
+    const list = visibleKeys(), i = list.indexOf(current);
     const next = list[Math.max(0, Math.min(list.length - 1, i + (e.key === "j" ? 1 : -1)))];
-    if (next) open(next.uid);
+    if (next) open(next);
   }
 });
 const origRender = render;
@@ -422,7 +462,7 @@ render = function () { origRender(); if (view === "suttas") refreshPreview(); };
   C = await cr.json(); S = await sr.json();
   byUid = Object.fromEntries(C.suttas.map(c => [c.uid, c]));
   const fromHash = decodeURIComponent(location.hash.slice(1));
-  current = byUid[fromHash] ? fromHash : C.suttas[0].uid;
+  current = byUid[uidOf(fromHash)] && (!fromHash.includes("~") || S.suttas[fromHash]) ? fromHash : C.suttas[0].uid;
   $("#save").textContent = "Saved to selections.json";
   render();
 })();

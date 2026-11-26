@@ -4,7 +4,7 @@ Usage (from the repo root):
 
     python3 -I scripts/passages/review/export_source.py <bilara-data checkout> [--check]
 
-Takes every sutta marked "In the set", in the Sequence order, and checks each one
+Takes every passage marked "In the set" (including duplicated suttas), in the Sequence order, and checks each one
 with the app's generator (build_passages.py): ranges, excerpt inside a range,
 highlight word-for-word, the widget lengths the app's tests allow, a question, unique IDs, AN 10.51 first. Nothing is
 written unless every passage passes. With --check it only reports.
@@ -59,10 +59,12 @@ def main(argv):
     refs.update({p["uid"]: p["ref"] for p in current["passages"]})
 
     passages, errors = [], []
-    order = [u for u in selections["order"] if selections["suttas"].get(u, {}).get("status") == "include"]
-    order += [u for u, s in selections["suttas"].items() if s.get("status") == "include" and u not in order]
-    for uid in order:
-        s = selections["suttas"][uid]
+    # Keys are a sutta's uid, or "uid~2", "uid~3" … for further passages from the same sutta.
+    order = [k for k in selections["order"] if selections["suttas"].get(k, {}).get("status") == "include"]
+    order += [k for k, s in selections["suttas"].items() if s.get("status") == "include" and k not in order]
+    for key in order:
+        s = selections["suttas"][key]
+        uid = s.get("uid") or key.split("~")[0]
         passages.append({
             "id": s["id"].strip(),
             "ref": verse_ref(uid, s.get("ranges", [])) or refs.get(uid, uid),

@@ -41,7 +41,17 @@
     "mn82",
     "sn22.56",
     "sn22.95",
-    "sn35.146"
+    "sn35.146",
+    "sn46.51",
+    "sn46.6",
+    "snp1.8",
+    "an10.48",
+    "an5.43",
+    "an8.40",
+    "an8.54",
+    "dhp1-20",
+    "dhp116-128",
+    "dhp76-89"
   ],
   "suttas": {
     "an10.51": {
@@ -885,12 +895,202 @@
       "note": ""
     },
     "sn46.51": {
-      "status": "",
+      "status": "include",
       "id": "sn46.51-nourishing",
       "shipped": false,
-      "ranges": [],
-      "excerpt": null,
-      "highlight": "",
+      "ranges": [
+        {
+          "start": "1.4",
+          "end": "2.4"
+        },
+        {
+          "start": "4.1",
+          "end": "4.4"
+        }
+      ],
+      "excerpt": {
+        "start": "2.1",
+        "end": "2.2"
+      },
+      "highlight": "when it has arisen, makes it increase and grow",
+      "question": "",
+      "note": ""
+    },
+    "sn46.6": {
+      "status": "include",
+      "id": "sn46.6-kundaliya",
+      "shipped": false,
+      "ranges": [
+        {
+          "start": "1.8",
+          "end": "3.5"
+        }
+      ],
+      "excerpt": {
+        "start": "2.5",
+        "end": "2.8"
+      },
+      "highlight": "agreeable sight with their eyes. They don’t desire it or enjoy it, and they don’t give rise to greed",
+      "question": "",
+      "note": ""
+    },
+    "snp1.8": {
+      "status": "include",
+      "id": "snp1.8-discourse-love",
+      "shipped": false,
+      "ranges": [
+        {
+          "start": "1.3",
+          "end": "3.2"
+        },
+        {
+          "start": "6.1",
+          "end": "7.4"
+        }
+      ],
+      "excerpt": {
+        "start": "7.1",
+        "end": "7.4"
+      },
+      "highlight": "Even as a mother would protect with her life",
+      "question": "",
+      "note": ""
+    },
+    "an10.48": {
+      "status": "include",
+      "id": "an10.48-ten-regular-reflections",
+      "shipped": false,
+      "ranges": [
+        {
+          "start": "7.1",
+          "end": "10.1"
+        }
+      ],
+      "excerpt": {
+        "start": "7.1",
+        "end": "10.1"
+      },
+      "highlight": "what sort of person am I becoming?",
+      "question": "",
+      "note": ""
+    },
+    "an5.43": {
+      "status": "include",
+      "id": "an5.43-likable",
+      "shipped": false,
+      "ranges": [
+        {
+          "start": "2.3",
+          "end": "4.3"
+        },
+        {
+          "start": "5.1",
+          "end": "5.2"
+        },
+        {
+          "start": "6.1",
+          "end": "6.2"
+        },
+        {
+          "start": "7.1",
+          "end": "7.2"
+        }
+      ],
+      "excerpt": {
+        "start": "2.3",
+        "end": "3.2"
+      },
+      "highlight": "these five things are not got by supplication or wishing for them",
+      "question": "",
+      "note": ""
+    },
+    "an8.40": {
+      "status": "include",
+      "id": "an8.40-results-misconduct",
+      "shipped": false,
+      "ranges": [
+        {
+          "start": "1.1",
+          "end": "6.2"
+        }
+      ],
+      "excerpt": {
+        "start": "1.1",
+        "end": "1.2"
+      },
+      "highlight": "minimum result",
+      "question": "",
+      "note": ""
+    },
+    "an8.54": {
+      "status": "include",
+      "id": "an8.54-dighajanu",
+      "shipped": false,
+      "ranges": [
+        {
+          "start": "5.1",
+          "end": "5.4"
+        }
+      ],
+      "excerpt": {
+        "start": "5.1",
+        "end": "5.4"
+      },
+      "highlight": "balances his finances, being neither too extravagant nor too frugal",
+      "question": "",
+      "note": ""
+    },
+    "dhp1-20": {
+      "status": "include",
+      "id": "dhp1-20-1-pairs",
+      "shipped": false,
+      "ranges": [
+        {
+          "start": "dhp3:1",
+          "end": "dhp5:4"
+        }
+      ],
+      "excerpt": {
+        "start": "dhp3:1",
+        "end": "dhp4:4"
+      },
+      "highlight": "laid to rest by love",
+      "question": "",
+      "note": ""
+    },
+    "dhp116-128": {
+      "status": "include",
+      "id": "dhp116-128-9-wickedness",
+      "shipped": false,
+      "ranges": [
+        {
+          "start": "dhp118:1",
+          "end": "dhp118:4"
+        }
+      ],
+      "excerpt": {
+        "start": "dhp118:1",
+        "end": "dhp118:4"
+      },
+      "highlight": "piling up goodness is joyful.",
+      "question": "",
+      "note": ""
+    },
+    "dhp76-89": {
+      "status": "include",
+      "id": "dhp76-89-6-astute",
+      "shipped": false,
+      "ranges": [
+        {
+          "start": "dhp84:1",
+          "end": "dhp84:4"
+        }
+      ],
+      "excerpt": {
+        "start": "dhp84:1",
+        "end": "dhp84:4"
+      },
+      "highlight": "be virtuous, wise, and just.",
       "question": "",
       "note": ""
     }
