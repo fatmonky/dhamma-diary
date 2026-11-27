@@ -31,6 +31,8 @@ struct ReviewView: View {
     #if DEBUG
     /// For simulator screenshots: `simctl launch … -debug.selectedTab 1 -debug.openWeek YES`.
     @State private var debugOpenWeek = UserDefaults.standard.bool(forKey: "debug.openWeek")
+    /// `-debug.openDailyReview YES` opens Daily Review (spec 10).
+    @State private var debugOpenDailyReview = UserDefaults.standard.bool(forKey: "debug.openDailyReview")
     #endif
 
     private var ratioByDay: [Date: Double?] {
@@ -167,6 +169,9 @@ struct ReviewView: View {
         .navigationDestination(isPresented: $debugOpenWeek) {
             WeekLookBackView(showsPassageLink: true)
         }
+        .navigationDestination(isPresented: $debugOpenDailyReview) {
+            DailyReviewView()
+        }
         #endif
         .onAppear {
             reloadAllData()
@@ -229,6 +234,18 @@ struct ReviewView: View {
             Text("Total days tracked: \(totalDaysTracked)")
             Text("This month: \(monthWhiteCount) white · \(monthBlackCount) black")
             Text("Streak: \(currentStreak)d")
+            // Spec 10: the day so far, every day including Sundays.
+            NavigationLink {
+                DailyReviewView()
+            } label: {
+                HStack(spacing: 4) {
+                    Text("Daily Review")
+                    Image(systemName: "chevron.right")
+                        .imageScale(.small)
+                }
+                .foregroundStyle(Self.brownAccent)
+            }
+            .padding(.top, 2)
             // On Sundays the card at the top takes its place.
             if !isSunday {
                 NavigationLink {
