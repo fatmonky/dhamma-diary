@@ -4,7 +4,9 @@ import SwiftUI
 /// Daily Review's falling stones (spec 10.2): the day's stones drop one by one
 /// into two heaps, white on the left from the top-left corner and black on the
 /// right from the top-right, with an invisible wall between them (PJ, 28 Nov:
-/// one mixed heap of 40 was a mess).
+/// one mixed heap of 40 was a mess). Each landed stone is drawn towards its
+/// heap's centre with an oval pull, so the heap gathers into the outline of
+/// one large stone made of the small ones (PJ, 28 Nov: "a composite stone").
 final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
     private enum Category {
         static let stone: UInt32 = 1 << 0
@@ -24,9 +26,15 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
     private var occupied: Set<StoneType> = []
     private var lastClack: TimeInterval = 0
     private var lastDropTime: TimeInterval?
+    private var lastUpdate: TimeInterval?
+    /// Each colour's composite stone: centre and half-width/half-height.
+    private var ovals: [StoneType: (centre: CGPoint, a: CGFloat, b: CGFloat)] = [:]
+    /// How hard landed stones are drawn in, in points per second squared at the oval's edge.
+    private let pull: CGFloat = 1100
     private var stillSince: TimeInterval?
     private var hasSettled = false
     private var isBuilt = false
+    private var placeQuietlyOnMove = false
 
     /// Called once, when the pile has come to rest (or on skip).
     var onSettled: () -> Void = {}
@@ -59,6 +67,11 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         physicsWorld.contactDelegate = self
         buildPalm()
+        buildOvals()
+        if placeQuietlyOnMove {
+            dropAllQuietly()
+            return
+        }
         run(.sequence([
             .wait(forDuration: 0.4),
             .repeat(.sequence([.run { [weak self] in self?.dropNext() }, .wait(forDuration: interval)]), count: types.count),
@@ -94,6 +107,43 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
             palm.physicsBody = body
             addChild(palm)
         }
+    }
+
+    /// Sizes each composite stone to hold its stones, packed loosely: an oval
+    /// half as wide again as tall, resting on the palm in the middle of its half.
+    private func buildOvals() {
+        let stoneArea = CGFloat.pi * radius * radius * 0.82
+        for side in [StoneType.white, .black] {
+            let count = CGFloat(max(types.filter { $0 == side }.count, 1))
+            let b = (count * stoneArea / 0.8 / (.pi * 1.5)).squareRoot()
+            let a = b * 1.5
+            ovals[side] = (CGPoint(x: centreX(of: side), y: 18 + b), a, b)
+        }
+    }
+
+    /// Once a stone has landed it leaves gravity and is drawn towards its
+    /// oval's centre instead, harder along the short axis, so the heap packs
+    /// into an oval rather than a round blob.
+    private func gather(_ dt: TimeInterval) {
+        for stone in stones where landed.contains(ObjectIdentifier(stone)) {
+            guard let body = stone.physicsBody,
+                  let oval = ovals[StoneType(rawValue: stone.name ?? "") ?? .white] else { continue }
+            let dx = stone.position.x - oval.centre.x
+            let dy = stone.position.y - oval.centre.y
+            let t = CGFloat(dt)
+            body.velocity.dx -= pull * dx / oval.a * t
+            body.velocity.dy -= pull * dy * oval.a / (oval.b * oval.b) * t
+        }
+    }
+
+    private func land(_ node: SKNode) {
+        guard !landed.contains(ObjectIdentifier(node)), let body = node.physicsBody else { return }
+        landed.insert(ObjectIdentifier(node))
+        body.affectedByGravity = false
+        body.linearDamping = 3
+        body.angularDamping = 3
+        // Slippery once gathered, so the pebbles slide into a smooth outline.
+        body.friction = 0.15
     }
 
     /// The middle of a colour's half of the screen.
@@ -148,9 +198,7 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
         while nextIndex < types.count {
             let type = types[nextIndex]
             nextIndex += 1
-            let x = centreX(of: type) + size.width * .random(in: -0.12...0.12)
-            let y = size.height * .random(in: 0.4...0.9)
-            makeStone(type, at: CGPoint(x: x, y: y))
+            land(makeStone(type, at: pointInOval(of: type)))
         }
         physicsWorld.speed = 2.5
         settle()
@@ -159,17 +207,31 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
     /// Reduce Motion: everything at once, silently, sped up; the view keeps
     /// it hidden until it has settled.
     func dropAllQuietly() {
+        // Called before the scene is shown: wait until the palm and ovals exist.
+        guard isBuilt else {
+            placeQuietlyOnMove = true
+            return
+        }
         removeAction(forKey: "drops")
         feedback.isMuted = true
         physicsWorld.speed = 4
         while nextIndex < types.count {
             let type = types[nextIndex]
-            let x = centreX(of: type) + CGFloat(nextIndex % 4 - 2) * radius * 1.6 + radius * 0.8
-            let y = size.height * 0.4 + CGFloat(nextIndex / 4) * radius * 1.4
             nextIndex += 1
-            makeStone(type, at: CGPoint(x: x, y: y))
+            land(makeStone(type, at: pointInOval(of: type)))
         }
         lastDropTime = -1
+    }
+
+    /// Somewhere inside a colour's oval, a little spread out, for stones
+    /// placed rather than dropped.
+    private func pointInOval(of type: StoneType) -> CGPoint {
+        guard let oval = ovals[type] else { return CGPoint(x: centreX(of: type), y: size.height / 2) }
+        // The upper part only, so none start below the palm's edge.
+        let angle = CGFloat.random(in: 0.1...(.pi - 0.1))
+        let distance = CGFloat.random(in: 0.2...1).squareRoot() * 1.6
+        return CGPoint(x: oval.centre.x + cos(angle) * oval.a * distance * 0.8,
+                       y: oval.centre.y + sin(angle) * oval.b * distance)
     }
 
     private func settle() {
@@ -179,6 +241,9 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
     }
 
     override func update(_ currentTime: TimeInterval) {
+        let dt = lastUpdate.map { min(currentTime - $0, 1.0 / 30) } ?? 0
+        lastUpdate = currentTime
+        gather(dt * Double(physicsWorld.speed))
         guard !hasSettled, nextIndex == types.count, let dropped = lastDropTime else { return }
         if dropped < 0 {
             lastDropTime = currentTime
@@ -195,7 +260,8 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
         }
         // At rest for a moment, or long enough after the last drop anyway.
         let restedLongEnough = stillSince.map { currentTime - $0 > 0.35 } ?? false
-        if restedLongEnough || currentTime - dropped > 3.0 / Double(physicsWorld.speed) {
+        // Give the heaps time to gather, even when sped up.
+        if restedLongEnough || currentTime - dropped > max(1.5, 3.0 / Double(physicsWorld.speed)) {
             settle()
         }
     }
@@ -221,7 +287,7 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
             // A stone on the palm.
             let stone = aIsStone ? a : b
             let first = !landed.contains(ObjectIdentifier(stone))
-            landed.insert(ObjectIdentifier(stone))
+            land(stone)
             if first {
                 // Onto an empty palm it's soft; beside stones already there, heavier.
                 let side = StoneType(rawValue: stone.name ?? "") ?? .white
@@ -237,8 +303,8 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
         // anything after that is a light clack.
         let aNew = !landed.contains(ObjectIdentifier(a))
         let bNew = !landed.contains(ObjectIdentifier(b))
-        landed.insert(ObjectIdentifier(a))
-        landed.insert(ObjectIdentifier(b))
+        land(a)
+        land(b)
         if aNew != bNew {
             feedback.play(.pile, strength: strength)
         } else if speed > 40, contact.collisionImpulse > 0 {
