@@ -12,7 +12,7 @@ struct DiaryView: View {
 
     @State private var mode: DiaryMode = .tonight
     @State private var expandedPassageID: String?
-    @State private var draft = ""
+    @State private var draft = TonightDraft()
 
     var body: some View {
         ZStack {
@@ -35,7 +35,7 @@ struct DiaryView: View {
                                 mode = .passages
                             }
                         },
-                        text: $draft
+                        draft: $draft
                     )
                 case .entries:
                     EntriesView()

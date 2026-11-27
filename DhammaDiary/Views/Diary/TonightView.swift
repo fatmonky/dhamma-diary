@@ -10,17 +10,33 @@ struct TonightView: View {
     /// Opens Passages at this passage's earlier entries.
     var onOpenPassageHistory: (String) -> Void = { _ in }
 
-    /// The reflection day on screen. It follows the clock, except that it
-    /// waits while there's unsaved text so a 3am rollover can't wipe it.
-    @State private var day = DateHelpers.currentReflectionDay
     @State private var passage: Passage?
     @State private var entry: JournalEntry?
     @State private var stoneSummary: StoneDaySummary?
     @State private var earlierEntryCount = 0
 
-    /// Held by DiaryView so unsaved text survives switching to Passages.
-    @Binding var text: String
-    @State private var savedText = ""
+    /// Held by DiaryView so unsaved text survives switching modes. It keeps
+    /// the saved text and the day with it: when this view was rebuilt, a
+    /// fresh `savedText` made yesterday's saved entry look unsaved, so it
+    /// stayed in the editor the next day (PJ, 27 Nov).
+    @Binding var draft: TonightDraft
+
+    private var text: String {
+        get { draft.text }
+        nonmutating set { draft.text = newValue }
+    }
+
+    private var savedText: String {
+        get { draft.savedText }
+        nonmutating set { draft.savedText = newValue }
+    }
+
+    /// The reflection day on screen. It follows the clock, except that it
+    /// waits while there's unsaved text so a 3am rollover can't wipe it.
+    private var day: Date {
+        get { draft.day ?? DateHelpers.currentReflectionDay }
+        nonmutating set { draft.day = newValue }
+    }
     @State private var lastSavedAt: Date?
     @State private var dayEndedBeforeSave = false
     @FocusState private var isEditorFocused: Bool
@@ -31,7 +47,7 @@ struct TonightView: View {
 
     private let accent = ColorHelpers.accent
 
-    private var hasUnsavedText: Bool { text != savedText }
+    private var hasUnsavedText: Bool { draft.hasUnsavedText }
 
     /// An entry keeps the question it was written with (spec 3.2).
     private var question: String {
@@ -165,7 +181,7 @@ struct TonightView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            TextEditor(text: $text)
+            TextEditor(text: $draft.text)
                 .focused($isEditorFocused)
                 .frame(height: isEditorFocused ? focusedEditorHeight : nil)
                 // Room under the last line for the keyboard's floating Done button.
@@ -270,12 +286,8 @@ struct TonightView: View {
             JournalStore.entries(forPassage: passage.id, in: modelContext).filter { $0.dayKey != key }.count
         } ?? 0
 
-        // Keep text being written; otherwise show what's saved.
-        let saved = entry?.responseText ?? ""
-        if !hasUnsavedText {
-            text = saved
-        }
-        savedText = saved
+        draft.day = day
+        draft.load(saved: entry?.responseText ?? "")
         lastSavedAt = entry?.updatedAt
     }
 
@@ -318,6 +330,27 @@ struct TonightView: View {
         savedText = text
         reload()
         followClock()
+    }
+}
+
+// MARK: - Draft
+
+/// Tonight's editor state, held by DiaryView so it outlives TonightView.
+struct TonightDraft: Equatable {
+    var text = ""
+    /// The text as last saved (or loaded) for `day`.
+    var savedText = ""
+    /// The reflection day the text belongs to; nil until Tonight first loads.
+    var day: Date?
+
+    var hasUnsavedText: Bool { text != savedText }
+
+    /// Shows the saved entry, unless there's writing that hasn't been saved.
+    mutating func load(saved: String) {
+        if !hasUnsavedText {
+            text = saved
+        }
+        savedText = saved
     }
 }
 

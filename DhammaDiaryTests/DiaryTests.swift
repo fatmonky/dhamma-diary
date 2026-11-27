@@ -125,3 +125,25 @@ final class WeekLookBackTests: XCTestCase {
         XCTAssertEqual(WeekLookBack.rangeText(monday: date(26, month: 10), calendar: calendar), "26 October – 1 November")
     }
 }
+
+final class TonightDraftTests: XCTestCase {
+    /// PJ, 27 Nov: yesterday's saved entry stayed in the editor the next day.
+    func testSavedEntryClearsOnTheNextDay() {
+        var draft = TonightDraft()
+        draft.load(saved: "it was yesterday.")
+        XCTAssertEqual(draft.text, "it was yesterday.")
+        XCTAssertFalse(draft.hasUnsavedText)
+
+        draft.load(saved: "") // the next day, nothing written yet
+        XCTAssertEqual(draft.text, "")
+    }
+
+    func testUnsavedWritingIsKept() {
+        var draft = TonightDraft()
+        draft.load(saved: "saved")
+        draft.text = "saved, and more"
+        draft.load(saved: "saved")
+        XCTAssertEqual(draft.text, "saved, and more")
+        XCTAssertTrue(draft.hasUnsavedText)
+    }
+}
