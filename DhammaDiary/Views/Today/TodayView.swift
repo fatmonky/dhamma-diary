@@ -42,6 +42,11 @@ struct TodayView: View {
     @State private var haptics = NoiseHaptics()
     /// When the last press ended, so its finger-lift isn't read as a flip.
     @State private var pressEndedAt = Date.distantPast
+    /// True while the stone gesture is live. Unlike `stonePressed` it resets
+    /// itself when the gesture is cancelled, as it is when hold-to-log opens
+    /// the stone sheet under the finger; `onEnded` never runs then, and Today
+    /// was left with scrolling off (PJ, 28 Nov).
+    @GestureState private var stoneGestureActive = false
 
     /// How far up the stone travels to "Noisy Mind" (to about the date
     /// line), and down to "Still" (to about the counts). It follows the
@@ -307,6 +312,11 @@ struct TodayView: View {
                 .frame(minHeight: UIScreen.main.bounds.height * 0.75)
             }
             .scrollDisabled(stonePressed)
+            .onChange(of: stoneGestureActive) { _, active in
+                if !active && stonePressed {
+                    endPress(record: false)
+                }
+            }
             .allowsHitTesting(!showOnboardingCoach)
 
             mindWords
@@ -367,7 +377,11 @@ struct TodayView: View {
         .navigationDestination(for: PersistentIdentifier.self) { id in
             StoneDetailView(stoneID: id)
         }
-        .sheet(item: $addStoneType, onDismiss: reloadTodayStones) { type in
+        .sheet(item: $addStoneType, onDismiss: {
+            // Backstop: never come back from the sheet with scrolling off.
+            if stonePressed { endPress(record: false) }
+            reloadTodayStones()
+        }) { type in
             AddStoneSheet(
                 stoneType: type,
                 onSave: onStoneSaved
@@ -443,6 +457,9 @@ extension TodayView {
     var stoneGesture: some Gesture {
         LongPressGesture(minimumDuration: 0.2, maximumDistance: 12)
             .sequenced(before: DragGesture(minimumDistance: 0))
+            .updating($stoneGestureActive) { value, active, _ in
+                if case .second(true, _) = value { active = true }
+            }
             .onChanged { value in
                 guard case .second(true, let drag) = value else { return }
                 if !stonePressed {
@@ -507,11 +524,12 @@ extension TodayView {
         haptics.update(noise: mindNoise)
     }
 
-    private func endPress() {
+    /// `record: false` when the press was cancelled rather than let go.
+    private func endPress(record: Bool = true) {
         holdToLogTask?.cancel()
         haptics.stop()
         pressEndedAt = .now
-        if mindSliding {
+        if mindSliding && record {
             recordMind(noise: mindNoise)
         }
         withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
