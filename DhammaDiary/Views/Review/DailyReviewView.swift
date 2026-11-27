@@ -28,8 +28,16 @@ struct DailyReviewView: View {
         }
         .navigationTitle("Daily Review")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear(perform: start)
-        .onDisappear { feedback.stop() }
+        .onAppear {
+            scene?.isPaused = false
+            start()
+        }
+        .onDisappear {
+            // Leaving mid-fall: no more sound or taps from a screen that's gone.
+            feedback.isMuted = true
+            feedback.stop()
+            scene?.isPaused = true
+        }
     }
 
     // MARK: - Pile

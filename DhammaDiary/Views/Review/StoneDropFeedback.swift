@@ -80,6 +80,11 @@ final class StoneDropFeedback {
     /// `strength` is 0…1, from the impact speed.
     func play(_ contact: StoneContact, strength: Double) {
         guard !isMuted else { return }
+        #if DEBUG
+        if UserDefaults.standard.bool(forKey: "debug.logContacts") {
+            print("played \(contact.rawValue) at \(Date.now.timeIntervalSince1970)")
+        }
+        #endif
         let level = contact.maxLevel * Float(0.35 + 0.65 * min(max(strength, 0), 1))
 
         if let player = players[contact]?.first(where: { !$0.isPlaying }) {

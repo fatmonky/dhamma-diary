@@ -39,3 +39,13 @@ From the Trello card "Dhamma Diary: Daily Review (stones dropped into your hand,
 - **On a phone:** the fall's feel, how fast stones gather, and how the composite looks on a smaller screen.
 - With Reduce Motion, one run of 20 had a single white stone at the edge when the screenshot was taken; it may still have been gathering.
 - Not merged into `main`, pushed or uploaded.
+
+## Fix: sound kept playing after the stones settled (PJ, same day)
+
+PJ heard the clacks carry on in the simulator after the animation had finished. The gathering pull kept nudging the settled stones, and every small knock played a clack.
+
+- When the heaps settle, the sounds and haptics stop, and 1.2s later the stones are frozen in place (`StoneDropScene.freeze()`).
+- Leaving the screen mutes it and pauses the scene.
+- Clacks need a firmer knock (impact strength over 120, was 40) and are at least 0.1s apart (was 0.06s).
+- Two falling stones bumping in mid-air no longer count as landed. Before, in a 40-stone run only 14 landings made their landing sound; now all 40 do (2 onto the empty palms, 38 onto the heaps).
+- Checked with `-debug.logContacts YES`, which also prints each sound played. 40 stones: 105 sounds, all between 4.5s and 8.5s after launch, and none in the 11 seconds after. 5 stones: 17 sounds, ending at 7.2s.

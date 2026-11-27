@@ -237,7 +237,23 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
     private func settle() {
         guard !hasSettled else { return }
         hasSettled = true
+        // The gathering pull keeps nudging the stones, and every nudge would
+        // clack: silence it now, and hold the heaps still once they've
+        // finished gathering (PJ, 28 Nov: the sound kept playing).
+        feedback.isMuted = true
+        run(.sequence([.wait(forDuration: 1.2), .run { [weak self] in self?.freeze() }]))
         onSettled()
+    }
+
+    /// Stops the physics, leaving the heaps exactly where they are.
+    func freeze() {
+        feedback.isMuted = true
+        removeAllActions()
+        for stone in stones {
+            stone.physicsBody?.velocity = .zero
+            stone.physicsBody?.angularVelocity = 0
+            stone.physicsBody?.isDynamic = false
+        }
     }
 
     override func update(_ currentTime: TimeInterval) {
@@ -293,7 +309,7 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
                 let side = StoneType(rawValue: stone.name ?? "") ?? .white
                 feedback.play(occupied.contains(side) ? .pile : .palm, strength: strength)
                 occupied.insert(side)
-            } else if speed > 60 {
+            } else if speed > 150 {
                 feedback.play(.clack, strength: strength * 0.6)
             }
             return
@@ -303,13 +319,16 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
         // anything after that is a light clack.
         let aNew = !landed.contains(ObjectIdentifier(a))
         let bNew = !landed.contains(ObjectIdentifier(b))
+        // Two falling stones bumping in the air haven't landed: they keep
+        // falling, and sound when they reach the heap.
+        if aNew && bNew { return }
         land(a)
         land(b)
         if aNew != bNew {
             feedback.play(.pile, strength: strength)
-        } else if speed > 40, contact.collisionImpulse > 0 {
+        } else if speed > 120, contact.collisionImpulse > 0 {
             let now = CACurrentMediaTime()
-            guard now - lastClack > 0.06 else { return }
+            guard now - lastClack > 0.1 else { return }
             lastClack = now
             feedback.play(.clack, strength: strength)
         }
