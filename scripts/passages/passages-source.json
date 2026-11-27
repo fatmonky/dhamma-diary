@@ -83,7 +83,7 @@
       "ranges": [
         {
           "start": "15.1",
-          "end": "15.10"
+          "end": "15.11"
         }
       ],
       "excerpt": {
@@ -210,14 +210,14 @@
       "ranges": [
         {
           "start": "3.1",
-          "end": "4.2"
+          "end": "4.3"
         }
       ],
       "excerpt": {
         "start": "4.1",
         "end": "4.2"
       },
-      "highlight": "you don’t truly know or see what is good for yourself, good for another, or good for both.",
+      "highlight": "sensual desire",
       "question": "When was a moment today when desire clouded the water, so you couldn't see what was good for you or for others? What was it like once it settled?"
     },
     {
@@ -448,6 +448,10 @@
         {
           "start": "11.6",
           "end": "11.6"
+        },
+        {
+          "start": "21.6",
+          "end": "21.6"
         }
       ],
       "excerpt": {
@@ -740,6 +744,791 @@
       },
       "highlight": "When you experience freedom due to the cessation of deeds by body, speech, and mind.",
       "question": "What new deeds did you do today by body, speech and mind? Which would you rather not repeat?"
+    },
+    {
+      "id": "sn46.51-nourishing",
+      "ref": "SN 46.51",
+      "uid": "sn46.51",
+      "ranges": [
+        {
+          "start": "1.4",
+          "end": "2.4"
+        },
+        {
+          "start": "4.1",
+          "end": "4.4"
+        }
+      ],
+      "excerpt": {
+        "start": "2.1",
+        "end": "2.2"
+      },
+      "highlight": "when it has arisen, makes it increase and grow",
+      "question": "Which hindrance did you feed today by going back to it again and again? What was the thing you kept returning to?"
+    },
+    {
+      "id": "sn46.6-kundaliya",
+      "ref": "SN 46.6",
+      "uid": "sn46.6",
+      "ranges": [
+        {
+          "start": "1.8",
+          "end": "3.5"
+        }
+      ],
+      "excerpt": {
+        "start": "2.5",
+        "end": "2.8"
+      },
+      "highlight": "agreeable sight with their eyes. They don’t desire it or enjoy it, and they don’t give rise to greed",
+      "question": "Think of something pleasant and something unpleasant you met today. Did either one unsettle you? Which was harder to stay steady with?"
+    },
+    {
+      "id": "snp1.8-discourse-love",
+      "ref": "Snp 1.8",
+      "uid": "snp1.8",
+      "ranges": [
+        {
+          "start": "1.3",
+          "end": "3.2"
+        },
+        {
+          "start": "6.1",
+          "end": "7.4"
+        }
+      ],
+      "excerpt": {
+        "start": "7.1",
+        "end": "7.4"
+      },
+      "highlight": "Even as a mother would protect with her life",
+      "question": "Who provoked or upset you today? Could you still wish them well, the way a mother protects her only child?"
+    },
+    {
+      "id": "an10.48-ten-regular-reflections",
+      "ref": "AN 10.48",
+      "uid": "an10.48",
+      "ranges": [
+        {
+          "start": "7.1",
+          "end": "10.1"
+        }
+      ],
+      "excerpt": {
+        "start": "7.1",
+        "end": "10.1"
+      },
+      "highlight": "what sort of person am I becoming?",
+      "question": "As today passed, what sort of person were you becoming? What would you like tomorrow to add?"
+    },
+    {
+      "id": "an5.43-likable",
+      "ref": "AN 5.43",
+      "uid": "an5.43",
+      "ranges": [
+        {
+          "start": "2.3",
+          "end": "4.3"
+        },
+        {
+          "start": "5.1",
+          "end": "5.2"
+        },
+        {
+          "start": "6.1",
+          "end": "6.2"
+        },
+        {
+          "start": "7.1",
+          "end": "7.2"
+        }
+      ],
+      "excerpt": {
+        "start": "2.3",
+        "end": "3.2"
+      },
+      "highlight": "these five things are not got by supplication or wishing for them",
+      "question": "What did you wish or hope for today without doing anything towards it? What would practising the way to it look like?"
+    },
+    {
+      "id": "an8.40-results-misconduct",
+      "ref": "AN 8.40",
+      "uid": "an8.40",
+      "ranges": [
+        {
+          "start": "1.1",
+          "end": "6.2"
+        }
+      ],
+      "excerpt": {
+        "start": "1.1",
+        "end": "1.2"
+      },
+      "highlight": "minimum result",
+      "question": "Did you come close today to harming, taking, lying, backbiting or harsh speech? What small result of it have you already seen?"
+    },
+    {
+      "id": "an8.54-dighajanu",
+      "ref": "AN 8.54",
+      "uid": "an8.54",
+      "ranges": [
+        {
+          "start": "5.1",
+          "end": "5.4"
+        }
+      ],
+      "excerpt": {
+        "start": "5.1",
+        "end": "5.2"
+      },
+      "highlight": "balances his finances, being neither too extravagant nor too frugal",
+      "question": "Where did you spend too freely today, or hold back too tightly, with money, time or energy? What would balance have looked like?"
+    },
+    {
+      "id": "dhp1-20-1-pairs",
+      "ref": "Dhp 3–5",
+      "uid": "dhp1-20",
+      "ranges": [
+        {
+          "start": "dhp3:1",
+          "end": "dhp5:4"
+        }
+      ],
+      "excerpt": {
+        "start": "dhp3:1",
+        "end": "dhp4:4"
+      },
+      "highlight": "laid to rest by love",
+      "question": "Is there a grudge you kept replaying today, what they said or did to you? What would it take to lay it to rest?"
+    },
+    {
+      "id": "dhp116-128-9-wickedness",
+      "ref": "Dhp 118",
+      "uid": "dhp116-128",
+      "ranges": [
+        {
+          "start": "dhp118:1",
+          "end": "dhp118:4"
+        }
+      ],
+      "excerpt": {
+        "start": "dhp118:1",
+        "end": "dhp118:4"
+      },
+      "highlight": "piling up goodness is joyful.",
+      "question": "What good thing did you do today? How could you do it again tomorrow?"
+    },
+    {
+      "id": "dhp76-89-6-astute",
+      "ref": "Dhp 84",
+      "uid": "dhp76-89",
+      "ranges": [
+        {
+          "start": "dhp84:1",
+          "end": "dhp84:4"
+        }
+      ],
+      "excerpt": {
+        "start": "dhp84:1",
+        "end": "dhp84:4"
+      },
+      "highlight": "be virtuous, wise, and just.",
+      "question": "Where did you want things to go your way today, even by bending what's fair? What would the just way have been?"
+    },
+    {
+      "id": "dn21-sakka-s-questions",
+      "ref": "DN 21",
+      "uid": "dn21",
+      "ranges": [
+        {
+          "start": "2.2.2",
+          "end": "2.2.23"
+        }
+      ],
+      "excerpt": {
+        "start": "2.2.8",
+        "end": "2.2.23"
+      },
+      "highlight": "“Judgments driven by the proliferation of perceptions are the source of thoughts.",
+      "question": "Were you jealous or stingy today? Can you trace it back: to what you liked or disliked, the desire behind it, the thoughts behind that?"
+    },
+    {
+      "id": "mn2-all-defilements",
+      "ref": "MN 2",
+      "uid": "mn2",
+      "ranges": [
+        {
+          "start": "3.1",
+          "end": "4.1"
+        }
+      ],
+      "excerpt": {
+        "start": "3.5",
+        "end": "4.1"
+      },
+      "highlight": "restraint, some by using, some by enduring, some by avoiding, some by dispelling, and some by developing",
+      "question": "Which defilement came up today? Was it one to meet by restraint, by enduring, by avoiding or by dispelling it?"
+    },
+    {
+      "id": "mn20-how-stop-thinking-2",
+      "ref": "MN 20",
+      "uid": "mn20",
+      "ranges": [
+        {
+          "start": "4.1",
+          "end": "4.6"
+        }
+      ],
+      "excerpt": {
+        "start": "4.5",
+        "end": "4.6"
+      },
+      "highlight": "If the carcass of a snake or a dog or a human were hung around their neck, they’d be horrified",
+      "question": "Which unskillful thought kept coming back today? When you saw its drawbacks clearly, did it lose its hold?"
+    },
+    {
+      "id": "mn20-how-stop-thinking-3",
+      "ref": "MN 20",
+      "uid": "mn20",
+      "ranges": [
+        {
+          "start": "5.1",
+          "end": "5.6"
+        }
+      ],
+      "excerpt": {
+        "start": "5.4",
+        "end": "5.6"
+      },
+      "highlight": "They’d just close their eyes or look away",
+      "question": "Was there a thought today you'd have done better not to give attention to? Could you look away from it, as you would from an ugly sight?"
+    },
+    {
+      "id": "mn19-two-kinds-thought-2",
+      "ref": "MN 19",
+      "uid": "mn19",
+      "ranges": [
+        {
+          "start": "11.1",
+          "end": "12.4"
+        }
+      ],
+      "excerpt": {
+        "start": "11.1",
+        "end": "11.2"
+      },
+      "highlight": "Whatever a mendicant frequently thinks about and considers becomes their heart’s inclination",
+      "question": "What did you think about most today? Which way is it inclining your heart?"
+    },
+    {
+      "id": "an4.14-restraint-2",
+      "ref": "AN 4.14",
+      "uid": "an4.14",
+      "ranges": [
+        {
+          "start": "2.1",
+          "end": "2.6"
+        }
+      ],
+      "excerpt": {
+        "start": "2.1",
+        "end": "2.4"
+      },
+      "highlight": "doesn’t tolerate a sensual",
+      "question": "Which sensual, malicious or cruel thought did you let stay today? What would it have taken to give it up sooner?"
+    },
+    {
+      "id": "an4.14-restraint-3",
+      "ref": "AN 4.14",
+      "uid": "an4.14",
+      "ranges": [
+        {
+          "start": "3.1",
+          "end": "3.9"
+        }
+      ],
+      "excerpt": {
+        "start": "3.1",
+        "end": "3.9"
+      },
+      "highlight": "rely on seclusion, fading away, and cessation, and ripen as letting go",
+      "question": "Which awakening factor did you develop today: mindfulness, investigation, energy, rapture, tranquility, immersion or equanimity? Which was missing?"
+    },
+    {
+      "id": "sn46.55-sangarava-2",
+      "ref": "SN 46.55",
+      "uid": "sn46.55",
+      "ranges": [
+        {
+          "start": "6.1",
+          "end": "6.3"
+        }
+      ],
+      "excerpt": {
+        "start": "6.1",
+        "end": "6.3"
+      },
+      "highlight": "ill will",
+      "question": "When was your mind boiling with ill will today? What couldn't you see clearly while it was?"
+    },
+    {
+      "id": "sn46.55-sangarava-3",
+      "ref": "SN 46.55",
+      "uid": "sn46.55",
+      "ranges": [
+        {
+          "start": "8.1",
+          "end": "8.3"
+        }
+      ],
+      "excerpt": {
+        "start": "8.1",
+        "end": "8.1"
+      },
+      "highlight": "heart is overcome and mired in dullness and drowsiness",
+      "question": "When was your mind dull or drowsy today, like water covered in moss? What did that hide from you?"
+    },
+    {
+      "id": "sn46.55-sangarava-4",
+      "ref": "SN 46.55",
+      "uid": "sn46.55",
+      "ranges": [
+        {
+          "start": "10.1",
+          "end": "10.3"
+        }
+      ],
+      "excerpt": {
+        "start": "10.1",
+        "end": "10.2"
+      },
+      "highlight": "overcome and mired in restlessness and remorse",
+      "question": "When was your mind restless or full of regret today, like water rippling in the wind? What did it stop you seeing?"
+    },
+    {
+      "id": "an10.61-ignorance-2",
+      "ref": "AN 10.61",
+      "uid": "an10.61",
+      "ranges": [
+        {
+          "start": "2.1",
+          "end": "2.12"
+        }
+      ],
+      "excerpt": {
+        "start": "2.10",
+        "end": "2.12"
+      },
+      "highlight": "Lack of mindfulness and situational awareness.",
+      "question": "Where did you lose mindfulness today? What followed from it: an unguarded sense, a misstep, a hindrance?"
+    },
+    {
+      "id": "an10.61-ignorance-3",
+      "ref": "AN 10.61",
+      "uid": "an10.61",
+      "ranges": [
+        {
+          "start": "2.23",
+          "end": "3.1"
+        }
+      ],
+      "excerpt": {
+        "start": "2.23",
+        "end": "2.24"
+      },
+      "highlight": "Associating with untrue persons",
+      "question": "Whose company and whose words did you take in today? Did they lead you towards the Dhamma, or away from it?"
+    },
+    {
+      "id": "an10.61-ignorance-4",
+      "ref": "AN 10.61",
+      "uid": "an10.61",
+      "ranges": [
+        {
+          "start": "6.1",
+          "end": "6.15"
+        }
+      ],
+      "excerpt": {
+        "start": "6.8",
+        "end": "6.12"
+      },
+      "highlight": "Sense restraint.",
+      "question": "Where did mindfulness guard your senses today? What good conduct came from that?"
+    },
+    {
+      "id": "an5.162-getting-rid-resentment-3",
+      "ref": "AN 5.162",
+      "uid": "an5.162",
+      "ranges": [
+        {
+          "start": "7.1",
+          "end": "8.1"
+        }
+      ],
+      "excerpt": {
+        "start": "8.1",
+        "end": "8.1"
+      },
+      "highlight": "focus on that individual’s pure behavior by way of body and speech",
+      "question": "Who did you resent today, even though they mostly act well? What is good in them that you could turn to, like a cool pond on a hot day?"
+    },
+    {
+      "id": "an5.162-getting-rid-resentment-2",
+      "ref": "AN 5.162",
+      "uid": "an5.162",
+      "ranges": [
+        {
+          "start": "6.1",
+          "end": "6.10"
+        }
+      ],
+      "excerpt": {
+        "start": "6.10",
+        "end": "6.10"
+      },
+      "highlight": "think of them with nothing but compassion, kindness, and sympathy",
+      "question": "Is there someone whose behaviour is hard to bear right now? Could you see them as a sick traveller far from help, and wish them well?"
+    },
+    {
+      "id": "mn54-potaliya-householder-2",
+      "ref": "MN 54",
+      "uid": "mn54",
+      "ranges": [
+        {
+          "start": "4.2",
+          "end": "4.12"
+        }
+      ],
+      "excerpt": {
+        "start": "4.4",
+        "end": "4.8"
+      },
+      "highlight": "eight things lead to the cutting off of business in the Noble One’s training",
+      "question": "Which of these did you rely on today: not harming, not stealing, truthful speech, not backbiting, not greed, not blaming, not anger, not arrogance? Which did you slip on?"
+    },
+    {
+      "id": "mn54-potaliya-householder-4",
+      "ref": "MN 54",
+      "uid": "mn54",
+      "ranges": [
+        {
+          "start": "16.1",
+          "end": "16.5"
+        }
+      ],
+      "excerpt": {
+        "start": "16.1",
+        "end": "16.5"
+      },
+      "highlight": "wouldn’t that result in death or deadly suffering for them?",
+      "question": "What were you holding onto today that others were also grabbing at? What would happen if you let it go?"
+    },
+    {
+      "id": "mn54-potaliya-householder-3",
+      "ref": "MN 54",
+      "uid": "mn54",
+      "ranges": [
+        {
+          "start": "13.1",
+          "end": "13.8"
+        }
+      ],
+      "excerpt": {
+        "start": "13.3",
+        "end": "13.4"
+      },
+      "highlight": "give up and cut off the fetters that might cause me to be arrogant",
+      "question": "When were you arrogant today, even quietly in your own mind? What did it cost you?"
+    },
+    {
+      "id": "an10.44-kusinara-2",
+      "ref": "AN 10.44",
+      "uid": "an10.44",
+      "ranges": [
+        {
+          "start": "4.1",
+          "end": "4.5"
+        }
+      ],
+      "excerpt": {
+        "start": "4.2",
+        "end": "4.3"
+      },
+      "highlight": "Is my heart established in love for my spiritual companions, without resentment?",
+      "question": "Did you criticise or correct anyone today? Was your heart established in love for them before you spoke?"
+    },
+    {
+      "id": "sn56.11-rolling-forth-wheel-2",
+      "ref": "SN 56.11",
+      "uid": "sn56.11",
+      "ranges": [
+        {
+          "start": "4.1",
+          "end": "4.2"
+        }
+      ],
+      "excerpt": {
+        "start": "4.1",
+        "end": "4.2"
+      },
+      "highlight": "the disliked is suffering; separation from the liked is suffering; not getting what you wish for",
+      "question": "Where did you meet the disliked today, lose the liked, or not get what you wished for? How did you hold that suffering?"
+    },
+    {
+      "id": "sn56.11-rolling-forth-wheel-3",
+      "ref": "SN 56.11",
+      "uid": "sn56.11",
+      "ranges": [
+        {
+          "start": "4.3",
+          "end": "4.5"
+        }
+      ],
+      "excerpt": {
+        "start": "4.3",
+        "end": "4.5"
+      },
+      "highlight": "craving for sensual pleasures, craving for continued existence, and craving for nonexistence",
+      "question": "What did you crave today: a pleasure, to become something, or for something to stop? Where did the craving alight?"
+    },
+    {
+      "id": "sn56.11-rolling-forth-wheel-5",
+      "ref": "SN 56.11",
+      "uid": "sn56.11",
+      "ranges": [
+        {
+          "start": "4.8",
+          "end": "4.10"
+        }
+      ],
+      "excerpt": {
+        "start": "4.8",
+        "end": "4.10"
+      },
+      "highlight": "It is simply this noble eightfold path",
+      "question": "Which part of the eightfold path did you walk today? Which could you give more care to tomorrow?"
+    },
+    {
+      "id": "mn139-analysis-no-strife-2",
+      "ref": "MN 139",
+      "uid": "mn139",
+      "ranges": [
+        {
+          "start": "2.4",
+          "end": "3.10"
+        }
+      ],
+      "excerpt": {
+        "start": "3.5",
+        "end": "3.6"
+      },
+      "highlight": "Knowing this, pursue inner pleasure.",
+      "question": "Did you flatter, rebuke, talk behind someone's back or speak in a hurry today? What would speaking without strife have sounded like?"
+    },
+    {
+      "id": "sn22.59-characteristic-not-self-2",
+      "ref": "SN 22.59",
+      "uid": "sn22.59",
+      "ranges": [
+        {
+          "start": "6.14",
+          "end": "7.1"
+        }
+      ],
+      "excerpt": {
+        "start": "6.14",
+        "end": "6.18"
+      },
+      "highlight": "This is not mine, I am not this, this is not my self",
+      "question": "What did you take personally today, as mine, as me, as my self? How does it look if you see it as not mine?"
+    },
+    {
+      "id": "mn128-corruptions-2",
+      "ref": "MN 128",
+      "uid": "mn128",
+      "ranges": [
+        {
+          "start": "13.2",
+          "end": "14.9"
+        }
+      ],
+      "excerpt": {
+        "start": "14.1",
+        "end": "14.3"
+      },
+      "highlight": "live diligently, keen, and resolute",
+      "question": "What small task did you quietly take care of today for the people you live with? What did you leave for someone else?"
+    },
+    {
+      "id": "mn128-corruptions-3",
+      "ref": "MN 128",
+      "uid": "mn128",
+      "ranges": [
+        {
+          "start": "15.1",
+          "end": "16.9"
+        }
+      ],
+      "excerpt": {
+        "start": "15.3",
+        "end": "16.1"
+      },
+      "highlight": "work out the basis of that",
+      "question": "What disturbed your calm today? Can you work out its basis, so it doesn't arise again?"
+    },
+    {
+      "id": "mn41-people-sala-2",
+      "ref": "MN 41",
+      "uid": "mn41",
+      "ranges": [
+        {
+          "start": "4.1",
+          "end": "7.1"
+        }
+      ],
+      "excerpt": {
+        "start": "5.1",
+        "end": "5.2"
+      },
+      "highlight": "immoral conduct is threefold by way of body, fourfold by way of speech, and threefold by way of mind",
+      "question": "Looking at today's conduct by body, speech and mind, which was most in line with the teaching? Which was least?"
+    },
+    {
+      "id": "mn41-people-sala-3",
+      "ref": "MN 41",
+      "uid": "mn41",
+      "ranges": [
+        {
+          "start": "11.1",
+          "end": "12.4"
+        }
+      ],
+      "excerpt": {
+        "start": "12.1",
+        "end": "12.2"
+      },
+      "highlight": "They give up sexual misconduct",
+      "question": "Did your actions today come from sympathy: not harming, not taking, not crossing anyone's boundaries? Where was that hardest?"
+    },
+    {
+      "id": "mn41-people-sala-4",
+      "ref": "MN 41",
+      "uid": "mn41",
+      "ranges": [
+        {
+          "start": "13.2",
+          "end": "13.5"
+        }
+      ],
+      "excerpt": {
+        "start": "13.5",
+        "end": "13.5"
+      },
+      "highlight": "right time which are valuable, reasonable, succinct, and beneficial",
+      "question": "Did your words today bring people together or set them apart? Were they true, gentle and said at the right time?"
+    },
+    {
+      "id": "sn45.8-analysis-2",
+      "ref": "SN 45.8",
+      "uid": "sn45.8",
+      "ranges": [
+        {
+          "start": "1.5",
+          "end": "3.3"
+        }
+      ],
+      "excerpt": {
+        "start": "2.1",
+        "end": "3.2"
+      },
+      "highlight": "Knowing about suffering, the origin of suffering, the cessation of suffering",
+      "question": "What did you understand today about your own suffering that you hadn't seen before? How did it change what you did?"
+    },
+    {
+      "id": "sn45.8-analysis-4",
+      "ref": "SN 45.8",
+      "uid": "sn45.8",
+      "ranges": [
+        {
+          "start": "8.1",
+          "end": "8.5"
+        }
+      ],
+      "excerpt": {
+        "start": "8.2",
+        "end": "8.3"
+      },
+      "highlight": "skillful qualities arise",
+      "question": "What skillful quality did you try to bring about today? What effort did you put into keeping it going?"
+    },
+    {
+      "id": "mn9-right-view-2",
+      "ref": "MN 9",
+      "uid": "mn9",
+      "ranges": [
+        {
+          "start": "54.1",
+          "end": "54.8"
+        }
+      ],
+      "excerpt": {
+        "start": "54.1",
+        "end": "54.3"
+      },
+      "highlight": "Feeling, perception, intention, contact, and application of mind",
+      "question": "Pick one moment today. What feeling, perception and intention were in it? What contact set it off?"
+    },
+    {
+      "id": "mn9-right-view-3",
+      "ref": "MN 9",
+      "uid": "mn9",
+      "ranges": [
+        {
+          "start": "11.1",
+          "end": "11.6"
+        }
+      ],
+      "excerpt": {
+        "start": "11.3",
+        "end": "11.5"
+      },
+      "highlight": "Fuel originates from craving. Fuel ceases when craving ceases.",
+      "question": "What fed you today, in body and in mind? Which of it did you reach for out of craving?"
+    },
+    {
+      "id": "mn9-right-view-4",
+      "ref": "MN 9",
+      "uid": "mn9",
+      "ranges": [
+        {
+          "start": "34.1",
+          "end": "34.4"
+        }
+      ],
+      "excerpt": {
+        "start": "34.2",
+        "end": "34.4"
+      },
+      "highlight": "Grasping at sensual pleasures, views, precepts and observances, and theories of a self.",
+      "question": "What did you grasp at today: a pleasure, a view, a way of doing things, or an idea of who you are? Where did the grasping come from?"
+    },
+    {
+      "id": "mn9-right-view-5",
+      "ref": "MN 9",
+      "uid": "mn9",
+      "ranges": [
+        {
+          "start": "58.1",
+          "end": "58.4"
+        }
+      ],
+      "excerpt": {
+        "start": "58.2",
+        "end": "58.4"
+      },
+      "highlight": "Consciousness originates from choices. Consciousness ceases when choices cease.",
+      "question": "What choices did you make today that shaped what you noticed? What did you miss because of them?"
     }
   ]
 }

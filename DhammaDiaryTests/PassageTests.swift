@@ -14,7 +14,7 @@ final class PassageSetTests: XCTestCase {
         XCTAssertEqual(set.source.branch, "published")
         XCTAssertEqual(set.source.translator, "sujato")
         XCTAssertFalse(set.source.commit.isEmpty)
-        XCTAssertEqual(set.passages.count, 41)
+        XCTAssertEqual(set.passages.count, 86)
     }
 
     func testIDsAreUnique() {
@@ -39,7 +39,10 @@ final class PassageSetTests: XCTestCase {
             XCTAssertLessThanOrEqual(passage.excerpt.joined(separator: " ").count, 340, passage.id)
             let segments = passage.blocks.flatMap { $0 }
             for part in passage.excerpt {
-                XCTAssertTrue(segments.contains { $0.contains(part) }, "\(passage.id): \(part)")
+                // The generator drops an unpaired quote mark at the edge of a passage (one that starts
+                // mid-dialogue), while the excerpt keeps its own paired marks; compare the words.
+                let words = part.trimmingCharacters(in: CharacterSet(charactersIn: "“”‘’"))
+                XCTAssertTrue(segments.contains { $0.contains(words) }, "\(passage.id): \(part)")
             }
         }
     }

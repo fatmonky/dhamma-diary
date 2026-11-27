@@ -135,7 +135,7 @@
       "ranges": [
         {
           "start": "15.1",
-          "end": "15.10"
+          "end": "15.11"
         }
       ],
       "blocks": [
@@ -149,7 +149,8 @@
           "Because that skeleton is scraped clean of flesh and smeared in blood.",
           "That dog will eventually get weary and frustrated.”",
           "“In the same way, a noble disciple reflects:",
-          "‘With the simile of a skeleton the Buddha said that sensual pleasures give little gratification and much suffering and distress, and they are all the more full of drawbacks.’"
+          "‘With the simile of a skeleton the Buddha said that sensual pleasures give little gratification and much suffering and distress, and they are all the more full of drawbacks.’",
+          "Having truly seen this with right understanding, they shun equanimity based on diversity and develop only the equanimity based on unity, where all kinds of grasping to the worldly pleasures of the flesh cease without remainder."
         ]
       ],
       "excerpt": [
@@ -366,21 +367,22 @@
       "ranges": [
         {
           "start": "3.1",
-          "end": "4.2"
+          "end": "4.3"
         }
       ],
       "blocks": [
         [
           "Brahmin, there’s a time when your heart is overcome and mired in sensual desire and you don’t truly understand the escape from sensual desire that has arisen. At that time you don’t truly know or see what is good for yourself, good for another, or good for both. Even hymns that are long-rehearsed don’t spring to mind, let alone those that are not rehearsed.",
           "Suppose there was a bowl of water that was mixed with dye such as red lac, turmeric, indigo, or rose madder.",
-          "Even a person with clear eyes checking their own reflection wouldn’t truly know it or see it."
+          "Even a person with clear eyes checking their own reflection wouldn’t truly know it or see it.",
+          "In the same way, when your heart is overcome and mired in sensual desire … Even hymns that are long-rehearsed don’t spring to mind, let alone those that are not rehearsed."
         ]
       ],
       "excerpt": [
         "Suppose there was a bowl of water that was mixed with dye such as red lac, turmeric, indigo, or rose madder.",
         "Even a person with clear eyes checking their own reflection wouldn’t truly know it or see it."
       ],
-      "highlight": "you don’t truly know or see what is good for yourself, good for another, or good for both.",
+      "highlight": "sensual desire",
       "question": "When was a moment today when desire clouded the water, so you couldn't see what was good for you or for others? What was it like once it settled?",
       "url": "https://suttacentral.net/sn46.55/en/sujato"
     },
@@ -786,6 +788,10 @@
         {
           "start": "11.6",
           "end": "11.6"
+        },
+        {
+          "start": "21.6",
+          "end": "21.6"
         }
       ],
       "blocks": [
@@ -796,6 +802,9 @@
         ],
         [
           "When you’ve got a fault-finding mind you can’t give up unmindfulness, lack of situational awareness, and a scattered mind."
+        ],
+        [
+          "When you don’t have a fault-finding mind you can give up unmindfulness, lack of situational awareness, and a scattered mind."
         ]
       ],
       "excerpt": [
@@ -1340,6 +1349,1465 @@
       "highlight": "When you experience freedom due to the cessation of deeds by body, speech, and mind.",
       "question": "What new deeds did you do today by body, speech and mind? Which would you rather not repeat?",
       "url": "https://suttacentral.net/sn35.146/en/sujato"
+    },
+    {
+      "id": "sn46.51-nourishing",
+      "ref": "SN 46.51",
+      "title": "Nourishing",
+      "uid": "sn46.51",
+      "ranges": [
+        {
+          "start": "1.4",
+          "end": "2.4"
+        },
+        {
+          "start": "4.1",
+          "end": "4.4"
+        }
+      ],
+      "blocks": [
+        [
+          "And what fuels the arising of sensual desire, or, when it has arisen, makes it increase and grow?",
+          "There is the feature of beauty.",
+          "Frequent irrational application of mind to that",
+          "fuels the arising of sensual desire, or, when it has arisen, makes it increase and grow.",
+          "And what fuels the arising of ill will, or, when it has arisen, makes it increase and grow?",
+          "There is the feature of aversion.",
+          "Frequent irrational application of mind to that",
+          "fuels the arising of ill will, or, when it has arisen, makes it increase and grow."
+        ],
+        [
+          "And what fuels the arising of restlessness and remorse, or, when they have arisen, makes them increase and grow?",
+          "There is the unsettled mind.",
+          "Frequent irrational application of mind to that",
+          "fuels the arising of restlessness and remorse, or, when they have arisen, makes them increase and grow."
+        ]
+      ],
+      "excerpt": [
+        "And what fuels the arising of ill will, or, when it has arisen, makes it increase and grow?",
+        "There is the feature of aversion."
+      ],
+      "highlight": "when it has arisen, makes it increase and grow",
+      "question": "Which hindrance did you feed today by going back to it again and again? What was the thing you kept returning to?",
+      "url": "https://suttacentral.net/sn46.51/en/sujato"
+    },
+    {
+      "id": "sn46.6-kundaliya",
+      "ref": "SN 46.6",
+      "title": "Kuṇḍaliya",
+      "uid": "sn46.6",
+      "ranges": [
+        {
+          "start": "1.8",
+          "end": "3.5"
+        }
+      ],
+      "blocks": [
+        [
+          "But what benefit does the worthy Gotama live for?”",
+          "“The benefit the Realized One lives for, Kuṇḍaliya, is the fruit of knowledge and freedom.”",
+          "“But what things must be developed and cultivated in order to fulfill knowledge and freedom?”",
+          "“The seven awakening factors.”",
+          "“But what things must be developed and cultivated in order to fulfill the seven awakening factors?”",
+          "“The four kinds of mindfulness meditation.”",
+          "“But what things must be developed and cultivated in order to fulfill the four kinds of mindfulness meditation?”",
+          "“The three kinds of good conduct.”",
+          "“But what things must be developed and cultivated in order to fulfill the three kinds of good conduct?”",
+          "“Sense restraint.",
+          "And Kuṇḍaliya, how is sense restraint developed and cultivated so as to fulfill the three kinds of good conduct?",
+          "A mendicant sees an agreeable sight with their eyes. They don’t desire it or enjoy it, and they don’t give rise to greed.",
+          "Their mind and body are steady internally, well settled and well freed.",
+          "But if they see a disagreeable sight they’re undismayed, with mind unirritated, spirit undaunted, and heart unangered.",
+          "Their mind and body are steady internally, well settled and well freed."
+        ]
+      ],
+      "excerpt": [
+        "But what things must be developed and cultivated in order to fulfill the four kinds of mindfulness meditation?”",
+        "“The three kinds of good conduct.”",
+        "“But what things must be developed and cultivated in order to fulfill the three kinds of good conduct?”",
+        "“Sense restraint."
+      ],
+      "highlight": "agreeable sight with their eyes. They don’t desire it or enjoy it, and they don’t give rise to greed",
+      "question": "Think of something pleasant and something unpleasant you met today. Did either one unsettle you? Which was harder to stay steady with?",
+      "url": "https://suttacentral.net/sn46.6/en/sujato"
+    },
+    {
+      "id": "snp1.8-discourse-love",
+      "ref": "Snp 1.8",
+      "title": "The Discourse on Love",
+      "uid": "snp1.8",
+      "ranges": [
+        {
+          "start": "1.3",
+          "end": "3.2"
+        },
+        {
+          "start": "6.1",
+          "end": "7.4"
+        }
+      ],
+      "blocks": [
+        [
+          "Let them be capable and upright, very upright,",
+          "easy to speak to, gentle and humble;",
+          "content and unburdensome,",
+          "unbusied, living lightly,",
+          "alert, with senses calmed,",
+          "courteous, not fawning on families.",
+          "Let them not do the slightest thing",
+          "that others who are wise would blame."
+        ],
+        [
+          "Let none deceive another,",
+          "nor look down on anyone anywhere.",
+          "Though provoked or aggrieved,",
+          "let them not wish pain on each other.",
+          "Even as a mother would protect with her life",
+          "her child, her only child,",
+          "so too for all creatures",
+          "unfold a boundless heart."
+        ]
+      ],
+      "excerpt": [
+        "Even as a mother would protect with her life",
+        "her child, her only child,",
+        "so too for all creatures",
+        "unfold a boundless heart."
+      ],
+      "highlight": "Even as a mother would protect with her life",
+      "question": "Who provoked or upset you today? Could you still wish them well, the way a mother protects her only child?",
+      "url": "https://suttacentral.net/snp1.8/en/sujato"
+    },
+    {
+      "id": "an10.48-ten-regular-reflections",
+      "ref": "AN 10.48",
+      "title": "Ten Regular Reflections for a Renunciate",
+      "uid": "an10.48",
+      "ranges": [
+        {
+          "start": "7.1",
+          "end": "10.1"
+        }
+      ],
+      "blocks": [
+        [
+          "‘I must be parted and separated from all I hold dear and beloved.’",
+          "‘I am the owner of my deeds and heir to my deeds. Deeds are my womb, my relative, and my refuge.",
+          "I shall be the heir of whatever deeds I do, whether good or bad.’",
+          "‘As the days and nights pass by, what sort of person am I becoming?’"
+        ]
+      ],
+      "excerpt": [
+        "‘I must be parted and separated from all I hold dear and beloved.’",
+        "‘I am the owner of my deeds and heir to my deeds. Deeds are my womb, my relative, and my refuge.",
+        "I shall be the heir of whatever deeds I do, whether good or bad.’",
+        "‘As the days and nights pass by, what sort of person am I becoming?’"
+      ],
+      "highlight": "what sort of person am I becoming?",
+      "question": "As today passed, what sort of person were you becoming? What would you like tomorrow to add?",
+      "url": "https://suttacentral.net/an10.48/en/sujato"
+    },
+    {
+      "id": "an5.43-likable",
+      "ref": "AN 5.43",
+      "title": "Likable",
+      "uid": "an5.43",
+      "ranges": [
+        {
+          "start": "2.3",
+          "end": "4.3"
+        },
+        {
+          "start": "5.1",
+          "end": "5.2"
+        },
+        {
+          "start": "6.1",
+          "end": "6.2"
+        },
+        {
+          "start": "7.1",
+          "end": "7.2"
+        }
+      ],
+      "blocks": [
+        [
+          "Long life,",
+          "beauty,",
+          "happiness,",
+          "fame,",
+          "and heaven.",
+          "These are the five things, which are likable, desirable, and agreeable, but hard to get in the world.",
+          "And I say that these five things are not got by supplication or wishing for them.",
+          "If they were, who would lack them?",
+          "A noble disciple who wants to live long ought not pray for it, or hope for it, or pine for it.",
+          "Instead, they should practice the way that leads to long life.",
+          "For by practicing that way they gain long life"
+        ],
+        [
+          "A noble disciple who wants to be beautiful ought not pray for it, or hope for it, or pine for it.",
+          "Instead, they should practice the way that leads to beauty."
+        ],
+        [
+          "A noble disciple who wants to be happy ought not pray for it, or hope for it, or pine for it.",
+          "Instead, they should practice the way that leads to happiness."
+        ],
+        [
+          "A noble disciple who wants to be famous ought not pray for it, or hope for it, or pine for it.",
+          "Instead, they should practice the way that leads to fame."
+        ]
+      ],
+      "excerpt": [
+        "Long life,",
+        "beauty,",
+        "happiness,",
+        "fame,",
+        "and heaven.",
+        "These are the five things, which are likable, desirable, and agreeable, but hard to get in the world.",
+        "And I say that these five things are not got by supplication or wishing for them.",
+        "If they were, who would lack them?"
+      ],
+      "highlight": "these five things are not got by supplication or wishing for them",
+      "question": "What did you wish or hope for today without doing anything towards it? What would practising the way to it look like?",
+      "url": "https://suttacentral.net/an5.43/en/sujato"
+    },
+    {
+      "id": "an8.40-results-misconduct",
+      "ref": "AN 8.40",
+      "title": "The Results of Misconduct",
+      "uid": "an8.40",
+      "ranges": [
+        {
+          "start": "1.1",
+          "end": "6.2"
+        }
+      ],
+      "blocks": [
+        [
+          "Mendicants, the killing of living creatures, when cultivated, developed, and practiced, leads to hell, the animal realm, or the ghost realm.",
+          "The minimum result it leads to for a human being is a short lifespan.",
+          "Stealing, when cultivated, developed, and practiced, leads to hell, the animal realm, or the ghost realm.",
+          "The minimum result it leads to for a human being is loss of wealth.",
+          "Sexual misconduct, when cultivated, developed, and practiced, leads to hell, the animal realm, or the ghost realm.",
+          "The minimum result it leads to for a human being is rivalry and enmity.",
+          "Lying, when cultivated, developed, and practiced, leads to hell, the animal realm, or the ghost realm.",
+          "The minimum result it leads to for a human being is false accusations.",
+          "Backbiting, when cultivated, developed, and practiced, leads to hell, the animal realm, or the ghost realm.",
+          "The minimum result it leads to for a human being is being divided against friends.",
+          "Harsh speech, when cultivated, developed, and practiced, leads to hell, the animal realm, or the ghost realm.",
+          "The minimum result it leads to for a human being is hearing disagreeable things."
+        ]
+      ],
+      "excerpt": [
+        "Mendicants, the killing of living creatures, when cultivated, developed, and practiced, leads to hell, the animal realm, or the ghost realm.",
+        "The minimum result it leads to for a human being is a short lifespan."
+      ],
+      "highlight": "minimum result",
+      "question": "Did you come close today to harming, taking, lying, backbiting or harsh speech? What small result of it have you already seen?",
+      "url": "https://suttacentral.net/an8.40/en/sujato"
+    },
+    {
+      "id": "an8.54-dighajanu",
+      "ref": "AN 8.54",
+      "title": "With Dīghajāṇu",
+      "uid": "an8.54",
+      "ranges": [
+        {
+          "start": "5.1",
+          "end": "5.4"
+        }
+      ],
+      "blocks": [
+        [
+          "And what is accomplishment in balanced finances?",
+          "It’s when a gentleman, knowing his income and expenditure, balances his finances, being neither too extravagant nor too frugal. He thinks, ‘In this way my income will exceed my expenditure, not the reverse.’",
+          "It’s like an appraiser or their apprentice who, holding up the scales, knows that it’s low by this much or high by this much.",
+          "In the same way, a gentleman, knowing his income and expenditure, balances his finances, being neither too extravagant nor too frugal. He thinks, ‘In this way my income will exceed my expenditure, not the reverse.’"
+        ]
+      ],
+      "excerpt": [
+        "And what is accomplishment in balanced finances?",
+        "It’s when a gentleman, knowing his income and expenditure, balances his finances, being neither too extravagant nor too frugal. He thinks, ‘In this way my income will exceed my expenditure, not the reverse.’"
+      ],
+      "highlight": "balances his finances, being neither too extravagant nor too frugal",
+      "question": "Where did you spend too freely today, or hold back too tightly, with money, time or energy? What would balance have looked like?",
+      "url": "https://suttacentral.net/an8.54/en/sujato"
+    },
+    {
+      "id": "dhp1-20-1-pairs",
+      "ref": "Dhp 3–5",
+      "title": "1. Pairs",
+      "uid": "dhp1-20",
+      "ranges": [
+        {
+          "start": "dhp3:1",
+          "end": "dhp5:4"
+        }
+      ],
+      "blocks": [
+        [
+          "“They abused me, they hit me!",
+          "They beat me, they robbed me!”",
+          "For those who bear such a grudge,",
+          "hatred is never laid to rest.",
+          "“They abused me, they hit me!",
+          "They beat me, they robbed me!”",
+          "For those who bear no such grudge,",
+          "hatred is laid to rest.",
+          "For never is hatred",
+          "laid to rest by hate,",
+          "it’s laid to rest by love:",
+          "this is an ancient teaching."
+        ]
+      ],
+      "excerpt": [
+        "“They abused me, they hit me!",
+        "They beat me, they robbed me!”",
+        "For those who bear such a grudge,",
+        "hatred is never laid to rest.",
+        "“They abused me, they hit me!",
+        "They beat me, they robbed me!”",
+        "For those who bear no such grudge,",
+        "hatred is laid to rest."
+      ],
+      "highlight": "laid to rest by love",
+      "question": "Is there a grudge you kept replaying today, what they said or did to you? What would it take to lay it to rest?",
+      "url": "https://suttacentral.net/dhp1-20/en/sujato"
+    },
+    {
+      "id": "dhp116-128-9-wickedness",
+      "ref": "Dhp 118",
+      "title": "9. Wickedness",
+      "uid": "dhp116-128",
+      "ranges": [
+        {
+          "start": "dhp118:1",
+          "end": "dhp118:4"
+        }
+      ],
+      "blocks": [
+        [
+          "If you do something good,",
+          "do it again and again,",
+          "set your heart on it,",
+          "for piling up goodness is joyful."
+        ]
+      ],
+      "excerpt": [
+        "If you do something good,",
+        "do it again and again,",
+        "set your heart on it,",
+        "for piling up goodness is joyful."
+      ],
+      "highlight": "piling up goodness is joyful.",
+      "question": "What good thing did you do today? How could you do it again tomorrow?",
+      "url": "https://suttacentral.net/dhp116-128/en/sujato"
+    },
+    {
+      "id": "dhp76-89-6-astute",
+      "ref": "Dhp 84",
+      "title": "6. The Astute",
+      "uid": "dhp76-89",
+      "ranges": [
+        {
+          "start": "dhp84:1",
+          "end": "dhp84:4"
+        }
+      ],
+      "blocks": [
+        [
+          "Never wish for success by unjust means,",
+          "for your own sake or that of another,",
+          "desiring children, wealth, or nation;",
+          "rather, be virtuous, wise, and just."
+        ]
+      ],
+      "excerpt": [
+        "Never wish for success by unjust means,",
+        "for your own sake or that of another,",
+        "desiring children, wealth, or nation;",
+        "rather, be virtuous, wise, and just."
+      ],
+      "highlight": "be virtuous, wise, and just.",
+      "question": "Where did you want things to go your way today, even by bending what's fair? What would the just way have been?",
+      "url": "https://suttacentral.net/dhp76-89/en/sujato"
+    },
+    {
+      "id": "dn21-sakka-s-questions",
+      "ref": "DN 21",
+      "title": "Sakka’s Questions",
+      "uid": "dn21",
+      "ranges": [
+        {
+          "start": "2.2.2",
+          "end": "2.2.23"
+        }
+      ],
+      "blocks": [
+        [
+          "“But good fellow, what is the source, origin, birthplace, and inception of jealousy and stinginess?",
+          "When what exists is there jealousy and stinginess?",
+          "When what doesn’t exist is there no jealousy and stinginess?”",
+          "“The liked and the disliked, lord of gods, are the source of jealousy and stinginess.",
+          "When the liked and the disliked exist there is jealousy and stinginess.",
+          "When the liked and the disliked don’t exist there is no jealousy and stinginess.”",
+          "“But good fellow, what is the source of what is liked and disliked?”",
+          "“Desire is the source of what is liked and disliked.”",
+          "“But what is the source of desire?”",
+          "“Thought is the source of desire.”",
+          "“But what is the source of thought?”",
+          "“Judgments driven by the proliferation of perceptions are the source of thoughts.”"
+        ]
+      ],
+      "excerpt": [
+        "“But good fellow, what is the source of what is liked and disliked?”",
+        "“Desire is the source of what is liked and disliked.”",
+        "“But what is the source of desire?”",
+        "“Thought is the source of desire.”",
+        "“But what is the source of thought?”",
+        "“Judgments driven by the proliferation of perceptions are the source of thoughts.”"
+      ],
+      "highlight": "“Judgments driven by the proliferation of perceptions are the source of thoughts.",
+      "question": "Were you jealous or stingy today? Can you trace it back: to what you liked or disliked, the desire behind it, the thoughts behind that?",
+      "url": "https://suttacentral.net/dn21/en/sujato"
+    },
+    {
+      "id": "mn2-all-defilements",
+      "ref": "MN 2",
+      "title": "All the Defilements",
+      "uid": "mn2",
+      "ranges": [
+        {
+          "start": "3.1",
+          "end": "4.1"
+        }
+      ],
+      "blocks": [
+        [
+          "Mendicants, I say that the ending of defilements is for one who knows and sees, not for one who does not know or see.",
+          "For one who knows and sees what?",
+          "Rational application of mind and irrational application of mind.",
+          "When you apply the mind irrationally, defilements arise, and once arisen they grow.",
+          "When you apply the mind rationally, defilements don’t arise, and those that have already arisen are given up.",
+          "Some defilements should be given up by seeing, some by restraint, some by using, some by enduring, some by avoiding, some by dispelling, and some by developing."
+        ]
+      ],
+      "excerpt": [
+        "When you apply the mind rationally, defilements don’t arise, and those that have already arisen are given up.",
+        "Some defilements should be given up by seeing, some by restraint, some by using, some by enduring, some by avoiding, some by dispelling, and some by developing."
+      ],
+      "highlight": "restraint, some by using, some by enduring, some by avoiding, some by dispelling, and some by developing",
+      "question": "Which defilement came up today? Was it one to meet by restraint, by enduring, by avoiding or by dispelling it?",
+      "url": "https://suttacentral.net/mn2/en/sujato"
+    },
+    {
+      "id": "mn20-how-stop-thinking-2",
+      "ref": "MN 20",
+      "title": "How to Stop Thinking",
+      "uid": "mn20",
+      "ranges": [
+        {
+          "start": "4.1",
+          "end": "4.6"
+        }
+      ],
+      "blocks": [
+        [
+          "Now, suppose that mendicant is focusing on some other subject connected with the skillful, but bad, unskillful thoughts connected with desire, hate, and delusion keep coming up. They should examine the drawbacks of those thoughts:",
+          "‘So these thoughts are unskillful, they’re blameworthy, and they result in suffering.’",
+          "As they do so, those bad thoughts are given up and come to an end.",
+          "Their mind becomes stilled internally; it settles, unifies, and becomes immersed in samādhi.",
+          "Suppose there was a woman or man who was young, youthful, and fond of adornments. If the carcass of a snake or a dog or a human were hung around their neck, they’d be horrified, repelled, and disgusted.",
+          "In the same way, a mendicant … should examine the drawbacks of those thoughts …"
+        ]
+      ],
+      "excerpt": [
+        "Suppose there was a woman or man who was young, youthful, and fond of adornments. If the carcass of a snake or a dog or a human were hung around their neck, they’d be horrified, repelled, and disgusted.",
+        "In the same way, a mendicant … should examine the drawbacks of those thoughts …"
+      ],
+      "highlight": "If the carcass of a snake or a dog or a human were hung around their neck, they’d be horrified",
+      "question": "Which unskillful thought kept coming back today? When you saw its drawbacks clearly, did it lose its hold?",
+      "url": "https://suttacentral.net/mn20/en/sujato"
+    },
+    {
+      "id": "mn20-how-stop-thinking-3",
+      "ref": "MN 20",
+      "title": "How to Stop Thinking",
+      "uid": "mn20",
+      "ranges": [
+        {
+          "start": "5.1",
+          "end": "5.6"
+        }
+      ],
+      "blocks": [
+        [
+          "Now, suppose that mendicant is examining the drawbacks of those thoughts, but bad, unskillful thoughts connected with desire, hate, and delusion keep coming up. They should try to forget and ignore them.",
+          "As they do so, those bad thoughts are given up and come to an end.",
+          "Their mind becomes stilled internally; it settles, unifies, and becomes immersed in samādhi.",
+          "Suppose there was a person with clear eyes, and some undesirable sights came into their range of vision.",
+          "They’d just close their eyes or look away.",
+          "In the same way, a mendicant … those bad thoughts are given up and come to an end …"
+        ]
+      ],
+      "excerpt": [
+        "Suppose there was a person with clear eyes, and some undesirable sights came into their range of vision.",
+        "They’d just close their eyes or look away.",
+        "In the same way, a mendicant … those bad thoughts are given up and come to an end …"
+      ],
+      "highlight": "They’d just close their eyes or look away",
+      "question": "Was there a thought today you'd have done better not to give attention to? Could you look away from it, as you would from an ugly sight?",
+      "url": "https://suttacentral.net/mn20/en/sujato"
+    },
+    {
+      "id": "mn19-two-kinds-thought-2",
+      "ref": "MN 19",
+      "title": "Two Kinds of Thought",
+      "uid": "mn19",
+      "ranges": [
+        {
+          "start": "11.1",
+          "end": "12.4"
+        }
+      ],
+      "blocks": [
+        [
+          "Whatever a mendicant frequently thinks about and considers becomes their heart’s inclination.",
+          "If they often think about and consider thoughts of renunciation, they’ve given up sensual thought to cultivate the thought of renunciation. Their mind inclines to thoughts of renunciation.",
+          "If they often think about and consider thoughts of good will … their mind inclines to thoughts of good will.",
+          "If they often think about and consider thoughts of harmlessness … their mind inclines to thoughts of harmlessness.",
+          "Suppose it’s the last month of summer, when all the crops have been gathered within a village, and a cowherd must take care of the cattle. While at the root of a tree or in the open he need only be mindful that",
+          "the cattle are there.",
+          "In the same way I needed only to be mindful that",
+          "those things were there."
+        ]
+      ],
+      "excerpt": [
+        "Whatever a mendicant frequently thinks about and considers becomes their heart’s inclination.",
+        "If they often think about and consider thoughts of renunciation, they’ve given up sensual thought to cultivate the thought of renunciation. Their mind inclines to thoughts of renunciation."
+      ],
+      "highlight": "Whatever a mendicant frequently thinks about and considers becomes their heart’s inclination",
+      "question": "What did you think about most today? Which way is it inclining your heart?",
+      "url": "https://suttacentral.net/mn19/en/sujato"
+    },
+    {
+      "id": "an4.14-restraint-2",
+      "ref": "AN 4.14",
+      "title": "Restraint",
+      "uid": "an4.14",
+      "ranges": [
+        {
+          "start": "2.1",
+          "end": "2.6"
+        }
+      ],
+      "blocks": [
+        [
+          "And what, mendicants, is the effort to give up?",
+          "It’s when a mendicant doesn’t tolerate a sensual,",
+          "malicious,",
+          "or cruel thought that’s arisen, but gives it up, dispels it, eliminates it, and obliterates it.",
+          "They don’t tolerate any bad, unskillful qualities that have arisen, but give them up, dispel them, eliminate them, and obliterate them.",
+          "This is called the effort to give up."
+        ]
+      ],
+      "excerpt": [
+        "And what, mendicants, is the effort to give up?",
+        "It’s when a mendicant doesn’t tolerate a sensual,",
+        "malicious,",
+        "or cruel thought that’s arisen, but gives it up, dispels it, eliminates it, and obliterates it."
+      ],
+      "highlight": "doesn’t tolerate a sensual",
+      "question": "Which sensual, malicious or cruel thought did you let stay today? What would it have taken to give it up sooner?",
+      "url": "https://suttacentral.net/an4.14/en/sujato"
+    },
+    {
+      "id": "an4.14-restraint-3",
+      "ref": "AN 4.14",
+      "title": "Restraint",
+      "uid": "an4.14",
+      "ranges": [
+        {
+          "start": "3.1",
+          "end": "3.9"
+        }
+      ],
+      "blocks": [
+        [
+          "And what, mendicants, is the effort to develop?",
+          "It’s when a mendicant develops the awakening factors of mindfulness,",
+          "investigation of principles,",
+          "energy,",
+          "rapture,",
+          "tranquility,",
+          "immersion,",
+          "and equanimity, which rely on seclusion, fading away, and cessation, and ripen as letting go.",
+          "This is called the effort to develop."
+        ]
+      ],
+      "excerpt": [
+        "And what, mendicants, is the effort to develop?",
+        "It’s when a mendicant develops the awakening factors of mindfulness,",
+        "investigation of principles,",
+        "energy,",
+        "rapture,",
+        "tranquility,",
+        "immersion,",
+        "and equanimity, which rely on seclusion, fading away, and cessation, and ripen as letting go.",
+        "This is called the effort to develop."
+      ],
+      "highlight": "rely on seclusion, fading away, and cessation, and ripen as letting go",
+      "question": "Which awakening factor did you develop today: mindfulness, investigation, energy, rapture, tranquility, immersion or equanimity? Which was missing?",
+      "url": "https://suttacentral.net/an4.14/en/sujato"
+    },
+    {
+      "id": "sn46.55-sangarava-2",
+      "ref": "SN 46.55",
+      "title": "With Saṅgārava",
+      "uid": "sn46.55",
+      "ranges": [
+        {
+          "start": "6.1",
+          "end": "6.3"
+        }
+      ],
+      "blocks": [
+        [
+          "Suppose there was a bowl of water that was heated by fire, boiling and bubbling.",
+          "Even a person with clear eyes checking their own reflection wouldn’t truly know it or see it.",
+          "In the same way, when your heart is overcome and mired in ill will … Even hymns that are long-rehearsed don’t spring to mind, let alone those that are not rehearsed."
+        ]
+      ],
+      "excerpt": [
+        "Suppose there was a bowl of water that was heated by fire, boiling and bubbling.",
+        "Even a person with clear eyes checking their own reflection wouldn’t truly know it or see it.",
+        "In the same way, when your heart is overcome and mired in ill will … Even hymns that are long-rehearsed don’t spring to mind, let alone those that are not rehearsed."
+      ],
+      "highlight": "ill will",
+      "question": "When was your mind boiling with ill will today? What couldn't you see clearly while it was?",
+      "url": "https://suttacentral.net/sn46.55/en/sujato"
+    },
+    {
+      "id": "sn46.55-sangarava-3",
+      "ref": "SN 46.55",
+      "title": "With Saṅgārava",
+      "uid": "sn46.55",
+      "ranges": [
+        {
+          "start": "8.1",
+          "end": "8.3"
+        }
+      ],
+      "blocks": [
+        [
+          "Suppose there was a bowl of water enveloped with moss and aquatic plants.",
+          "Even a person with clear eyes checking their own reflection wouldn’t truly know it or see it.",
+          "In the same way, when your heart is overcome and mired in dullness and drowsiness … Even hymns that are long-rehearsed don’t spring to mind, let alone those that are not rehearsed."
+        ]
+      ],
+      "excerpt": [
+        "Suppose there was a bowl of water enveloped with moss and aquatic plants."
+      ],
+      "highlight": "heart is overcome and mired in dullness and drowsiness",
+      "question": "When was your mind dull or drowsy today, like water covered in moss? What did that hide from you?",
+      "url": "https://suttacentral.net/sn46.55/en/sujato"
+    },
+    {
+      "id": "sn46.55-sangarava-4",
+      "ref": "SN 46.55",
+      "title": "With Saṅgārava",
+      "uid": "sn46.55",
+      "ranges": [
+        {
+          "start": "10.1",
+          "end": "10.3"
+        }
+      ],
+      "blocks": [
+        [
+          "Suppose there was a bowl of water stirred by the wind, quivering, swirling, and rippling.",
+          "Even a person with clear eyes checking their own reflection wouldn’t truly know it or see it.",
+          "In the same way, when your heart is overcome and mired in restlessness and remorse … Even hymns that are long-rehearsed don’t spring to mind, let alone those that are not rehearsed."
+        ]
+      ],
+      "excerpt": [
+        "Suppose there was a bowl of water stirred by the wind, quivering, swirling, and rippling.",
+        "Even a person with clear eyes checking their own reflection wouldn’t truly know it or see it."
+      ],
+      "highlight": "overcome and mired in restlessness and remorse",
+      "question": "When was your mind restless or full of regret today, like water rippling in the wind? What did it stop you seeing?",
+      "url": "https://suttacentral.net/sn46.55/en/sujato"
+    },
+    {
+      "id": "an10.61-ignorance-2",
+      "ref": "AN 10.61",
+      "title": "Ignorance",
+      "uid": "an10.61",
+      "ranges": [
+        {
+          "start": "2.1",
+          "end": "2.12"
+        }
+      ],
+      "blocks": [
+        [
+          "I say that ignorance is fueled by something, it’s not unfueled.",
+          "And what is the fuel for ignorance?",
+          "You should say: ‘The five hindrances.’",
+          "I say that the five hindrances are fueled by something, they’re not unfueled.",
+          "And what is the fuel for the five hindrances?",
+          "You should say: ‘The three kinds of misconduct.’",
+          "I say that the three kinds of misconduct are fueled by something, they’re not unfueled.",
+          "And what is the fuel for the three kinds of misconduct?",
+          "You should say: ‘Lack of sense restraint.’",
+          "I say that lack of sense restraint is fueled by something, it’s not unfueled.",
+          "And what is the fuel for lack of sense restraint?",
+          "You should say: ‘Lack of mindfulness and situational awareness.’"
+        ]
+      ],
+      "excerpt": [
+        "I say that lack of sense restraint is fueled by something, it’s not unfueled.",
+        "And what is the fuel for lack of sense restraint?",
+        "You should say: ‘Lack of mindfulness and situational awareness.’"
+      ],
+      "highlight": "Lack of mindfulness and situational awareness.",
+      "question": "Where did you lose mindfulness today? What followed from it: an unguarded sense, a misstep, a hindrance?",
+      "url": "https://suttacentral.net/an10.61/en/sujato"
+    },
+    {
+      "id": "an10.61-ignorance-3",
+      "ref": "AN 10.61",
+      "title": "Ignorance",
+      "uid": "an10.61",
+      "ranges": [
+        {
+          "start": "2.23",
+          "end": "3.1"
+        }
+      ],
+      "blocks": [
+        [
+          "And what is the fuel for listening to an untrue teaching?",
+          "You should say: ‘Associating with untrue persons.’",
+          "In this way, when the factor of associating with untrue persons is fulfilled, it fulfills the factor of listening to an untrue teaching. When the factor of listening to an untrue teaching is fulfilled, it fulfills the factor of lack of faith … irrational application of mind … lack of mindfulness and situational awareness … lack of sense restraint … the three kinds of misconduct … the five hindrances. When the five hindrances are fulfilled, they fulfill ignorance."
+        ]
+      ],
+      "excerpt": [
+        "And what is the fuel for listening to an untrue teaching?",
+        "You should say: ‘Associating with untrue persons.’"
+      ],
+      "highlight": "Associating with untrue persons",
+      "question": "Whose company and whose words did you take in today? Did they lead you towards the Dhamma, or away from it?",
+      "url": "https://suttacentral.net/an10.61/en/sujato"
+    },
+    {
+      "id": "an10.61-ignorance-4",
+      "ref": "AN 10.61",
+      "title": "Ignorance",
+      "uid": "an10.61",
+      "ranges": [
+        {
+          "start": "6.1",
+          "end": "6.15"
+        }
+      ],
+      "blocks": [
+        [
+          "I say that knowledge and freedom are fueled by something, they’re not unfueled.",
+          "And what is the fuel for knowledge and freedom?",
+          "You should say: ‘The seven awakening factors.’",
+          "I say that the seven awakening factors are fueled by something, they’re not unfueled.",
+          "And what is the fuel for the seven awakening factors?",
+          "You should say: ‘The four kinds of mindfulness meditation.’",
+          "I say that the four kinds of mindfulness meditation are fueled by something, they’re not unfueled.",
+          "And what is the fuel for the four kinds of mindfulness meditation?",
+          "You should say: ‘The three kinds of good conduct.’",
+          "I say that the three kinds of good conduct are fueled by something, they’re not unfueled.",
+          "And what is the fuel for the three kinds of good conduct?",
+          "You should say: ‘Sense restraint.’",
+          "I say that sense restraint is fueled by something, it’s not unfueled.",
+          "And what is the fuel for sense restraint?",
+          "You should say: ‘Mindfulness and situational awareness.’"
+        ]
+      ],
+      "excerpt": [
+        "And what is the fuel for the four kinds of mindfulness meditation?",
+        "You should say: ‘The three kinds of good conduct.’",
+        "I say that the three kinds of good conduct are fueled by something, they’re not unfueled.",
+        "And what is the fuel for the three kinds of good conduct?",
+        "You should say: ‘Sense restraint.’"
+      ],
+      "highlight": "Sense restraint.",
+      "question": "Where did mindfulness guard your senses today? What good conduct came from that?",
+      "url": "https://suttacentral.net/an10.61/en/sujato"
+    },
+    {
+      "id": "an5.162-getting-rid-resentment-3",
+      "ref": "AN 5.162",
+      "title": "Getting Rid of Resentment (2nd)",
+      "uid": "an5.162",
+      "ranges": [
+        {
+          "start": "7.1",
+          "end": "8.1"
+        }
+      ],
+      "blocks": [
+        [
+          "How should you get rid of resentment for an individual whose behavior by way of body and speech is pure, and who gets an openness and clarity of heart from time to time?",
+          "Suppose there was a lotus pond with clear, sweet, cool water, clean, with smooth banks, delightful, and shaded by many trees.",
+          "Then along comes a person struggling in the oppressive heat, weary, thirsty, and parched.",
+          "They’d plunge into the lotus pond to bathe and drink. And after emerging they’d sit or lie down right there in the shade of the trees.",
+          "In the same way, at that time you should focus on that individual’s pure behavior by way of body and speech, and on the fact that they get an openness and clarity of heart from time to time."
+        ]
+      ],
+      "excerpt": [
+        "In the same way, at that time you should focus on that individual’s pure behavior by way of body and speech, and on the fact that they get an openness and clarity of heart from time to time."
+      ],
+      "highlight": "focus on that individual’s pure behavior by way of body and speech",
+      "question": "Who did you resent today, even though they mostly act well? What is good in them that you could turn to, like a cool pond on a hot day?",
+      "url": "https://suttacentral.net/an5.162/en/sujato"
+    },
+    {
+      "id": "an5.162-getting-rid-resentment-2",
+      "ref": "AN 5.162",
+      "title": "Getting Rid of Resentment (2nd)",
+      "uid": "an5.162",
+      "ranges": [
+        {
+          "start": "6.1",
+          "end": "6.10"
+        }
+      ],
+      "blocks": [
+        [
+          "How should you get rid of resentment for an individual whose behavior by way of body and speech is impure, and who doesn’t get an openness and clarity of heart from time to time?",
+          "Suppose a person was traveling along a road, and they were sick, suffering, gravely ill.",
+          "And it was a long way to a village, whether ahead or behind.",
+          "And they didn’t have any suitable food or medicine, or a competent carer, or someone to bring them within a village.",
+          "Another person traveling along the road might see them,",
+          "and think of them with nothing but compassion, kindness, and sympathy:",
+          "‘Oh, may this person get suitable food or medicine, or a competent carer, or someone to bring them within a village.",
+          "Why is that?",
+          "So that they don’t come to ruin right here.’",
+          "In the same way, at that time you should ignore that individual’s impure behavior by way of speech and body, and the fact that they don’t get an openness and clarity of heart from time to time, and think of them with nothing but compassion, kindness, and sympathy:"
+        ]
+      ],
+      "excerpt": [
+        "In the same way, at that time you should ignore that individual’s impure behavior by way of speech and body, and the fact that they don’t get an openness and clarity of heart from time to time, and think of them with nothing but compassion, kindness, and sympathy:"
+      ],
+      "highlight": "think of them with nothing but compassion, kindness, and sympathy",
+      "question": "Is there someone whose behaviour is hard to bear right now? Could you see them as a sick traveller far from help, and wish them well?",
+      "url": "https://suttacentral.net/an5.162/en/sujato"
+    },
+    {
+      "id": "mn54-potaliya-householder-2",
+      "ref": "MN 54",
+      "title": "With Potaliya the Householder",
+      "uid": "mn54",
+      "ranges": [
+        {
+          "start": "4.2",
+          "end": "4.12"
+        }
+      ],
+      "blocks": [
+        [
+          "“Householder, these eight things lead to the cutting off of business in the Noble One’s training.",
+          "What eight?",
+          "Killing living creatures should be given up, relying on not killing living creatures.",
+          "Stealing should be given up, relying on not stealing.",
+          "Lying should be given up, relying on speaking the truth.",
+          "Backbiting should be given up, relying on not backbiting.",
+          "Greed and lust should be given up, relying on not being greedy and lustful.",
+          "Blaming and insulting should be given up, relying on not blaming and not insulting.",
+          "Anger and distress should be given up, relying on not being angry and distressed.",
+          "Arrogance should be given up, relying on not being arrogant.",
+          "These are the eight things—stated in brief without being analyzed in detail—that lead to the cutting off of business in the Noble One’s training.”"
+        ]
+      ],
+      "excerpt": [
+        "Killing living creatures should be given up, relying on not killing living creatures.",
+        "Stealing should be given up, relying on not stealing.",
+        "Lying should be given up, relying on speaking the truth.",
+        "Backbiting should be given up, relying on not backbiting.",
+        "Greed and lust should be given up, relying on not being greedy and lustful."
+      ],
+      "highlight": "eight things lead to the cutting off of business in the Noble One’s training",
+      "question": "Which of these did you rely on today: not harming, not stealing, truthful speech, not backbiting, not greed, not blaming, not anger, not arrogance? Which did you slip on?",
+      "url": "https://suttacentral.net/mn54/en/sujato"
+    },
+    {
+      "id": "mn54-potaliya-householder-4",
+      "ref": "MN 54",
+      "title": "With Potaliya the Householder",
+      "uid": "mn54",
+      "ranges": [
+        {
+          "start": "16.1",
+          "end": "16.5"
+        }
+      ],
+      "blocks": [
+        [
+          "Suppose a vulture or a crow or a hawk was to grab a scrap of meat and fly away.",
+          "Other vultures, crows, and hawks would keep chasing it, pecking and clawing.",
+          "What do you think, householder?",
+          "If that vulture, crow, or hawk doesn’t quickly let go of that scrap of meat, wouldn’t that result in death or deadly suffering for them?”",
+          "“Yes, sir.” …"
+        ]
+      ],
+      "excerpt": [
+        "Suppose a vulture or a crow or a hawk was to grab a scrap of meat and fly away.",
+        "Other vultures, crows, and hawks would keep chasing it, pecking and clawing.",
+        "What do you think, householder?",
+        "If that vulture, crow, or hawk doesn’t quickly let go of that scrap of meat, wouldn’t that result in death or deadly suffering for them?”",
+        "“Yes, sir.” …"
+      ],
+      "highlight": "wouldn’t that result in death or deadly suffering for them?",
+      "question": "What were you holding onto today that others were also grabbing at? What would happen if you let it go?",
+      "url": "https://suttacentral.net/mn54/en/sujato"
+    },
+    {
+      "id": "mn54-potaliya-householder-3",
+      "ref": "MN 54",
+      "title": "With Potaliya the Householder",
+      "uid": "mn54",
+      "ranges": [
+        {
+          "start": "13.1",
+          "end": "13.8"
+        }
+      ],
+      "blocks": [
+        [
+          "Arrogance should be given up, relying on not being arrogant.’ That’s what I said, but why did I say it?",
+          "It’s when a noble disciple reflects:",
+          "‘I am practicing to give up and cut off the fetters that might cause me to be arrogant.",
+          "But if I were to be arrogant, because of that I would reprimand myself; sensible people, after examination, would criticize me; and when my body breaks up, after death, I could expect to be reborn in a bad place.",
+          "And arrogance is itself a fetter and a hindrance.",
+          "The distressing and feverish defilements that might arise because of arrogance do not occur in someone who is not arrogant.’",
+          "‘Arrogance should be given up by not being arrogant.’",
+          "That’s what I said, and this is why I said it."
+        ]
+      ],
+      "excerpt": [
+        "I am practicing to give up and cut off the fetters that might cause me to be arrogant.",
+        "But if I were to be arrogant, because of that I would reprimand myself; sensible people, after examination, would criticize me; and when my body breaks up, after death, I could expect to be reborn in a bad place."
+      ],
+      "highlight": "give up and cut off the fetters that might cause me to be arrogant",
+      "question": "When were you arrogant today, even quietly in your own mind? What did it cost you?",
+      "url": "https://suttacentral.net/mn54/en/sujato"
+    },
+    {
+      "id": "an10.44-kusinara-2",
+      "ref": "AN 10.44",
+      "title": "At Kusinārā",
+      "uid": "an10.44",
+      "ranges": [
+        {
+          "start": "4.1",
+          "end": "4.5"
+        }
+      ],
+      "blocks": [
+        [
+          "Furthermore, a mendicant who wants to accuse another should check this:",
+          "‘Is my heart established in love for my spiritual companions, without resentment?",
+          "Is this thing found in me or not?’",
+          "If it’s not, there will be people who say:",
+          "‘Come on, venerable, establish your heart in love for your spiritual companions first.’"
+        ]
+      ],
+      "excerpt": [
+        "‘Is my heart established in love for my spiritual companions, without resentment?",
+        "Is this thing found in me or not?’"
+      ],
+      "highlight": "Is my heart established in love for my spiritual companions, without resentment?",
+      "question": "Did you criticise or correct anyone today? Was your heart established in love for them before you spoke?",
+      "url": "https://suttacentral.net/an10.44/en/sujato"
+    },
+    {
+      "id": "sn56.11-rolling-forth-wheel-2",
+      "ref": "SN 56.11",
+      "title": "Rolling Forth the Wheel of Dhamma",
+      "uid": "sn56.11",
+      "ranges": [
+        {
+          "start": "4.1",
+          "end": "4.2"
+        }
+      ],
+      "blocks": [
+        [
+          "Now this is the noble truth of suffering.",
+          "Rebirth is suffering; old age is suffering; illness is suffering; death is suffering; being coupled with the disliked is suffering; separation from the liked is suffering; not getting what you wish for is suffering. In brief, the five grasping aggregates are suffering."
+        ]
+      ],
+      "excerpt": [
+        "Now this is the noble truth of suffering.",
+        "Rebirth is suffering; old age is suffering; illness is suffering; death is suffering; being coupled with the disliked is suffering; separation from the liked is suffering; not getting what you wish for is suffering. In brief, the five grasping aggregates are suffering."
+      ],
+      "highlight": "the disliked is suffering; separation from the liked is suffering; not getting what you wish for",
+      "question": "Where did you meet the disliked today, lose the liked, or not get what you wished for? How did you hold that suffering?",
+      "url": "https://suttacentral.net/sn56.11/en/sujato"
+    },
+    {
+      "id": "sn56.11-rolling-forth-wheel-3",
+      "ref": "SN 56.11",
+      "title": "Rolling Forth the Wheel of Dhamma",
+      "uid": "sn56.11",
+      "ranges": [
+        {
+          "start": "4.3",
+          "end": "4.5"
+        }
+      ],
+      "blocks": [
+        [
+          "Now this is the noble truth of the origin of suffering.",
+          "It’s the craving that leads to future lives, mixed up with relishing and greed, taking pleasure there wherever it alights. That is,",
+          "craving for sensual pleasures, craving for continued existence, and craving for nonexistence."
+        ]
+      ],
+      "excerpt": [
+        "Now this is the noble truth of the origin of suffering.",
+        "It’s the craving that leads to future lives, mixed up with relishing and greed, taking pleasure there wherever it alights. That is,",
+        "craving for sensual pleasures, craving for continued existence, and craving for nonexistence."
+      ],
+      "highlight": "craving for sensual pleasures, craving for continued existence, and craving for nonexistence",
+      "question": "What did you crave today: a pleasure, to become something, or for something to stop? Where did the craving alight?",
+      "url": "https://suttacentral.net/sn56.11/en/sujato"
+    },
+    {
+      "id": "sn56.11-rolling-forth-wheel-5",
+      "ref": "SN 56.11",
+      "title": "Rolling Forth the Wheel of Dhamma",
+      "uid": "sn56.11",
+      "ranges": [
+        {
+          "start": "4.8",
+          "end": "4.10"
+        }
+      ],
+      "blocks": [
+        [
+          "Now this is the noble truth of the practice that leads to the cessation of suffering.",
+          "It is simply this noble eightfold path, that is:",
+          "right view, right purpose, right speech, right action, right livelihood, right effort, right mindfulness, and right immersion."
+        ]
+      ],
+      "excerpt": [
+        "Now this is the noble truth of the practice that leads to the cessation of suffering.",
+        "It is simply this noble eightfold path, that is:",
+        "right view, right purpose, right speech, right action, right livelihood, right effort, right mindfulness, and right immersion."
+      ],
+      "highlight": "It is simply this noble eightfold path",
+      "question": "Which part of the eightfold path did you walk today? Which could you give more care to tomorrow?",
+      "url": "https://suttacentral.net/sn56.11/en/sujato"
+    },
+    {
+      "id": "mn139-analysis-no-strife-2",
+      "ref": "MN 139",
+      "title": "The Analysis of No Strife",
+      "uid": "mn139",
+      "ranges": [
+        {
+          "start": "2.4",
+          "end": "3.10"
+        }
+      ],
+      "blocks": [
+        [
+          "The Buddha said this:",
+          "“Don’t indulge in sensual pleasure, which is low, crude, ordinary, ignoble, and pointless. And don’t indulge in self-mortification, which is painful, ignoble, and pointless.",
+          "Avoiding these two extremes, the Realized One understood the middle way of practice, which gives vision and knowledge, and leads to peace, direct knowledge, awakening, and extinguishment.",
+          "Know what it means to flatter and to rebuke.",
+          "Knowing these, avoid them, and just teach Dhamma.",
+          "Know how to evaluate different kinds of pleasure.",
+          "Knowing this, pursue inner pleasure.",
+          "Don’t talk behind people’s backs, and don’t speak sharply in their presence.",
+          "Don’t speak hurriedly.",
+          "Don’t insist on popular definitions and don’t overstep normal labels.",
+          "This is the summary recital for the analysis of no strife."
+        ]
+      ],
+      "excerpt": [
+        "Know how to evaluate different kinds of pleasure.",
+        "Knowing this, pursue inner pleasure."
+      ],
+      "highlight": "Knowing this, pursue inner pleasure.",
+      "question": "Did you flatter, rebuke, talk behind someone's back or speak in a hurry today? What would speaking without strife have sounded like?",
+      "url": "https://suttacentral.net/mn139/en/sujato"
+    },
+    {
+      "id": "sn22.59-characteristic-not-self-2",
+      "ref": "SN 22.59",
+      "title": "The Characteristic of Not-Self",
+      "uid": "sn22.59",
+      "ranges": [
+        {
+          "start": "6.14",
+          "end": "7.1"
+        }
+      ],
+      "blocks": [
+        [
+          "But if it’s impermanent, is it suffering or happiness?”",
+          "“Suffering, sir.”",
+          "“But if it’s impermanent, suffering, and perishable, is it fit to be regarded thus:",
+          "‘This is mine, I am this, this is my self’?”",
+          "“No, sir.”",
+          "“So you should truly see any kind of form at all—past, future, or present; internal or external; solid or subtle; inferior or superior; far or near: <em>all</em> form—with right understanding: ‘This is not mine, I am not this, this is not my self.’"
+        ]
+      ],
+      "excerpt": [
+        "“But if it’s impermanent, is it suffering or happiness?”",
+        "“Suffering, sir.”",
+        "“But if it’s impermanent, suffering, and perishable, is it fit to be regarded thus:",
+        "‘This is mine, I am this, this is my self’?”",
+        "“No, sir.”"
+      ],
+      "highlight": "This is not mine, I am not this, this is not my self",
+      "question": "What did you take personally today, as mine, as me, as my self? How does it look if you see it as not mine?",
+      "url": "https://suttacentral.net/sn22.59/en/sujato"
+    },
+    {
+      "id": "mn128-corruptions-2",
+      "ref": "MN 128",
+      "title": "Corruptions",
+      "uid": "mn128",
+      "ranges": [
+        {
+          "start": "13.2",
+          "end": "14.9"
+        }
+      ],
+      "blocks": [
+        [
+          "But I hope you’re living diligently, keen, and resolute?”",
+          "“Indeed, sir, we live diligently.”",
+          "“But how do you live this way?”",
+          "“In this case, sir, whoever returns first from almsround prepares the seats, and puts out the drinking water and the rubbish bin.",
+          "If there’s remainder, whoever returns last eats it if they like. Otherwise they throw it out where there is little that grows, or drop it into water that has no living creatures.",
+          "Then they put away the seats, drinking water, and rubbish bin, and sweep the refectory.",
+          "If someone sees that the pot of water for washing, drinking, or the toilet is empty they set it up.",
+          "If he can’t do it, he summons another with a wave of the hand, and they set it up by lending each other a hand to lift. But we don’t break into speech for that reason.",
+          "And every five days we sit together for the whole night and discuss the teachings.",
+          "That’s how we live diligently, keen, and resolute."
+        ]
+      ],
+      "excerpt": [
+        "Indeed, sir, we live diligently.”",
+        "“But how do you live this way?”",
+        "“In this case, sir, whoever returns first from almsround prepares the seats, and puts out the drinking water and the rubbish bin."
+      ],
+      "highlight": "live diligently, keen, and resolute",
+      "question": "What small task did you quietly take care of today for the people you live with? What did you leave for someone else?",
+      "url": "https://suttacentral.net/mn128/en/sujato"
+    },
+    {
+      "id": "mn128-corruptions-3",
+      "ref": "MN 128",
+      "title": "Corruptions",
+      "uid": "mn128",
+      "ranges": [
+        {
+          "start": "15.1",
+          "end": "16.9"
+        }
+      ],
+      "blocks": [
+        [
+          "Good, good, Anuruddha and friends!",
+          "But as you live diligently like this, have you achieved any superhuman distinction in knowledge and vision worthy of the noble ones, a comfortable meditation?”",
+          "“Well, sir, while meditating diligent, keen, and resolute, we perceive both light and vision of forms.",
+          "But before long the light and the vision of forms vanish.",
+          "We haven’t worked out the basis of that.”",
+          "“Well, you should work out the basis of that.",
+          "Before my awakening—when I was still unawakened but intent on awakening—I too perceived light and vision of forms.",
+          "But before long my light and vision of forms vanished.",
+          "It occurred to me:",
+          "‘What’s the cause, what’s the reason why my light and vision of forms vanish?’",
+          "It occurred to me:",
+          "‘Doubt arose in me, and because of that my immersion fell away.",
+          "When immersion falls away, the light and vision of forms vanish.",
+          "I’ll make sure that doubt will not arise in me again.’"
+        ]
+      ],
+      "excerpt": [
+        "Well, sir, while meditating diligent, keen, and resolute, we perceive both light and vision of forms.",
+        "But before long the light and the vision of forms vanish.",
+        "We haven’t worked out the basis of that.”",
+        "“Well, you should work out the basis of that."
+      ],
+      "highlight": "work out the basis of that",
+      "question": "What disturbed your calm today? Can you work out its basis, so it doesn't arise again?",
+      "url": "https://suttacentral.net/mn128/en/sujato"
+    },
+    {
+      "id": "mn41-people-sala-2",
+      "ref": "MN 41",
+      "title": "The People of Sālā",
+      "uid": "mn41",
+      "ranges": [
+        {
+          "start": "4.1",
+          "end": "7.1"
+        }
+      ],
+      "blocks": [
+        [
+          "What is the cause, worthy Gotama, what is the reason why some sentient beings, when their body breaks up, after death, are reborn in a place of loss, a bad place, the underworld, hell?",
+          "And what is the cause, worthy Gotama, what is the reason why some sentient beings, when their body breaks up, after death, are reborn in a good place, a heavenly realm?”",
+          "“Unprincipled and immoral conduct is the reason why some sentient beings, when their body breaks up, after death, are reborn in a place of loss, a bad place, the underworld, hell.",
+          "Principled and moral conduct is the reason why some sentient beings, when their body breaks up, after death, are reborn in a good place, a heavenly realm.”",
+          "“We don’t understand the detailed meaning of the worthy Gotama’s brief statement.",
+          "Worthy Gotama, please teach us this matter in detail so we can understand the meaning.”",
+          "“Well then, householders, listen and apply your mind well, I will speak.”",
+          "“Yes, worthy sir,” they replied.",
+          "The Buddha said this:",
+          "“Householders, unprincipled and immoral conduct is threefold by way of body, fourfold by way of speech, and threefold by way of mind."
+        ]
+      ],
+      "excerpt": [
+        "“Unprincipled and immoral conduct is the reason why some sentient beings, when their body breaks up, after death, are reborn in a place of loss, a bad place, the underworld, hell.",
+        "Principled and moral conduct is the reason why some sentient beings, when their body breaks up, after death, are reborn in a good place, a heavenly realm.”"
+      ],
+      "highlight": "immoral conduct is threefold by way of body, fourfold by way of speech, and threefold by way of mind",
+      "question": "Looking at today's conduct by body, speech and mind, which was most in line with the teaching? Which was least?",
+      "url": "https://suttacentral.net/mn41/en/sujato"
+    },
+    {
+      "id": "mn41-people-sala-3",
+      "ref": "MN 41",
+      "title": "The People of Sālā",
+      "uid": "mn41",
+      "ranges": [
+        {
+          "start": "11.1",
+          "end": "12.4"
+        }
+      ],
+      "blocks": [
+        [
+          "Householders, principled and moral conduct is threefold by way of body, fourfold by way of speech, and threefold by way of mind.",
+          "And how is principled and moral conduct threefold by way of body?",
+          "It’s when someone gives up killing living creatures, renouncing the rod and the sword. They’re scrupulous and kind, living full of sympathy for all living beings.",
+          "They give up stealing. They don’t, with the intention to commit theft, take the wealth or belongings of others from village or wilderness.",
+          "They give up sexual misconduct. They don’t have relations with women who have their mother, father, both mother and father, brother, sister, relatives, or clan as guardian. They don’t have relations with a woman who is protected on principle, or who has a husband, or whose violation is punishable by law, or even one who has been garlanded as a token of betrothal."
+        ]
+      ],
+      "excerpt": [
+        "And how is principled and moral conduct threefold by way of body?",
+        "It’s when someone gives up killing living creatures, renouncing the rod and the sword. They’re scrupulous and kind, living full of sympathy for all living beings."
+      ],
+      "highlight": "They give up sexual misconduct",
+      "question": "Did your actions today come from sympathy: not harming, not taking, not crossing anyone's boundaries? Where was that hardest?",
+      "url": "https://suttacentral.net/mn41/en/sujato"
+    },
+    {
+      "id": "mn41-people-sala-4",
+      "ref": "MN 41",
+      "title": "The People of Sālā",
+      "uid": "mn41",
+      "ranges": [
+        {
+          "start": "13.2",
+          "end": "13.5"
+        }
+      ],
+      "blocks": [
+        [
+          "It’s when someone gives up lying. They’re summoned to a council, an assembly, a family meeting, a guild, or to the royal court, and asked to bear witness: ‘Please, my friend, say what you know.’ Not knowing, they say ‘I don’t know.’ Knowing, they say ‘I know.’ Not seeing, they say ‘I don’t see.’ And seeing, they say ‘I see.’ So they don’t deliberately lie for the sake of themselves or another, or for some trivial worldly reason.",
+          "They give up backbiting. They don’t repeat in one place what they heard in another so as to divide people against each other. Instead, they reconcile those who are divided and support those who are united, delighting in harmony, loving harmony, speaking words that promote harmony.",
+          "They give up harsh speech. They speak in a way that’s mellow, pleasing to the ear, endearing, going to the heart, polite, likable, and agreeable to the people.",
+          "They give up talking nonsense. Their words are timely, true, and meaningful, in line with the teaching and training. They say things at the right time which are valuable, reasonable, succinct, and beneficial."
+        ]
+      ],
+      "excerpt": [
+        "They give up talking nonsense. Their words are timely, true, and meaningful, in line with the teaching and training. They say things at the right time which are valuable, reasonable, succinct, and beneficial."
+      ],
+      "highlight": "right time which are valuable, reasonable, succinct, and beneficial",
+      "question": "Did your words today bring people together or set them apart? Were they true, gentle and said at the right time?",
+      "url": "https://suttacentral.net/mn41/en/sujato"
+    },
+    {
+      "id": "sn45.8-analysis-2",
+      "ref": "SN 45.8",
+      "title": "Analysis",
+      "uid": "sn45.8",
+      "ranges": [
+        {
+          "start": "1.5",
+          "end": "3.3"
+        }
+      ],
+      "blocks": [
+        [
+          "The Buddha said this:",
+          "“And what is the noble eightfold path?",
+          "It is right view, right purpose, right speech, right action, right livelihood, right effort, right mindfulness, and right immersion.",
+          "And what is right view?",
+          "Knowing about suffering, the origin of suffering, the cessation of suffering, and the practice that leads to the cessation of suffering.",
+          "This is called right view."
+        ]
+      ],
+      "excerpt": [
+        "And what is the noble eightfold path?",
+        "It is right view, right purpose, right speech, right action, right livelihood, right effort, right mindfulness, and right immersion.",
+        "And what is right view?",
+        "Knowing about suffering, the origin of suffering, the cessation of suffering, and the practice that leads to the cessation of suffering."
+      ],
+      "highlight": "Knowing about suffering, the origin of suffering, the cessation of suffering",
+      "question": "What did you understand today about your own suffering that you hadn't seen before? How did it change what you did?",
+      "url": "https://suttacentral.net/sn45.8/en/sujato"
+    },
+    {
+      "id": "sn45.8-analysis-4",
+      "ref": "SN 45.8",
+      "title": "Analysis",
+      "uid": "sn45.8",
+      "ranges": [
+        {
+          "start": "8.1",
+          "end": "8.5"
+        }
+      ],
+      "blocks": [
+        [
+          "And what is right effort?",
+          "It’s when a mendicant generates enthusiasm, tries, makes an effort, exerts the mind, and strives so that bad, unskillful qualities don’t arise.",
+          "They generate enthusiasm, try, make an effort, exert the mind, and strive so that bad, unskillful qualities that have arisen are given up.",
+          "They generate enthusiasm, try, make an effort, exert the mind, and strive so that skillful qualities arise.",
+          "They generate enthusiasm, try, make an effort, exert the mind, and strive so that skillful qualities that have arisen remain, are not lost, but increase, mature, and are fully developed."
+        ]
+      ],
+      "excerpt": [
+        "It’s when a mendicant generates enthusiasm, tries, makes an effort, exerts the mind, and strives so that bad, unskillful qualities don’t arise.",
+        "They generate enthusiasm, try, make an effort, exert the mind, and strive so that bad, unskillful qualities that have arisen are given up."
+      ],
+      "highlight": "skillful qualities arise",
+      "question": "What skillful quality did you try to bring about today? What effort did you put into keeping it going?",
+      "url": "https://suttacentral.net/sn45.8/en/sujato"
+    },
+    {
+      "id": "mn9-right-view-2",
+      "ref": "MN 9",
+      "title": "Right View",
+      "uid": "mn9",
+      "ranges": [
+        {
+          "start": "54.1",
+          "end": "54.8"
+        }
+      ],
+      "blocks": [
+        [
+          "But what are name and form? What is their origin, their cessation, and the practice that leads to their cessation?",
+          "Feeling, perception, intention, contact, and application of mind—",
+          "this is called name.",
+          "The four principal states, and form derived from the four principal states—",
+          "this is called form.",
+          "Such is name and such is form.",
+          "This is called name and form.",
+          "Name and form originate from consciousness. Name and form cease when consciousness ceases. The practice that leads to the cessation of name and form is simply this noble eightfold path …"
+        ]
+      ],
+      "excerpt": [
+        "But what are name and form? What is their origin, their cessation, and the practice that leads to their cessation?",
+        "Feeling, perception, intention, contact, and application of mind—",
+        "this is called name."
+      ],
+      "highlight": "Feeling, perception, intention, contact, and application of mind",
+      "question": "Pick one moment today. What feeling, perception and intention were in it? What contact set it off?",
+      "url": "https://suttacentral.net/mn9/en/sujato"
+    },
+    {
+      "id": "mn9-right-view-3",
+      "ref": "MN 9",
+      "title": "Right View",
+      "uid": "mn9",
+      "ranges": [
+        {
+          "start": "11.1",
+          "end": "11.6"
+        }
+      ],
+      "blocks": [
+        [
+          "But what is fuel? What is its origin, its cessation, and the practice that leads to its cessation?",
+          "These four fuels maintain sentient beings that have been born and help those about to be born.",
+          "What four?",
+          "Edible food, whether solid or subtle; contact is the second, mental intention the third, and consciousness the fourth.",
+          "Fuel originates from craving. Fuel ceases when craving ceases. The practice that leads to the cessation of fuel is simply this noble eightfold path, that is:",
+          "right view, right purpose, right speech, right action, right livelihood, right effort, right mindfulness, and right immersion."
+        ]
+      ],
+      "excerpt": [
+        "What four?",
+        "Edible food, whether solid or subtle; contact is the second, mental intention the third, and consciousness the fourth.",
+        "Fuel originates from craving. Fuel ceases when craving ceases. The practice that leads to the cessation of fuel is simply this noble eightfold path, that is:"
+      ],
+      "highlight": "Fuel originates from craving. Fuel ceases when craving ceases.",
+      "question": "What fed you today, in body and in mind? Which of it did you reach for out of craving?",
+      "url": "https://suttacentral.net/mn9/en/sujato"
+    },
+    {
+      "id": "mn9-right-view-4",
+      "ref": "MN 9",
+      "title": "Right View",
+      "uid": "mn9",
+      "ranges": [
+        {
+          "start": "34.1",
+          "end": "34.4"
+        }
+      ],
+      "blocks": [
+        [
+          "But what is grasping? What is its origin, its cessation, and the practice that leads to its cessation?",
+          "There are these four kinds of grasping.",
+          "Grasping at sensual pleasures, views, precepts and observances, and theories of a self.",
+          "Grasping originates from craving. Grasping ceases when craving ceases. The practice that leads to the cessation of grasping is simply this noble eightfold path …"
+        ]
+      ],
+      "excerpt": [
+        "There are these four kinds of grasping.",
+        "Grasping at sensual pleasures, views, precepts and observances, and theories of a self.",
+        "Grasping originates from craving. Grasping ceases when craving ceases. The practice that leads to the cessation of grasping is simply this noble eightfold path …"
+      ],
+      "highlight": "Grasping at sensual pleasures, views, precepts and observances, and theories of a self.",
+      "question": "What did you grasp at today: a pleasure, a view, a way of doing things, or an idea of who you are? Where did the grasping come from?",
+      "url": "https://suttacentral.net/mn9/en/sujato"
+    },
+    {
+      "id": "mn9-right-view-5",
+      "ref": "MN 9",
+      "title": "Right View",
+      "uid": "mn9",
+      "ranges": [
+        {
+          "start": "58.1",
+          "end": "58.4"
+        }
+      ],
+      "blocks": [
+        [
+          "But what is consciousness? What is its origin, its cessation, and the practice that leads to its cessation?",
+          "There are these six classes of consciousness.",
+          "Eye, ear, nose, tongue, body, and mind consciousness.",
+          "Consciousness originates from choices. Consciousness ceases when choices cease. The practice that leads to the cessation of consciousness is simply this noble eightfold path …"
+        ]
+      ],
+      "excerpt": [
+        "There are these six classes of consciousness.",
+        "Eye, ear, nose, tongue, body, and mind consciousness.",
+        "Consciousness originates from choices. Consciousness ceases when choices cease. The practice that leads to the cessation of consciousness is simply this noble eightfold path …"
+      ],
+      "highlight": "Consciousness originates from choices. Consciousness ceases when choices cease.",
+      "question": "What choices did you make today that shaped what you noticed? What did you miss because of them?",
+      "url": "https://suttacentral.net/mn9/en/sujato"
     }
   ]
 }
