@@ -25,9 +25,9 @@ enum StoneContact: String, CaseIterable {
     /// The loudest each contact gets, before scaling by impact.
     var maxLevel: Float {
         switch self {
-        case .palm: 0.8
+        case .palm: 0.9
         case .pile: 1.0
-        case .clack: 0.45
+        case .clack: 0.6
         }
     }
 }
@@ -85,7 +85,9 @@ final class StoneDropFeedback {
             print("played \(contact.rawValue) at \(Date.now.timeIntervalSince1970)")
         }
         #endif
-        let level = contact.maxLevel * Float(0.35 + 0.65 * min(max(strength, 0), 1))
+        // Never faint: even a gentle landing is clearly heard and felt
+        // (PJ, 28 Nov: too weak on the phone).
+        let level = contact.maxLevel * Float(0.6 + 0.4 * min(max(strength, 0), 1))
 
         if let player = players[contact]?.first(where: { !$0.isPlaying }) {
             player.volume = level
@@ -96,17 +98,45 @@ final class StoneDropFeedback {
         }
 
         guard let engine else { return }
-        let event = CHHapticEvent(
-            eventType: .hapticTransient,
-            parameters: [
-                CHHapticEventParameter(parameterID: .hapticIntensity, value: contact == .clack ? level * 0.6 : level),
-                CHHapticEventParameter(parameterID: .hapticSharpness, value: contact.sharpness),
-            ],
-            relativeTime: 0
-        )
+        let events: [CHHapticEvent]
+        switch contact {
+        case .clack:
+            // A small, crisp tick.
+            events = [CHHapticEvent(
+                eventType: .hapticTransient,
+                parameters: [
+                    CHHapticEventParameter(parameterID: .hapticIntensity, value: level * 0.7),
+                    CHHapticEventParameter(parameterID: .hapticSharpness, value: contact.sharpness),
+                ],
+                relativeTime: 0
+            )]
+        case .palm, .pile:
+            // A landing: a full-strength knock, then a brief, heavy settle,
+            // so each stone is felt arriving in the hand.
+            let weight: Float = contact == .pile ? 1.0 : 0.75
+            events = [
+                CHHapticEvent(
+                    eventType: .hapticTransient,
+                    parameters: [
+                        CHHapticEventParameter(parameterID: .hapticIntensity, value: min(1, level * 1.1)),
+                        CHHapticEventParameter(parameterID: .hapticSharpness, value: contact.sharpness),
+                    ],
+                    relativeTime: 0
+                ),
+                CHHapticEvent(
+                    eventType: .hapticContinuous,
+                    parameters: [
+                        CHHapticEventParameter(parameterID: .hapticIntensity, value: level * weight * 0.8),
+                        CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.05),
+                    ],
+                    relativeTime: 0.01,
+                    duration: contact == .pile ? 0.09 : 0.06
+                ),
+            ]
+        }
         do {
             try engine.start()
-            let player = try engine.makePlayer(with: CHHapticPattern(events: [event], parameters: []))
+            let player = try engine.makePlayer(with: CHHapticPattern(events: events, parameters: []))
             try player.start(atTime: CHHapticTimeImmediate)
         } catch {
             logger.error("Haptic tap failed: \(error.localizedDescription)")

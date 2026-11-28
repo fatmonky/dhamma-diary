@@ -49,3 +49,10 @@ PJ heard the clacks carry on in the simulator after the animation had finished. 
 - Clacks need a firmer knock (impact strength over 120, was 40) and are at least 0.1s apart (was 0.06s).
 - Two falling stones bumping in mid-air no longer count as landed. Before, in a 40-stone run only 14 landings made their landing sound; now all 40 do (2 onto the empty palms, 38 onto the heaps).
 - Checked with `-debug.logContacts YES`, which also prints each sound played. 40 stones: 105 sounds, all between 4.5s and 8.5s after launch, and none in the 11 seconds after. 5 stones: 17 sounds, ending at 7.2s.
+
+## Fix: no sound on the phone, haptics too weak (PJ, same day)
+
+- **Sound:** the palm and pile sounds had only 2–3% of their energy above 400 Hz (they sat at 105–165 Hz), which an iPhone speaker barely plays. `make_stone_sounds.py` now centres them in the speaker's range (palm ~620 Hz, pile ~400 Hz, so the pile is still the duller one; 59–75% above 400 Hz), with a little low thud kept for headphones. All three are normalised louder, and even a gentle landing now plays at 60% or more of full volume (was 35%).
+- **Haptics:** a landing is now a full-strength transient knock followed by a brief low-sharpness continuous "settle" (60ms on the palm, 90ms on the pile). Clacks stay a small, crisp tick.
+- The sounds still use the `.ambient` session as the card asked, so **silent mode mutes them**. If the phone is on silent, nothing will be heard at any volume.
+- Not verified: hearing or feeling them. The simulator has no haptics, and these sounds haven't been listened to on a phone yet.

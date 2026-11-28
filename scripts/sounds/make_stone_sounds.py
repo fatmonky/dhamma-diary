@@ -79,27 +79,37 @@ def write(name, x):
         w.writeframes(data.tobytes())
 
 
+# iPhone speakers play little below about 400 Hz, so each sound's character
+# sits between 400 Hz and 4 kHz; the low thud underneath is for headphones
+# (PJ, 28 Nov: nothing could be heard on the phone).
+
+
 def palm():
+    """Soft and fleshy: a muffled, short tap."""
     t = timeline(0.16)
-    body = partial(t, 165, 0.022, 1.0, glide=0.25) + partial(t, 310, 0.010, 0.35)
-    skin = noise_burst(t, 0.006, cutoff_high=1800, amp=0.45)
-    return finish(body + skin, 0.55)
+    body = (partial(t, 640, 0.018, 1.0, glide=0.15) + partial(t, 1050, 0.012, 0.55)
+            + partial(t, 160, 0.030, 0.5, glide=0.2))
+    skin = noise_burst(t, 0.007, cutoff_low=500, cutoff_high=3200, amp=0.6)
+    return finish(body + skin, 0.95)
 
 
 def pile():
-    t = timeline(0.24)
-    body = partial(t, 105, 0.045, 1.0, glide=0.2) + partial(t, 230, 0.025, 0.45)
-    knock = partial(t, 820, 0.012, 0.22) + partial(t, 1330, 0.008, 0.12)
-    grit = noise_burst(t, 0.010, cutoff_high=1400, amp=0.35)
-    return finish(body + knock + grit, 0.8)
+    """Heavier and duller: lower, longer, with a muted knock of stone."""
+    t = timeline(0.26)
+    body = (partial(t, 430, 0.040, 1.0, glide=0.12) + partial(t, 690, 0.028, 0.6)
+            + partial(t, 980, 0.018, 0.35) + partial(t, 110, 0.050, 0.6, glide=0.2))
+    knock = partial(t, 1500, 0.010, 0.3)
+    grit = noise_burst(t, 0.012, cutoff_low=350, cutoff_high=1800, amp=0.5)
+    return finish(body + knock + grit, 0.95)
 
 
 def clack():
+    """Light and bright: two stones touching."""
     t = timeline(0.12)
     modes = (partial(t, 2350, 0.020, 1.0) + partial(t, 3710, 0.014, 0.6)
              + partial(t, 5480, 0.009, 0.35) + partial(t, 1520, 0.016, 0.3))
     click = noise_burst(t, 0.0015, cutoff_low=1500, amp=0.5)
-    return finish(modes + click, 0.45)
+    return finish(modes + click, 0.8)
 
 
 if __name__ == "__main__":
