@@ -25,6 +25,7 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
     /// Sides whose palm already holds a stone: later landings there sound heavier.
     private var occupied: Set<StoneType> = []
     private var lastClack: TimeInterval = 0
+    private var lastLanding: TimeInterval = 0
     private var lastDropTime: TimeInterval?
     private var lastUpdate: TimeInterval?
     /// Each colour's composite stone: centre and half-width/half-height.
@@ -45,13 +46,21 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
         self.interval = DailyReview.dropInterval(forCount: types.count)
         // Smaller stones for a big day, so each heap stays in its half.
         let largest = max(types.filter { $0 == .white }.count, types.filter { $0 == .black }.count)
-        self.radius = switch largest {
+        let preferred: CGFloat = switch largest {
         case ..<8: 22
         case ..<16: 18
         case ..<28: 15
         case ..<45: 12
         default: 10
         }
+        // A week can hold far more than a day (spec 10.4): shrink further so
+        // the bigger composite stone still fits across its half and within
+        // the height. See buildOvals for the oval's size.
+        let maxA = (size.width / 2 - 10) * 0.46
+        let maxB = (size.height - 40) / 2
+        let perStone = (CGFloat(max(largest, 1)) * 0.82 / 0.8 / 1.5).squareRoot()
+        let fit = min(maxA / (1.5 * perStone), maxB / perStone)
+        self.radius = max(4, min(preferred, fit))
         super.init(size: size)
         scaleMode = .resizeFill
         backgroundColor = .clear
@@ -325,6 +334,10 @@ final class StoneDropScene: SKScene, SKPhysicsContactDelegate {
         land(a)
         land(b)
         if aNew != bNew {
+            // On a big week, landings can come faster than they can be told apart.
+            let now = CACurrentMediaTime()
+            guard now - lastLanding > 0.04 else { return }
+            lastLanding = now
             feedback.play(.pile, strength: strength)
         } else if speed > 120, contact.collisionImpulse > 0 {
             let now = CACurrentMediaTime()

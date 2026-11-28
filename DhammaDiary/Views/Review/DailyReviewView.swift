@@ -1,4 +1,3 @@
-import SpriteKit
 import SwiftData
 import SwiftUI
 
@@ -6,19 +5,21 @@ import SwiftUI
 /// day so far — stones, mind and diary entry.
 struct DailyReviewView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var review: DailyReview?
-    @State private var scene: StoneDropScene?
-    @State private var feedback = StoneDropFeedback()
     @State private var settled = false
-
-    private static let pileHeight: CGFloat = 330
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                pile
+                if let review {
+                    StoneDropPile(
+                        types: review.stoneTypes,
+                        label: "Today's stones",
+                        value: review.tallyText,
+                        settled: $settled
+                    )
+                }
                 if settled, let review {
                     summary(review)
                         .transition(.opacity)
@@ -28,41 +29,7 @@ struct DailyReviewView: View {
         }
         .navigationTitle("Daily Review")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            scene?.isPaused = false
-            start()
-        }
-        .onDisappear {
-            // Leaving mid-fall: no more sound or taps from a screen that's gone.
-            feedback.isMuted = true
-            feedback.stop()
-            scene?.isPaused = true
-        }
-    }
-
-    // MARK: - Pile
-
-    @ViewBuilder
-    private var pile: some View {
-        if let review, !review.stoneTypes.isEmpty {
-            GeometryReader { proxy in
-                ZStack {
-                    if let scene {
-                        SpriteView(scene: scene, options: [.allowsTransparency])
-                            // With Reduce Motion the pile settles out of sight first.
-                            .opacity(reduceMotion && !settled ? 0 : 1)
-                    }
-                }
-                .contentShape(Rectangle())
-                .onTapGesture { scene?.skipToEnd() }
-                .onAppear { makeScene(review, size: proxy.size) }
-            }
-            .frame(height: Self.pileHeight)
-            .accessibilityElement()
-            .accessibilityLabel("Today's stones")
-            .accessibilityValue(review.tallyText)
-            .accessibilityHint(settled ? "" : "Double-tap to skip.")
-        }
+        .onAppear(perform: start)
     }
 
     private func start() {
@@ -70,36 +37,14 @@ struct DailyReviewView: View {
         guard review == nil else { return }
         var loaded = DailyReview.load(day: DateHelpers.currentReflectionDay, in: modelContext)
         #if DEBUG
-        // For simulator checks: `-debug.dropCount 40` drops that many stones instead.
-        let count = UserDefaults.standard.integer(forKey: "debug.dropCount")
-        if count > 0 {
-            loaded = DailyReview(
-                day: loaded.day,
-                stoneTypes: (0..<count).map { $0 % 3 == 2 ? .black : .white },
-                checks: loaded.checks,
-                entry: loaded.entry
-            )
-        }
+        loaded = DailyReview(
+            day: loaded.day,
+            stoneTypes: StoneDropDebug.override(loaded.stoneTypes),
+            checks: loaded.checks,
+            entry: loaded.entry
+        )
         #endif
         review = loaded
-        if loaded.stoneTypes.isEmpty {
-            settled = true
-        }
-    }
-
-    private func makeScene(_ review: DailyReview, size: CGSize) {
-        guard scene == nil, size.width > 0 else { return }
-        feedback.prepare()
-        let scene = StoneDropScene(types: review.stoneTypes, size: size, feedback: feedback)
-        scene.onSettled = {
-            withAnimation(.easeIn(duration: reduceMotion ? 0.6 : 0.8)) {
-                settled = true
-            }
-        }
-        if reduceMotion {
-            scene.dropAllQuietly()
-        }
-        self.scene = scene
     }
 
     // MARK: - The day so far

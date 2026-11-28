@@ -2,7 +2,9 @@ import SwiftUI
 import SwiftData
 
 /// "This week" (spec 8.3): the week's stones and roots, then each day from
-/// Monday to today with its stones and the first line of its entry.
+/// Monday to today with its stones and the first line of its entry. It opens
+/// like Daily Review (spec 10.4): the week's stones fall into a white and a
+/// black heap first, and the review fades in once they settle.
 struct WeekLookBackView: View {
     @Environment(\.modelContext) private var modelContext
 
@@ -11,10 +13,23 @@ struct WeekLookBackView: View {
 
     @State private var week: WeekLookBack?
     @State private var openEntry: PersistentIdentifier?
+    /// The week's stones in logging order, for the fall.
+    @State private var stoneTypes: [StoneType] = []
+    @State private var settled = false
 
     var body: some View {
         List {
             if let week {
+                StoneDropPile(
+                    types: stoneTypes,
+                    label: "This week's stones",
+                    value: week.white + week.black > 0 ? "\(week.white) white · \(week.black) black" : "No stones this week",
+                    settled: $settled
+                )
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets())
+            }
+            if let week, settled {
                 Section {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(week.rangeText)
@@ -33,6 +48,7 @@ struct WeekLookBackView: View {
                     .padding(.vertical, 4)
                     .accessibilityElement(children: .combine)
                 }
+                .transition(.opacity)
 
                 Section {
                     // Not NavigationLinks: a row-wide link would swallow taps on
@@ -49,6 +65,7 @@ struct WeekLookBackView: View {
                         }
                     }
                 }
+                .transition(.opacity)
             }
         }
         .listStyle(.insetGrouped)
@@ -58,6 +75,8 @@ struct WeekLookBackView: View {
         .navigationTitle("This week")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
+            // Once per visit: coming back from an entry keeps the settled heaps.
+            guard week == nil else { return }
             reload()
             #if DEBUG
             // For simulator screenshots: `simctl launch … -debug.openWeek YES -debug.openEntry YES`.
@@ -79,6 +98,10 @@ struct WeekLookBackView: View {
         ))
         let entries = JournalStore.entries(in: WeekLookBack.entryInterval(currentDay: today), in: modelContext)
         week = WeekLookBack(currentDay: today, stones: stones, entries: entries)
+        stoneTypes = stones.map(\.type)
+        #if DEBUG
+        stoneTypes = StoneDropDebug.override(stoneTypes)
+        #endif
     }
 }
 
