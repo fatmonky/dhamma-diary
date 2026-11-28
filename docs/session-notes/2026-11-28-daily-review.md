@@ -56,3 +56,12 @@ PJ heard the clacks carry on in the simulator after the animation had finished. 
 - **Haptics:** a landing is now a full-strength transient knock followed by a brief low-sharpness continuous "settle" (60ms on the palm, 90ms on the pile). Clacks stay a small, crisp tick.
 - The sounds still use the `.ambient` session as the card asked, so **silent mode mutes them**. If the phone is on silent, nothing will be heard at any volume.
 - Not verified: hearing or feeling them. The simulator has no haptics, and these sounds haven't been listened to on a phone yet.
+
+## Fix attempt: no haptics in silent mode (PJ, same day)
+
+On the phone with sound on, the sounds now play. In silent mode the haptics disappeared too.
+
+- Likely cause (not confirmed): the haptic engines (`StoneDropFeedback`, and Today's `NoiseHaptics`) were created with `CHHapticEngine()`, which can share the app's audio session. Daily Review sets that session to `.ambient` so the silent switch mutes its sounds, and on silent the taps went quiet with them.
+- Change: both engines are now created with `CHHapticEngine(audioSession: nil)`. The SDK header says the engine then "will create its own" session, so the sounds' silent-mode setting can't reach the haptics.
+- Not verified: only a phone can show it; the simulator has no haptics.
+- If it still fails on silent, check Settings › Sounds & Haptics › Haptics. With "Don't Play in Silent Mode" or "Never Play", iOS may hold back app haptics on silent too, and the app can't override that.

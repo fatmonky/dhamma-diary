@@ -13,7 +13,9 @@ final class NoiseHaptics {
     func start(noise: Double) {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
         do {
-            let engine = try self.engine ?? CHHapticEngine()
+            // Its own audio session, so Daily Review's `.ambient` sounds (and
+            // the silent switch) never reach the slide's buzz.
+            let engine = try self.engine ?? CHHapticEngine(audioSession: nil)
             engine.isAutoShutdownEnabled = true
             try engine.start()
             self.engine = engine

@@ -66,7 +66,10 @@ final class StoneDropFeedback {
         }
         if CHHapticEngine.capabilitiesForHardware().supportsHaptics, engine == nil {
             do {
-                let engine = try CHHapticEngine()
+                // Its own audio session, not the app's `.ambient` one: the
+                // silent switch mutes the sounds but must leave the taps
+                // (PJ, 28 Nov: no haptics in silent mode).
+                let engine = try CHHapticEngine(audioSession: nil)
                 engine.isAutoShutdownEnabled = true
                 engine.playsHapticsOnly = true
                 try engine.start()
