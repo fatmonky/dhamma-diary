@@ -8,6 +8,10 @@ PJ (29 Nov 2026, screenshot IMG_3526 marked in red): move "Total days tracked / 
 - The "Daily Review ›" and "This week ›" links move into a new `reviewLinks`, which stays where they were: below Mind today. PJ boxed only the three figures, so the links didn't move with them.
 - Spec 8.2, 8.3, 10.1 and 10.4 updated to match.
 
+## Follow-up
+
+PJ: put the Daily Review and This week links below Streak and above Mind today. They now sit with the stats line at the top (`statStrip` then `reviewLinks`, 10pt apart). On Sundays the "Look back on this week" card follows them, before Mind today.
+
 ## Verification
 
 - Tests: 109 passed.

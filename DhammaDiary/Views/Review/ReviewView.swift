@@ -141,13 +141,16 @@ struct ReviewView: View {
         ZStack {
             ScrollView {
                 VStack(spacing: 22) {
-                    // The running totals first, just under the title (PJ, 29 Nov).
-                    statStrip
+                    // The running totals and the two look-backs first, just
+                    // under the title (PJ, 29 Nov).
+                    VStack(alignment: .leading, spacing: 10) {
+                        statStrip
+                        reviewLinks
+                    }
                     if isSunday {
                         weekLookBackCard
                     }
                     MindReviewSection(day: DateHelpers.currentReflectionDay)
-                    reviewLinks
                     secondarySection
                     Divider()
                         .frame(maxWidth: 260)
@@ -243,7 +246,7 @@ struct ReviewView: View {
         .padding(.horizontal)
     }
 
-    /// Daily Review and (except on Sundays) This week, below Mind today.
+    /// Daily Review and (except on Sundays) This week, under the stats line.
     private var reviewLinks: some View {
         VStack(alignment: .leading, spacing: 6) {
             // Spec 10: the day so far, every day including Sundays.
